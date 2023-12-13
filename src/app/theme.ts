@@ -117,21 +117,9 @@ export interface ITheme {
       Guest: ColorValue;
     };
   };
-
-  // Legacy values
-  legacy: {
-    neutral: {
-      regular: ColorValue;
-      subtleShadow: ColorValue;
-      shadow: ColorValue;
-      light: ColorValue;
-      subtleLight: ColorValue;
-      extraLight: ColorValue;
-    };
-  };
 }
 
-type ThemeInitializer = Pick<ITheme, 'palette' | 'legacy'> & {
+type ThemeInitializer = Pick<ITheme, 'palette'> & {
   init(): ITheme;
 };
 
@@ -243,17 +231,6 @@ export const defaultTheme: ThemeInitializer = {
       orange: '#ff9057',
       green: '#3cb371',
       blue: '#2a9cc8',
-    },
-  },
-
-  legacy: {
-    neutral: {
-      regular: '#868ca0',
-      subtleShadow: '#414355',
-      shadow: '#1f2029',
-      light: '#f8f8fa',
-      subtleLight: '#858Fa9',
-      extraLight: '#f8f8fa',
     },
   },
 
