@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 
 import { I18n } from '~/app/i18n';
 import { IGlobalState } from '~/app/store';
-import theme from '~/app/theme';
+import theme, { isOverrideMultiThemed } from '~/app/theme';
 import DefaultButton from '~/framework/components/buttons/default';
 import { ButtonLineGroup, LineButton } from '~/framework/components/buttons/line';
 import SecondaryButton from '~/framework/components/buttons/secondary';
@@ -252,6 +252,13 @@ function useAccountMenuFeature(session: UserHomeScreenPrivateProps['session'], f
                   onPress={() => editUserInformation(ModificationType.MOBILE)}
                 />
               </>
+            ) : null}
+            {isOverrideMultiThemed ? (
+              <LineButton
+                disabled={!!currentLoadingMenu}
+                title={I18n.get('user-page-editpref')}
+                onPress={() => navigation.navigate(userRouteNames.preferences, {})}
+              />
             ) : null}
           </ButtonLineGroup>
         </View>
