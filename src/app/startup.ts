@@ -9,6 +9,7 @@ import { appReadyAction } from '~/framework/navigation/redux';
 import { Platform } from '~/framework/util/appConf';
 import { Storage } from '~/framework/util/storage';
 
+import { Theme } from '~/app/theme';
 import { I18n } from './i18n';
 
 /**
@@ -19,37 +20,39 @@ export function useAppStartup(dispatch: ThunkDispatch<any, any, any>, lastPlatfo
   React.useEffect(() => {
     Storage.init()
       .then(() =>
-        I18n.init()
-          .then(() =>
-            loadCurrentPlatform().then(platform => {
-              if (platform) {
-                let loginDone = false;
-                dispatch(loginAction(platform, undefined))
-                  .then(redirect => {
-                    dispatch(actions.redirectAutoLogin(redirect));
-                  })
-                  .catch(() => {
-                    // Do nothing. Finally clause + default navigation state will handle the case.
-                  })
-                  .finally(() => {
-                    loginDone = true;
-                    setLoadedPlatform(platform);
-                    dispatch(appReadyAction());
-                  });
-                setTimeout(() => {
-                  if (!loginDone) {
-                    dispatch(actions.sessionError(RuntimeAuthErrorCode.NETWORK_ERROR));
-                    setLoadedPlatform(platform);
-                    dispatch(appReadyAction());
-                  }
-                }, 15000);
-              } else dispatch(appReadyAction());
+        Theme.init().then(() =>
+          I18n.init()
+            .then(() =>
+              loadCurrentPlatform().then(platform => {
+                if (platform) {
+                  let loginDone = false;
+                  dispatch(loginAction(platform, undefined))
+                    .then(redirect => {
+                      dispatch(actions.redirectAutoLogin(redirect));
+                    })
+                    .catch(() => {
+                      // Do nothing. Finally clause + default navigation state will handle the case.
+                    })
+                    .finally(() => {
+                      loginDone = true;
+                      setLoadedPlatform(platform);
+                      dispatch(appReadyAction());
+                    });
+                  setTimeout(() => {
+                    if (!loginDone) {
+                      dispatch(actions.sessionError(RuntimeAuthErrorCode.NETWORK_ERROR));
+                      setLoadedPlatform(platform);
+                      dispatch(appReadyAction());
+                    }
+                  }, 15000);
+                } else dispatch(appReadyAction());
+              }),
+            )
+            .catch(e => {
+              if (__DEV__) console.warn(e);
+              dispatch(appReadyAction());
             }),
-          )
-          .catch(e => {
-            if (__DEV__) console.warn(e);
-            dispatch(appReadyAction());
-          }),
+        ),
       )
       .catch(e => {
         if (__DEV__) console.warn(e);
