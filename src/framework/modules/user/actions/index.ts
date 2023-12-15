@@ -9,6 +9,7 @@ import { ThunkDispatch } from 'redux-thunk';
 
 import Sound from 'react-native-sound';
 import { IGlobalState } from '~/app/store';
+import { Mode, Theme } from '~/app/theme';
 import { ILoggedUserProfile } from '~/framework/modules/auth/model';
 import { assertSession, actions as authActions } from '~/framework/modules/auth/reducer';
 import { actionTypes } from '~/framework/modules/user/reducer';
@@ -65,6 +66,10 @@ export function profileUpdateAction(newValues: UpdatableProfileValues) {
     }
   };
 }
+
+export const setModeAction = async (mode: Mode) => Theme.setMode(mode);
+
+export const getMode = () => Theme.getMode;
 
 const xmasThemeStorageKey = 'xmasThemeSetting';
 const xmasMusicStorageKey = 'xmasMusicSetting';
