@@ -1,6 +1,6 @@
 {
   "WARNING": "¡¡¡ USED AND UPDATED BY prepare-build.js - DO NOT EDIT MANUALLY !!!",
-  "last": "2024-07-22 16:14:40",
-  "notes": "chore(debug): add network requests history screen for dev/alpha/support builds\nchore: yarn clean\nwayf: put webview in private mode\nrelease: 1.13.1-rc.1(1130109)",
-  "version": "1.13.1-alpha.9(1130110)"
+  "last": "2024-07-24 15:59:33",
+  "notes": "release: 3.0.0(3000000)\nrelease: 2.0.0(2000000)\nSquashed commit of the following:\ni18n(ent77): MB-2868, ent77 i18n key/wording addition\nfix(wayf): Add missing domain to network security config\nMerge branch 'dev/1.13.1' of github.com:edificeio/edifice-mobile-framework into dev/1.13.1\nfix(audience) MB-2845 , fix typo on reactions view\nrelease: 1.13.1-alpha.9(1130110)",
+  "version": "3.0.0-poc.1(3000001)"
 }
