@@ -66,6 +66,7 @@ export default class RichEditor extends Component {
     that.htmlLoaded = false;
     that.imagesUrls = [];
     that.linksUrls = [];
+    that.medias = [];
     that._onAudioTouched = that._onAudioTouched.bind(that);
     that._onImageTouched = that._onImageTouched.bind(that);
     that._onLinkTouched = that._onLinkTouched.bind(that);
@@ -185,31 +186,19 @@ export default class RichEditor extends Component {
       });
   }
 
-  _onImageTouched(url, imagesUrls) {
+  _onImageTouched(url, medias) {
     const { disabled } = this.props;
     if (disabled) {
-      const images = imagesUrls.map(imgSrc => ({
-        type: 'image',
-        src: { uri: imgSrc },
-      }));
-      // openCarousel({ data: images, startIndex: imagesUrls.indexOf(url) });
-      navigateCarousel({ medias: images, startIndex: imagesUrls.indexOf(url) });
+      const startIndex = medias.findIndex(m => m?.src?.uri === url);
+      navigateCarousel({ medias, startIndex: startIndex === -1 ? 0 : startIndex });
     }
   }
 
-  _onLinkTouched(url, linksUrls) {
+  _onLinkTouched(url, medias) {
     const { disabled } = this.props;
     if (disabled) {
-      // console.debug('CLICK URL', url, linksUrls);
-      // openUrl(url);
-      const links = linksUrls.map(href => ({
-        // type: 'attachment',
-        // ToDo: THIS IS A TEST ! We enforce pdf type to test pdf carousel
-        type: 'pdf',
-        src: { uri: href },
-      }));
-      navigateCarousel({ medias: links, startIndex: linksUrls.indexOf(url) });
-      //openCarousel({ data: links, startIndex: linksUrls.indexOf(url) });
+      const startIndex = medias.findIndex(m => m?.src?.uri === url);
+      navigateCarousel({ medias, startIndex: startIndex === -1 ? 0 : startIndex });
       // TODO: https://edifice-community.atlassian.net/browse/MB-2437
     }
   }
@@ -242,7 +231,7 @@ export default class RichEditor extends Component {
           }
           break;
         case messages.LINK_TOUCHED:
-          that._onLinkTouched(that._getAbsoluteUrl(data), that.linksUrls);
+          that._onLinkTouched(that._getAbsoluteUrl(data), that.medias);
           break;
         case messages.LOG:
           console.debug('FROM EDIT:', ...data);
@@ -290,14 +279,16 @@ export default class RichEditor extends Component {
           that._onAudioTouched(that._getAbsoluteUrl(data));
           break;
         case messages.IMAGE_TOUCHED:
-          that._onImageTouched(that._getAbsoluteUrl(data), that.imagesUrls);
+          that._onImageTouched(that._getAbsoluteUrl(data), that.medias);
           break;
         case messages.IMAGES_URLS:
           that.imagesUrls = data.map(url => that._getAbsoluteUrl(url));
-          console.debug(`IMAGES URLS:\r\n${that.imagesUrls}`);
           break;
         case messages.LINKS_URLS:
           that.linksUrls = data.map(url => that._getAbsoluteUrl(url));
+          break;
+        case messages.MEDIAS:
+          that.medias = data.map(media => ({ type: media.type, src: { uri: that._getAbsoluteUrl(media.src) } }));
           break;
         case messages.VIDEO_TOUCHED:
           that._onVideoTouched(that._getAbsoluteUrl(data));

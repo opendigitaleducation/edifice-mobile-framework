@@ -556,6 +556,7 @@ function createHTML(options = {}) {
                     Actions.FORMAT_AUDIOS();
                     Actions.FORMAT_VIDEOS();
                     Actions.GET_IMAGES_URLS();
+                    Actions.GET_MEDIAS();
                     Actions.GET_LINKS_URLS();
                     for (var t=0; t < 5; t=t+2) {
                         setTimeout(() => {
@@ -593,6 +594,7 @@ function createHTML(options = {}) {
                     Actions.FORMAT_VIDEOS();
                     Actions.GET_IMAGES_URLS();
                     Actions.GET_LINKS_URLS();
+                    Actions.GET_MEDIAS();
                     for (var t=0; t <= 10; t=t+2) {
                         setTimeout(() => {
                             Actions.UPDATE_HEIGHT();
@@ -699,6 +701,28 @@ function createHTML(options = {}) {
                 }
                 postAction({type: 'LINKS_URLS', data: linksUrls}, true);
             },
+
+            GET_MEDIAS: function() {
+                const medias = [];
+                const querySelectors = {
+                    IMG: 'img',
+                    VIDEO: 'video',
+                    AUDIO: 'audio',
+                    A: 'a'
+                }
+                const results = document.querySelectorAll(Object.values(querySelectors).join(', '));
+                results.forEach((result) => {
+                    switch(result.tagName) {
+                    case 'A':
+                        medias.push({type: 'pdf', src: result.getAttribute('href')});
+                        break;
+                    case 'IMG':
+                        medias.push({type: 'image', src: result.getAttribute('src')});
+                        break;
+                    }
+                });
+                postAction({type: 'MEDIAS', data: medias}, true);
+            }
 
         };
 
