@@ -4,7 +4,7 @@ import { ImageProps, ImageURISource, View, ViewStyle } from 'react-native';
 import RNFastImage from 'react-native-fast-image';
 
 import theme from '~/app/theme';
-import { openCarousel } from '~/framework/components/carousel/openCarousel';
+import { openCarousel } from '~/framework/components/carousel-old/openCarousel';
 import { UI_SIZES, getScaleImageSize } from '~/framework/components/constants';
 import { NamedSVG } from '~/framework/components/picture';
 import { SmallInverseText } from '~/framework/components/text';

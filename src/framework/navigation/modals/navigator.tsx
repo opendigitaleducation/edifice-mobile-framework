@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import CarouselScreen from '~/framework/components/carousel';
-import { computeNavBar as CarouselNavBar } from '~/framework/components/carousel/screen';
+import { CarouselScreen } from '~/framework/components/carousel';
+import Carousel, { computeNavBar as CarouselNavBar } from '~/framework/components/carousel-old/screen';
 import FileImportScreen, { computeNavBar as FileAddNavBar } from '~/framework/components/inputs/rich-text/file-import';
 import MediaPlayer from '~/framework/components/media/player';
 import { computeNavBar as PDFNavBar, PDFReader } from '~/framework/components/pdf/pdf-reader';
@@ -34,7 +34,7 @@ export default (
       screenOptions={{
         presentation: 'fullScreenModal',
       }}>
-      <RootStack.Screen name={ModalsRouteNames.CarouselOld} options={CarouselNavBar} component={CarouselScreen} />
+      <RootStack.Screen name={ModalsRouteNames.CarouselOld} options={CarouselNavBar} component={Carousel} />
       <RootStack.Screen name={ModalsRouteNames.MediaPlayer} options={{ headerShown: false }} component={MediaPlayer} />
       <RootStack.Screen
         name={ModalsRouteNames.FileImport}
@@ -49,7 +49,11 @@ export default (
         initialParams={{}}
       />
     </RootStack.Group>
-    <RootStack.Screen name={globalRouteNames.carousel} />
+    <RootStack.Screen
+      name={globalRouteNames.carousel}
+      options={CarouselScreen.navOptions}
+      component={CarouselScreen.CarouselScreenComponent}
+    />
   </>
 );
 

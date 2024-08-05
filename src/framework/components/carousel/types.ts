@@ -4,8 +4,8 @@ import { AudienceParameter } from '~/framework/modules/core/audience/types';
 import { IModalsNavigationParams, globalRouteNames } from '~/framework/navigation/modals';
 import type { IMedia } from '~/framework/util/media';
 
-export namespace CarouselScreen {
-  export interface PublicProps {
+export namespace CarouselScreenProps {
+  export interface Public {
     // No props to provide byself
   }
 
@@ -19,5 +19,5 @@ export namespace CarouselScreen {
 
   export type NavBarConfig = ({ navigation, route }: Navigation) => NativeStackNavigationOptions;
 
-  export interface AllProps extends PublicProps, Navigation {}
+  export interface All extends Public, Navigation {}
 }

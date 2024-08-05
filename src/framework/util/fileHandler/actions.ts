@@ -4,7 +4,7 @@
 import FileViewer from 'react-native-file-viewer';
 import type { ThunkDispatch } from 'redux-thunk';
 
-import { openCarousel } from '~/framework/components/carousel/openCarousel';
+import { openCarousel } from '~/framework/components/carousel-old/openCarousel';
 import { MediaType, openMediaPlayer } from '~/framework/components/media/player';
 import { assertSession } from '~/framework/modules/auth/reducer';
 import fileTransferService, {

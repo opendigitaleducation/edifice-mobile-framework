@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import IconButton from '~/framework/components/buttons/icon';
-import { openCarousel } from '~/framework/components/carousel/openCarousel';
+import { openCarousel } from '~/framework/components/carousel-old/openCarousel';
 import { UI_SIZES } from '~/framework/components/constants';
 import { ImagePicked, cameraAction, galleryAction } from '~/framework/components/menus/actions';
 import BottomMenu from '~/framework/components/menus/bottom';

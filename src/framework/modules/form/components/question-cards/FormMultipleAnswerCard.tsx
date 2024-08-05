@@ -3,7 +3,7 @@ import { FlatList, Image, StyleSheet, TextInput, TouchableOpacity } from 'react-
 
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
-import { openCarousel } from '~/framework/components/carousel/openCarousel';
+import { openCarousel } from '~/framework/components/carousel-old/openCarousel';
 import { UI_SIZES, UI_STYLES } from '~/framework/components/constants';
 import { SmallText } from '~/framework/components/text';
 import { FormQuestionCard } from '~/framework/modules/form/components/FormQuestionCard';

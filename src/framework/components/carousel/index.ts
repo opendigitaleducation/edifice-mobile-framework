@@ -8,3 +8,9 @@
  * Carousel is included as a fullscreen modal screen included in main navigation.
  * You don't have to instanciate it yourself, just use the provided `navigateCarousel` function.
  */
+
+export { navigateCarousel } from './navigation';
+
+export { CarouselScreen } from './screen';
+
+export type { CarouselScreenProps } from './types';
