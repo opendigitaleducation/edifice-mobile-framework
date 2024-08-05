@@ -6,7 +6,6 @@ import theme from '~/app/theme';
 import { navigateCarousel } from '~/framework/components/carousel';
 import { MediaType, openMediaPlayer } from '~/framework/components/media/player';
 import { getSession } from '~/framework/modules/auth/reducer';
-import { openUrl } from '~/framework/util/linking';
 import { urlSigner } from '~/infra/oauth';
 
 import { actions, messages } from './const';
@@ -201,12 +200,14 @@ export default class RichEditor extends Component {
   _onLinkTouched(url, linksUrls) {
     const { disabled } = this.props;
     if (disabled) {
-      openUrl(url);
-      /*const links = linksUrls.map(href => ({
-      type: 'link',
-      src: { uri: href },
-    }));
-    openCarousel({ data: links, startIndex: linksUrls.indexOf(url) });*/
+      // console.debug('CLICK URL', url, linksUrls);
+      // openUrl(url);
+      const links = linksUrls.map(href => ({
+        type: 'attachment',
+        src: { uri: href },
+      }));
+      navigateCarousel({ medias: links, startIndex: linksUrls.indexOf(url) });
+      //openCarousel({ data: links, startIndex: linksUrls.indexOf(url) });
       // TODO: https://edifice-community.atlassian.net/browse/MB-2437
     }
   }

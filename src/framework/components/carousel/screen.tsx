@@ -2,6 +2,7 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import * as React from 'react';
 import Pinchable from 'react-native-pinchable';
 import Carousel from 'react-native-reanimated-carousel';
+import { WebViewSourceUri } from 'react-native-webview/lib/WebViewTypes';
 import { connect } from 'react-redux';
 
 import { I18n } from '~/app/i18n';
@@ -13,11 +14,12 @@ import { ToastHandler } from '~/framework/components/toast';
 import { DEFAULTS } from '~/framework/components/toast/component';
 import { getCurrentQueryParamToken } from '~/framework/modules/auth/reducer';
 import { navBarOptions } from '~/framework/navigation/navBar';
-import type { formatMediaSource } from '~/framework/util/media';
+import type { formatMediaSource, IAttachmentMedia, IImageMedia } from '~/framework/util/media';
 import { formatMediaSourceArray, Image } from '~/framework/util/media';
 import { OAuth2RessourceOwnerPasswordClient } from '~/infra/oauth';
 import { Loading } from '~/ui/Loading';
 
+import WebView from '../webview';
 import styles from './styles';
 import { CarouselScreenProps } from './types';
 
@@ -38,7 +40,13 @@ export namespace CarouselScreen {
     };
   };
 
-  const CarouselItemImageComponent = ({ media, index }: { media: ReturnType<typeof formatMediaSource>; index: number }) => {
+  const CarouselItemImageComponent = ({
+    media,
+    index,
+  }: {
+    media: ReturnType<typeof formatMediaSource<IImageMedia>>;
+    index: number;
+  }) => {
     return (
       <Pinchable style={styles.pinchable}>
         <Image source={media.src} style={styles.image} />
@@ -46,9 +54,21 @@ export namespace CarouselScreen {
     );
   };
 
+  const CarouselItemAttachmentComponent = ({
+    media,
+    index,
+  }: {
+    media: ReturnType<typeof formatMediaSource<IAttachmentMedia>>;
+    index: number;
+  }) => {
+    return <WebView source={media.src as WebViewSourceUri} style={styles.webview} />;
+  };
+
   const CarouselItemComponent = ({ media, index }: { media: ReturnType<typeof formatMediaSource>; index: number }) => {
     if (media.type === 'image') {
       return <CarouselItemImageComponent media={media} index={index} />;
+    } else if (media.type === 'attachment') {
+      return <CarouselItemAttachmentComponent media={media} index={index} />;
     } else return null;
   };
 
@@ -68,7 +88,10 @@ export namespace CarouselScreen {
   }))((props: CarouselScreenProps.All) => {
     const { queryParamToken } = props;
     const { startIndex = 0 } = props.route.params;
-    const medias = React.useMemo(() => formatMediaSourceArray(props.route.params.medias, { absolute: true }), []);
+    const medias = React.useMemo(
+      () => formatMediaSourceArray(props.route.params.medias, { absolute: true, queryParamToken }),
+      [props.route.params.medias, queryParamToken],
+    );
     const [navBarHidden, setNavBarHidden] = React.useState(false);
     const navBarAndStatusBarHeight = useHeaderHeight();
 

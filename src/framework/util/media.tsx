@@ -55,7 +55,10 @@ export function formatSource(src: string | ImageURISource, opts: { absolute?: bo
   return typeof src === 'string' ? { uri } : { ...src, uri };
 }
 
-export function formatMediaSource(media: IMedia, opts: { absolute?: boolean; queryParamToken?: AuthQueryParamToken }) {
+export function formatMediaSource<MediaType extends IMedia>(
+  media: MediaType,
+  opts: { absolute?: boolean; queryParamToken?: AuthQueryParamToken },
+) {
   return { ...media, src: formatSource(media.src, opts) };
 }
 
