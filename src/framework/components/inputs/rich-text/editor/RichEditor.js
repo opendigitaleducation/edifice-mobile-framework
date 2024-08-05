@@ -203,7 +203,9 @@ export default class RichEditor extends Component {
       // console.debug('CLICK URL', url, linksUrls);
       // openUrl(url);
       const links = linksUrls.map(href => ({
-        type: 'attachment',
+        // type: 'attachment',
+        // ToDo: THIS IS A TEST ! We enforce pdf type to test pdf carousel
+        type: 'pdf',
         src: { uri: href },
       }));
       navigateCarousel({ medias: links, startIndex: linksUrls.indexOf(url) });

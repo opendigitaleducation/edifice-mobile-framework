@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ImageProps, ImageURISource, Image as RNImage, StyleSheet, View } from 'react-native';
 import { FastImageProps, default as RNFastImage } from 'react-native-fast-image';
+import { PdfProps } from 'react-native-pdf';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
@@ -10,37 +11,40 @@ import { urlSigner } from '~/infra/oauth';
 import { AuthQueryParamToken } from '../modules/auth/model';
 
 interface IMediaCommonAttributes {
-  src: string | ImageURISource;
+  src: unknown;
   link?: string;
   alt?: string;
   mime?: string;
 }
 
-export interface IImageAttributes extends IMediaCommonAttributes {}
-export interface IVideoAttributes extends IMediaCommonAttributes {
+export interface IImageMedia extends IMediaCommonAttributes {
+  type: 'image';
+  src: ImageProps['source'];
+}
+
+export interface IVideoMedia extends IMediaCommonAttributes {
+  type: 'video';
+  src: ImageProps['source'];
   poster?: string | ImageURISource;
   ratio?: number;
 }
-export interface IAudioAttributes extends IMediaCommonAttributes {}
-export interface IAttachmentAttributes extends IMediaCommonAttributes {}
 
-export interface IImageMedia extends IImageAttributes {
-  type: 'image';
-}
-
-export interface IVideoMedia extends IVideoAttributes {
-  type: 'video';
-}
-
-export interface IAudioMedia extends IAudioAttributes {
+export interface IAudioMedia extends IMediaCommonAttributes {
   type: 'audio';
+  src: ImageProps['source'];
 }
 
-export interface IAttachmentMedia extends IAttachmentAttributes {
+export interface IPdfMedia extends IMediaCommonAttributes {
+  type: 'pdf';
+  src: PdfProps['source'];
+}
+
+export interface IAttachmentMedia extends IMediaCommonAttributes {
   type: 'attachment';
+  src: ImageProps['source'];
 }
 
-export type IMedia = IImageMedia | IVideoMedia | IAudioMedia | IAttachmentMedia;
+export type IMedia = IImageMedia | IVideoMedia | IAudioMedia | IPdfMedia | IAttachmentMedia;
 
 export function formatSource(src: string | ImageURISource, opts: { absolute?: boolean; queryParamToken?: AuthQueryParamToken }) {
   let uri = typeof src === 'string' ? src : src.uri;

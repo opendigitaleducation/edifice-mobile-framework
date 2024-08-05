@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-reanimated-carousel/src/ScrollViewGesture.tsx b/node_modules/react-native-reanimated-carousel/src/ScrollViewGesture.tsx
+index ae2a123..1aabca9 100644
+--- a/node_modules/react-native-reanimated-carousel/src/ScrollViewGesture.tsx
++++ b/node_modules/react-native-reanimated-carousel/src/ScrollViewGesture.tsx
+@@ -348,6 +348,7 @@ const IScrollViewGesture: React.FC<PropsWithChildren<Props>> = (props) => {
+       {...panGestureHandlerProps}
+       enabled={enabled}
+       onGestureEvent={panGestureEventHandler}
++      maxPointers={1}
+     >
+       <Animated.View
+         ref={containerRef}

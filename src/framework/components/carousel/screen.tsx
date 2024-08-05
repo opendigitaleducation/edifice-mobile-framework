@@ -1,5 +1,6 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import * as React from 'react';
+import Pdf from 'react-native-pdf';
 import Pinchable from 'react-native-pinchable';
 import Carousel from 'react-native-reanimated-carousel';
 import { WebViewSourceUri } from 'react-native-webview/lib/WebViewTypes';
@@ -8,6 +9,7 @@ import { connect } from 'react-redux';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
+import { LoadingIndicator } from '~/framework/components/loading';
 import { PageView } from '~/framework/components/page';
 import StatusBar from '~/framework/components/status-bar';
 import { ToastHandler } from '~/framework/components/toast';
@@ -15,15 +17,21 @@ import { DEFAULTS } from '~/framework/components/toast/component';
 import WebView from '~/framework/components/webview';
 import { getCurrentQueryParamToken } from '~/framework/modules/auth/reducer';
 import { navBarOptions } from '~/framework/navigation/navBar';
-import type { formatMediaSource, IAttachmentMedia, IImageMedia } from '~/framework/util/media';
+import { openUrl } from '~/framework/util/linking';
+import type { formatMediaSource, IAttachmentMedia, IImageMedia, IMedia, IPdfMedia } from '~/framework/util/media';
 import { formatMediaSourceArray, Image } from '~/framework/util/media';
 import { OAuth2RessourceOwnerPasswordClient } from '~/infra/oauth';
-import { Loading } from '~/ui/Loading';
 
 import styles from './styles';
 import { CarouselScreenProps } from './types';
 
 export namespace CarouselScreen {
+  const onLinkPress = (uri: string) => {
+    openUrl(uri);
+  };
+
+  const renderLoading = () => <LoadingIndicator />;
+
   export const navOptions: CarouselScreenProps.NavBarConfig = ({ navigation, route }) => {
     const { medias, startIndex = 0 } = route.params;
     return {
@@ -40,13 +48,13 @@ export namespace CarouselScreen {
     };
   };
 
-  const CarouselItemImageComponent = ({
-    media,
-    index,
-  }: {
-    media: ReturnType<typeof formatMediaSource<IImageMedia>>;
+  interface CarouselItemProps<MediaType extends IMedia = IMedia> {
+    media: ReturnType<typeof formatMediaSource<MediaType>>;
     index: number;
-  }) => {
+    carouselRef: React.RefObject<CarouselScreenHandle>;
+  }
+
+  const CarouselItemImageComponent = ({ media, index }: CarouselItemProps<IImageMedia>) => {
     return (
       <Pinchable style={styles.pinchable}>
         <Image source={media.src} style={styles.image} />
@@ -54,25 +62,44 @@ export namespace CarouselScreen {
     );
   };
 
-  const CarouselItemAttachmentComponent = ({
-    media,
-    index,
-  }: {
-    media: ReturnType<typeof formatMediaSource<IAttachmentMedia>>;
-    index: number;
-  }) => {
+  const CarouselItemPdfComponent = ({ media, index, carouselRef }: CarouselItemProps<IPdfMedia>) => {
+    const onScaleChanged = React.useCallback(
+      (scale: number) => {
+        if (scale <= 1) {
+          carouselRef.current?.setSwipeEnabled(true);
+        } else {
+          carouselRef.current?.setSwipeEnabled(false);
+        }
+      },
+      [carouselRef],
+    );
+
+    return (
+      <Pdf
+        source={media.src}
+        style={styles.webview}
+        trustAllCerts={false}
+        // onError={() => this.setState({ error: true })}
+        onPressLink={onLinkPress}
+        renderActivityIndicator={renderLoading}
+        onScaleChanged={onScaleChanged}
+      />
+    );
+  };
+
+  const CarouselItemAttachmentComponent = ({ media, index }: CarouselItemProps<IAttachmentMedia>) => {
     return <WebView source={media.src as WebViewSourceUri} style={styles.webview} />;
   };
 
-  const CarouselItemComponent = ({ media, index }: { media: ReturnType<typeof formatMediaSource>; index: number }) => {
+  const CarouselItemComponent = ({ media, index, carouselRef }: CarouselItemProps) => {
     if (media.type === 'image') {
-      return <CarouselItemImageComponent media={media} index={index} />;
+      return <CarouselItemImageComponent media={media} index={index} carouselRef={carouselRef} />;
+    } else if (media.type === 'pdf') {
+      return <CarouselItemPdfComponent media={media} index={index} carouselRef={carouselRef} />;
     } else if (media.type === 'attachment') {
-      return <CarouselItemAttachmentComponent media={media} index={index} />;
+      return <CarouselItemAttachmentComponent media={media} index={index} carouselRef={carouselRef} />;
     } else return null;
   };
-
-  const renderItem = ({ item, index }) => <CarouselItemComponent media={item} index={index} />;
 
   const carouselAnimationConfig = {
     type: 'spring' as const,
@@ -81,6 +108,10 @@ export namespace CarouselScreen {
       damping: 500,
       overshootClamping: true,
     },
+  };
+
+  export type CarouselScreenHandle = {
+    setSwipeEnabled: (v: boolean) => void;
   };
 
   export const CarouselScreenComponent = connect(() => ({
@@ -104,14 +135,26 @@ export namespace CarouselScreen {
       }
     }, [queryParamToken]);
 
+    const carouselRef = React.useRef<CarouselScreenHandle>(null);
+    const [swipeEnabled, setSwipeEnabled] = React.useState(true);
+    React.useImperativeHandle(carouselRef, () => ({
+      setSwipeEnabled,
+    }));
+
+    const renderItem = React.useCallback(
+      ({ item, index }) => <CarouselItemComponent media={item} index={index} carouselRef={carouselRef} />,
+      [carouselRef],
+    );
+
     return (
       <PageView style={styles.page} showNetworkBar={false} showToast={false}>
         <StatusBar type="dark" hidden={navBarHidden} />
         <ToastHandler offset={navBarAndStatusBarHeight + DEFAULTS.offset} />
         {loading ? (
-          <Loading />
+          <LoadingIndicator />
         ) : (
           <Carousel
+            enabled={swipeEnabled}
             style={styles.page}
             data={medias}
             renderItem={renderItem}
