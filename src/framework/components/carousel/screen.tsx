@@ -12,6 +12,7 @@ import { PageView } from '~/framework/components/page';
 import StatusBar from '~/framework/components/status-bar';
 import { ToastHandler } from '~/framework/components/toast';
 import { DEFAULTS } from '~/framework/components/toast/component';
+import WebView from '~/framework/components/webview';
 import { getCurrentQueryParamToken } from '~/framework/modules/auth/reducer';
 import { navBarOptions } from '~/framework/navigation/navBar';
 import type { formatMediaSource, IAttachmentMedia, IImageMedia } from '~/framework/util/media';
@@ -19,7 +20,6 @@ import { formatMediaSourceArray, Image } from '~/framework/util/media';
 import { OAuth2RessourceOwnerPasswordClient } from '~/infra/oauth';
 import { Loading } from '~/ui/Loading';
 
-import WebView from '../webview';
 import styles from './styles';
 import { CarouselScreenProps } from './types';
 
@@ -32,7 +32,7 @@ export namespace CarouselScreen {
         navigation,
         route,
         title: medias.length !== 1 ? I18n.get('carousel-counter', { current: startIndex + 1, total: medias.length }) : '',
-        titleStyle: styles.title,
+        // titleStyle: styles.title,
       }),
       headerTransparent: true,
       headerBlurEffect: 'dark',
