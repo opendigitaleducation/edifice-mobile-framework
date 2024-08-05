@@ -1,7 +1,7 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import * as React from 'react';
+import Pinchable from 'react-native-pinchable';
 import Carousel from 'react-native-reanimated-carousel';
-import { WebViewSourceUri } from 'react-native-webview/lib/WebViewTypes';
 import { connect } from 'react-redux';
 
 import { I18n } from '~/app/i18n';
@@ -11,11 +11,10 @@ import { PageView } from '~/framework/components/page';
 import StatusBar from '~/framework/components/status-bar';
 import { ToastHandler } from '~/framework/components/toast';
 import { DEFAULTS } from '~/framework/components/toast/component';
-import WebView from '~/framework/components/webview';
 import { getCurrentQueryParamToken } from '~/framework/modules/auth/reducer';
 import { navBarOptions } from '~/framework/navigation/navBar';
 import type { formatMediaSource } from '~/framework/util/media';
-import { formatMediaSourceArray } from '~/framework/util/media';
+import { formatMediaSourceArray, Image } from '~/framework/util/media';
 import { OAuth2RessourceOwnerPasswordClient } from '~/infra/oauth';
 import { Loading } from '~/ui/Loading';
 
@@ -27,6 +26,7 @@ export namespace CarouselScreen {
     const { medias, startIndex = 0 } = route.params;
     return {
       presentation: 'fullScreenModal',
+      fullScreenGestureEnabled: true,
       ...navBarOptions({
         navigation,
         route,
@@ -39,29 +39,37 @@ export namespace CarouselScreen {
     };
   };
 
-  const imageHtmlInjectedJS = `
-    document.documentElement.style.backgroundColor = "${theme.palette.grey.black.toString()}";
-  `;
+  const CarouselItemImageComponent = ({ media, index }: { media: ReturnType<typeof formatMediaSource>; index: number }) => {
+    return (
+      <Pinchable style={styles.pinchable}>
+        <Image source={media.src} style={styles.image} />
+      </Pinchable>
+    );
+  };
 
   const CarouselItemComponent = ({ media, index }: { media: ReturnType<typeof formatMediaSource>; index: number }) => {
     if (media.type === 'image') {
-      console.debug('redner image', media.src, index);
-      // return <Image source={media.src} style={{ flex: 1, resizeMode: 'contain' }} />;
-      return <WebView source={media.src as WebViewSourceUri} injectedJavaScriptBeforeContentLoaded={imageHtmlInjectedJS} />;
+      return <CarouselItemImageComponent media={media} index={index} />;
     } else return null;
   };
 
   const renderItem = ({ item, index }) => <CarouselItemComponent media={item} index={index} />;
+
+  const carouselAnimationConfig = {
+    type: 'spring' as const,
+    config: {
+      stiffness: 1000,
+      damping: 500,
+      overshootClamping: true,
+    },
+  };
 
   export const CarouselScreenComponent = connect(() => ({
     queryParamToken: getCurrentQueryParamToken(),
   }))((props: CarouselScreenProps.All) => {
     const { queryParamToken } = props;
     const { startIndex = 0 } = props.route.params;
-    const medias = React.useMemo(
-      () => formatMediaSourceArray(props.route.params.medias, { absolute: true, queryParamToken }),
-      [props.route.params.medias, queryParamToken],
-    );
+    const medias = React.useMemo(() => formatMediaSourceArray(props.route.params.medias, { absolute: true }), []);
     const [navBarHidden, setNavBarHidden] = React.useState(false);
     const navBarAndStatusBarHeight = useHeaderHeight();
 
@@ -88,6 +96,8 @@ export namespace CarouselScreen {
             defaultIndex={startIndex}
             width={UI_SIZES.screen.width}
             height={UI_SIZES.screen.height}
+            windowSize={3}
+            withAnimation={carouselAnimationConfig}
           />
         )}
       </PageView>
