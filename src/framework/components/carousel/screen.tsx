@@ -26,7 +26,6 @@ export namespace CarouselScreen {
     const { medias, startIndex = 0 } = route.params;
     return {
       presentation: 'fullScreenModal',
-      fullScreenGestureEnabled: true,
       ...navBarOptions({
         navigation,
         route,
