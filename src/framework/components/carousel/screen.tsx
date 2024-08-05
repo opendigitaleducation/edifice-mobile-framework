@@ -1,9 +1,10 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import * as React from 'react';
+import { ImageProps, View } from 'react-native';
 import Pdf from 'react-native-pdf';
-import Pinchable from 'react-native-pinchable';
 import Carousel, { TCarouselProps } from 'react-native-reanimated-carousel';
 import { WebViewSourceUri } from 'react-native-webview/lib/WebViewTypes';
+import Zoom from 'react-native-zoom-reanimated';
 import { connect } from 'react-redux';
 
 import { I18n } from '~/app/i18n';
@@ -65,11 +66,46 @@ export namespace CarouselScreen {
     carouselRef: React.RefObject<CarouselScreenHandle>;
   }
 
+  const carouselItemImageComponentDoubleTapConfig = {
+    minZoomScale: 1,
+    maxZoomScale: 10,
+    defaultScale: 4,
+  };
+
+  const carouselItemImageComponentAnimationConfig = {
+    minZoomScale: 1,
+    maxZoomScale: 10,
+    defaultScale: 4,
+  };
+
   const CarouselItemImageComponent = ({ media, index }: CarouselItemProps<IImageMedia>) => {
+    const [wh, setWh] = React.useState<{ w: number; h: number } | undefined>(undefined);
+    const containerStyle = React.useMemo<ImageProps['style']>(
+      () => [styles.container, { aspectRatio: wh && wh.h !== 0 ? wh.w / wh.h : 'auto' }],
+      [wh],
+    );
     return (
-      <Pinchable style={styles.pinchable}>
-        <Image source={media.src} style={styles.image} />
-      </Pinchable>
+      <Zoom
+        style={styles.pinchable}
+        doubleTapConfig={carouselItemImageComponentDoubleTapConfig}
+        animationConfig={carouselItemImageComponentAnimationConfig}>
+        <View style={containerStyle}>
+          <Image
+            source={media.src}
+            style={styles.image}
+            onLoad={React.useCallback(
+              ({
+                nativeEvent: {
+                  source: { width, height },
+                },
+              }) => {
+                setWh({ w: width, h: height });
+              },
+              [],
+            )}
+          />
+        </View>
+      </Zoom>
     );
   };
 
