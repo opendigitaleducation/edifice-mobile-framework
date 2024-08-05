@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ImageProps, ImageURISource, Image as RNImage, StyleSheet, View } from 'react-native';
 import { FastImageProps, default as RNFastImage } from 'react-native-fast-image';
+import { VideoPlayerProps } from 'react-native-media-console';
 import { PdfProps } from 'react-native-pdf';
 
 import theme from '~/app/theme';
@@ -24,14 +25,14 @@ export interface IImageMedia extends IMediaCommonAttributes {
 
 export interface IVideoMedia extends IMediaCommonAttributes {
   type: 'video';
-  src: ImageProps['source'];
+  src: VideoPlayerProps['source'];
   poster?: string | ImageURISource;
   ratio?: number;
 }
 
 export interface IAudioMedia extends IMediaCommonAttributes {
   type: 'audio';
-  src: ImageProps['source'];
+  src: VideoPlayerProps['source'];
 }
 
 export interface IPdfMedia extends IMediaCommonAttributes {

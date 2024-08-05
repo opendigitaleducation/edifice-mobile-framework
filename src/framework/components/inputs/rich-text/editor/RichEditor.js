@@ -4,9 +4,7 @@ import { WebView } from 'react-native-webview';
 
 import theme from '~/app/theme';
 import { navigateCarousel } from '~/framework/components/carousel';
-import { MediaType, openMediaPlayer } from '~/framework/components/media/player';
 import { getSession } from '~/framework/modules/auth/reducer';
-import { urlSigner } from '~/infra/oauth';
 
 import { actions, messages } from './const';
 import { createHTML } from './editor';
@@ -177,13 +175,12 @@ export default class RichEditor extends Component {
     this._keyOpen = false;
   }
 
-  _onAudioTouched(url) {
+  _onAudioTouched(url, medias) {
     const { disabled } = this.props;
-    if (disabled)
-      openMediaPlayer({
-        type: MediaType.AUDIO,
-        source: urlSigner.signURISource(url),
-      });
+    if (disabled) {
+      const startIndex = medias.findIndex(m => m?.src?.uri === url);
+      navigateCarousel({ medias, startIndex: startIndex === -1 ? 0 : startIndex });
+    }
   }
 
   _onImageTouched(url, medias) {
@@ -203,13 +200,13 @@ export default class RichEditor extends Component {
     }
   }
 
-  _onVideoTouched(url) {
+  _onVideoTouched(url, medias) {
     const { disabled } = this.props;
-    if (disabled)
-      openMediaPlayer({
-        type: MediaType.VIDEO,
-        source: urlSigner.signURISource(url),
-      });
+    if (disabled) {
+      const startIndex = medias.findIndex(m => m?.src?.uri === url);
+      navigateCarousel({ medias, startIndex: startIndex === -1 ? 0 : startIndex });
+      // TODO: https://edifice-community.atlassian.net/browse/MB-2437
+    }
   }
 
   onMessage(event) {
@@ -276,7 +273,7 @@ export default class RichEditor extends Component {
           if (offsetY > 0) onCursorPosition(offsetY);
           break;
         case messages.AUDIO_TOUCHED:
-          that._onAudioTouched(that._getAbsoluteUrl(data));
+          that._onAudioTouched(that._getAbsoluteUrl(data), that.medias);
           break;
         case messages.IMAGE_TOUCHED:
           that._onImageTouched(that._getAbsoluteUrl(data), that.medias);
@@ -291,7 +288,7 @@ export default class RichEditor extends Component {
           that.medias = data.map(media => ({ type: media.type, src: { uri: that._getAbsoluteUrl(media.src) } }));
           break;
         case messages.VIDEO_TOUCHED:
-          that._onVideoTouched(that._getAbsoluteUrl(data));
+          that._onVideoTouched(that._getAbsoluteUrl(data), that.medias);
           break;
         default:
           onMessage?.(message);

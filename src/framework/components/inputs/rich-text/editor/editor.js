@@ -719,6 +719,12 @@ function createHTML(options = {}) {
                     case 'IMG':
                         medias.push({type: 'image', src: result.getAttribute('src')});
                         break;
+                    case 'AUDIO':
+                        medias.push({type: 'audio', src: result.getAttribute('src')});
+                        break;
+                    case 'VIDEO':
+                        medias.push({type: 'video', src: result.getAttribute('src')});
+                        break;
                     }
                 });
                 postAction({type: 'MEDIAS', data: medias}, true);

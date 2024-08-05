@@ -11,6 +11,7 @@ import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
 import { LoadingIndicator } from '~/framework/components/loading';
+import MediaPlayer from '~/framework/components/media/player-carousel';
 import { PageView } from '~/framework/components/page';
 import StatusBar from '~/framework/components/status-bar';
 import { ToastHandler } from '~/framework/components/toast';
@@ -19,7 +20,15 @@ import WebView from '~/framework/components/webview';
 import { getCurrentQueryParamToken } from '~/framework/modules/auth/reducer';
 import { navBarOptions } from '~/framework/navigation/navBar';
 import { openUrl } from '~/framework/util/linking';
-import type { formatMediaSource, IAttachmentMedia, IImageMedia, IMedia, IPdfMedia } from '~/framework/util/media';
+import type {
+  formatMediaSource,
+  IAttachmentMedia,
+  IAudioMedia,
+  IImageMedia,
+  IMedia,
+  IPdfMedia,
+  IVideoMedia,
+} from '~/framework/util/media';
 import { formatMediaSourceArray, Image } from '~/framework/util/media';
 import { OAuth2RessourceOwnerPasswordClient } from '~/infra/oauth';
 
@@ -72,7 +81,7 @@ export namespace CarouselScreen {
     defaultScale: 4,
   };
 
-  const CarouselItemImageComponent = ({ media, index }: CarouselItemProps<IImageMedia>) => {
+  const CarouselItemImageComponent = ({ media }: CarouselItemProps<IImageMedia>) => {
     const [wh, setWh] = React.useState<{ w: number; h: number } | undefined>(undefined);
     const containerStyle = React.useMemo<ImageProps['style']>(
       () => [styles.container, { aspectRatio: wh && wh.h !== 0 ? wh.w / wh.h : 'auto' }],
@@ -100,7 +109,11 @@ export namespace CarouselScreen {
     );
   };
 
-  const CarouselItemPdfComponent = ({ media, index, carouselRef }: CarouselItemProps<IPdfMedia>) => {
+  const CarouselItemPlayerComponent = ({ media }: CarouselItemProps<IAudioMedia | IVideoMedia>) => {
+    return <MediaPlayer media={media} />;
+  };
+
+  const CarouselItemPdfComponent = ({ media, carouselRef }: CarouselItemProps<IPdfMedia>) => {
     const onScaleChanged = React.useCallback(
       (scale: number) => {
         if (scale <= 1) {
@@ -132,6 +145,8 @@ export namespace CarouselScreen {
   const CarouselItemComponent = ({ media, index, carouselRef }: CarouselItemProps) => {
     if (media.type === 'image') {
       return <CarouselItemImageComponent media={media} index={index} carouselRef={carouselRef} />;
+    } else if (media.type === 'audio' || media.type === 'video') {
+      return <CarouselItemPlayerComponent media={media} index={index} carouselRef={carouselRef} />;
     } else if (media.type === 'pdf') {
       return <CarouselItemPdfComponent media={media} index={index} carouselRef={carouselRef} />;
     } else if (media.type === 'attachment') {
