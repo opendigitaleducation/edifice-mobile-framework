@@ -4,5 +4,5 @@ import { ModalsRouteNames } from '~/framework/navigation/modals';
 import { ICarouselNavParams } from './screen';
 
 export function openCarousel(props: ICarouselNavParams) {
-  navigate(ModalsRouteNames.Carousel, props);
+  navigate(ModalsRouteNames.CarouselOld, props);
 }

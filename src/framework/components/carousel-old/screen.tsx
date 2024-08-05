@@ -16,7 +16,7 @@ import Share from 'react-native-share';
 
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
-import ImageViewer from '~/framework/components/carousel/image-viewer';
+import ImageViewer from '~/framework/components/carousel-old/image-viewer';
 import { UI_SIZES } from '~/framework/components/constants';
 import { EmptyScreen } from '~/framework/components/empty-screens';
 import PopupMenu from '~/framework/components/menus/popup';
@@ -46,7 +46,7 @@ export interface ICarouselNavParams {
   referer: AudienceParameter; // used for audience tracking
 }
 
-export interface ICarouselProps extends NativeStackScreenProps<IModalsNavigationParams, ModalsRouteNames.Carousel> {}
+export interface ICarouselProps extends NativeStackScreenProps<IModalsNavigationParams, ModalsRouteNames.CarouselOld> {}
 
 const styles = StyleSheet.create({
   page: { backgroundColor: theme.palette.grey.black },
@@ -140,7 +140,7 @@ export const Buttons = ({ disabled, imageViewerRef }: { disabled: boolean; image
 export function computeNavBar({
   navigation,
   route,
-}: NativeStackScreenProps<IModalsNavigationParams, ModalsRouteNames.Carousel>): NativeStackNavigationOptions {
+}: NativeStackScreenProps<IModalsNavigationParams, ModalsRouteNames.CarouselOld>): NativeStackNavigationOptions {
   return {
     ...navBarOptions({
       navigation,

@@ -13,7 +13,7 @@ import AudienceViewsScreen, { computeNavBar as audienceViewsNavBar } from '~/fra
 import { setCrossIconBlackForRoutes, setModalModeForRoutes } from '~/framework/navigation/hideTabBarAndroid';
 import { getTypedRootStack } from '~/framework/navigation/navigators';
 
-import { IModalsNavigationParams, ModalsRouteNames } from '.';
+import { IModalsNavigationParams, ModalsRouteNames, globalRouteNames } from '.';
 
 const RootStack = getTypedRootStack<IModalsNavigationParams>();
 export default (
@@ -34,7 +34,7 @@ export default (
       screenOptions={{
         presentation: 'fullScreenModal',
       }}>
-      <RootStack.Screen name={ModalsRouteNames.Carousel} options={CarouselNavBar} component={CarouselScreen} />
+      <RootStack.Screen name={ModalsRouteNames.CarouselOld} options={CarouselNavBar} component={CarouselScreen} />
       <RootStack.Screen name={ModalsRouteNames.MediaPlayer} options={{ headerShown: false }} component={MediaPlayer} />
       <RootStack.Screen
         name={ModalsRouteNames.FileImport}
@@ -49,12 +49,13 @@ export default (
         initialParams={{}}
       />
     </RootStack.Group>
+    <RootStack.Screen name={globalRouteNames.carousel} />
   </>
 );
 
 setModalModeForRoutes([
   ModalsRouteNames.Pdf,
-  ModalsRouteNames.Carousel,
+  ModalsRouteNames.CarouselOld,
   ModalsRouteNames.MediaPlayer,
   ModalsRouteNames.RichTextEditor,
   ModalsRouteNames.FileImport,

@@ -4,7 +4,7 @@ import { FastImageProps, default as RNFastImage } from 'react-native-fast-image'
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { NamedSVG } from '~/framework/components/picture/NamedSVG';
 import { urlSigner } from '~/infra/oauth';
 
 interface IMediaCommonAttributes {
@@ -19,8 +19,8 @@ export interface IVideoAttributes extends IMediaCommonAttributes {
   poster?: string | ImageURISource;
   ratio?: number;
 }
-
 export interface IAudioAttributes extends IMediaCommonAttributes {}
+export interface IAttachmentAttributes extends IMediaCommonAttributes {}
 
 export interface IImageMedia extends IImageAttributes {
   type: 'image';
@@ -34,7 +34,11 @@ export interface IAudioMedia extends IAudioAttributes {
   type: 'audio';
 }
 
-export type IMedia = IImageMedia | IVideoMedia | IAudioMedia;
+export interface IAttachmentMedia extends IAttachmentAttributes {
+  type: 'attachment';
+}
+
+export type IMedia = IImageMedia | IVideoMedia | IAudioMedia | IAttachmentMedia;
 
 export function formatSource(src: string | ImageURISource) {
   return typeof src === 'string' ? { uri: src } : src;
