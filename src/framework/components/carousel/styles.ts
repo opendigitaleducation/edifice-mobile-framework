@@ -5,7 +5,7 @@ import theme from '~/app/theme';
 import { UI_SIZES } from '../constants';
 
 export default StyleSheet.create({
-  page: { backgroundColor: theme.palette.grey.black },
+  page: { backgroundColor: theme.palette.grey.darkness },
   pinchable: { width: UI_SIZES.screen.width },
   container: {
     margin: 'auto',
@@ -16,5 +16,5 @@ export default StyleSheet.create({
     height: '100%',
     resizeMode: 'contain',
   },
-  webview: { flex: 1, backgroundColor: theme.palette.grey.black },
+  webview: { flex: 1, backgroundColor: theme.palette.grey.darkness },
 });
