@@ -11,7 +11,7 @@ import { Source } from 'react-native-fast-image';
 
 import { I18n } from '~/app/i18n';
 import { getStore } from '~/app/store';
-import type { AuthLoggedAccount, AuthSavedAccount, AuthTokenSet } from '~/framework/modules/auth/model';
+import type { AuthLoggedAccount, AuthSavedAccount, AuthTokenSet, ExpirableToken } from '~/framework/modules/auth/model';
 import { getSerializedLoggedInAccountInfo } from '~/framework/modules/auth/model';
 import {
   assertSession,
@@ -608,6 +608,11 @@ export class OAuth2RessourceOwnerPasswordClient {
   public async deleteQueryParamToken() {
     const session = assertSession();
     getStore().dispatch(authActions.setQueryParamToken(session.user.id, undefined));
+  }
+
+  public static tokenIsExpired(token: ExpirableToken) {
+    const nowMomentWithPadding = moment().add(OAuth2RessourceOwnerPasswordClient.QUERY_PARAM_TOKEN_EXPIRATION_PADDING, 'seconds');
+    return nowMomentWithPadding.isAfter(moment(token.expiresAt));
   }
 }
 

@@ -1,5 +1,6 @@
 import { NativeStackNavigationOptions, NativeStackScreenProps } from '@react-navigation/native-stack';
 
+import { AuthActiveAccount } from '~/framework/modules/auth/model';
 import { AudienceParameter } from '~/framework/modules/core/audience/types';
 import { IModalsNavigationParams, globalRouteNames } from '~/framework/navigation/modals';
 import type { IMedia } from '~/framework/util/media';
@@ -7,6 +8,10 @@ import type { IMedia } from '~/framework/util/media';
 export namespace CarouselScreenProps {
   export interface Public {
     // No props to provide byself
+  }
+
+  export interface Store {
+    queryParamToken: AuthActiveAccount['tokens']['queryParam'];
   }
 
   export interface NavParams {
@@ -19,5 +24,5 @@ export namespace CarouselScreenProps {
 
   export type NavBarConfig = ({ navigation, route }: Navigation) => NativeStackNavigationOptions;
 
-  export interface All extends Public, Navigation {}
+  export interface All extends Public, Navigation, Store {}
 }

@@ -7,6 +7,8 @@ import { UI_SIZES } from '~/framework/components/constants';
 import { NamedSVG } from '~/framework/components/picture/NamedSVG';
 import { urlSigner } from '~/infra/oauth';
 
+import { AuthQueryParamToken } from '../modules/auth/model';
+
 interface IMediaCommonAttributes {
   src: string | ImageURISource;
   link?: string;
@@ -40,16 +42,25 @@ export interface IAttachmentMedia extends IAttachmentAttributes {
 
 export type IMedia = IImageMedia | IVideoMedia | IAudioMedia | IAttachmentMedia;
 
-export function formatSource(src: string | ImageURISource) {
-  return typeof src === 'string' ? { uri: src } : src;
+export function formatSource(src: string | ImageURISource, opts: { absolute?: boolean; queryParamToken?: AuthQueryParamToken }) {
+  let uri = typeof src === 'string' ? src : src.uri;
+  if (uri && opts?.absolute) {
+    uri = urlSigner.getAbsoluteUrl(uri);
+  }
+  if (uri && opts?.queryParamToken) {
+    const uriObj = new URL(uri);
+    uriObj.searchParams.set('queryparam_token', opts.queryParamToken.value);
+    uri = uriObj.toString();
+  }
+  return typeof src === 'string' ? { uri } : { ...src, uri };
 }
 
-export function formatMediaSource(media: IMediaCommonAttributes) {
-  return { ...media, src: formatSource(media.src) };
+export function formatMediaSource(media: IMedia, opts: { absolute?: boolean; queryParamToken?: AuthQueryParamToken }) {
+  return { ...media, src: formatSource(media.src, opts) };
 }
 
-export function formatMediaSourceArray(medias: IMediaCommonAttributes[]) {
-  return medias.map(m => formatMediaSource(m));
+export function formatMediaSourceArray(medias: IMedia[], opts: { absolute?: boolean; queryParamToken?: AuthQueryParamToken }) {
+  return medias.map(m => formatMediaSource(m, opts));
 }
 
 const style = StyleSheet.create({

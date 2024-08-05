@@ -210,17 +210,19 @@ export interface AuthToken {
   value: string;
 }
 
-/**
- * A Bearer token used for authentication
- */
-export interface AuthBearerToken extends AuthToken {
-  type: 'Bearer';
+export interface ExpirableToken {
   expiresAt: DateTimeString;
 }
 
-export interface AuthQueryParamToken extends AuthToken {
+/**
+ * A Bearer token used for authentication
+ */
+export interface AuthBearerToken extends AuthToken, ExpirableToken {
+  type: 'Bearer';
+}
+
+export interface AuthQueryParamToken extends AuthToken, ExpirableToken {
   type: 'QueryParam';
-  expiresAt: DateTimeString;
 }
 
 /**

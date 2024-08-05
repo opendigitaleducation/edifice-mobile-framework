@@ -5,23 +5,25 @@ import theme from '~/app/theme';
 
 export interface StatusBarProps {
   type: 'primary' | 'light' | 'dark';
+  hidden?: boolean;
 }
 
 export const StatusBar = (props: StatusBarProps) => {
+  const { type, hidden } = props;
   return Platform.select(
-    props.type === 'primary'
+    type === 'primary'
       ? {
-          ios: <RNStatusBar barStyle="light-content" />,
-          android: <RNStatusBar backgroundColor={theme.palette.primary.regular} barStyle="light-content" />,
+          ios: <RNStatusBar barStyle="light-content" hidden={hidden} />,
+          android: <RNStatusBar backgroundColor={theme.palette.primary.regular} barStyle="light-content" hidden={hidden} />,
         }
-      : props.type === 'light'
+      : type === 'light'
         ? {
-            ios: <RNStatusBar barStyle="dark-content" />,
-            android: <RNStatusBar backgroundColor={theme.ui.background.page} barStyle="dark-content" />,
+            ios: <RNStatusBar barStyle="dark-content" hidden={hidden} />,
+            android: <RNStatusBar backgroundColor={theme.ui.background.page} barStyle="dark-content" hidden={hidden} />,
           }
         : /* props.type === 'dark' */ {
-            ios: <RNStatusBar barStyle="light-content" />,
-            android: <RNStatusBar backgroundColor={theme.palette.grey.black} barStyle="light-content" />,
+            ios: <RNStatusBar barStyle="light-content" hidden={hidden} />,
+            android: <RNStatusBar backgroundColor={theme.palette.grey.black} barStyle="light-content" hidden={hidden} />,
           },
   );
 };
