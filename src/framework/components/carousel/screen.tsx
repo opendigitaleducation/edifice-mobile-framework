@@ -72,12 +72,6 @@ export namespace CarouselScreen {
     defaultScale: 4,
   };
 
-  const carouselItemImageComponentAnimationConfig = {
-    minZoomScale: 1,
-    maxZoomScale: 10,
-    defaultScale: 4,
-  };
-
   const CarouselItemImageComponent = ({ media, index }: CarouselItemProps<IImageMedia>) => {
     const [wh, setWh] = React.useState<{ w: number; h: number } | undefined>(undefined);
     const containerStyle = React.useMemo<ImageProps['style']>(
@@ -85,10 +79,7 @@ export namespace CarouselScreen {
       [wh],
     );
     return (
-      <Zoom
-        style={styles.pinchable}
-        doubleTapConfig={carouselItemImageComponentDoubleTapConfig}
-        animationConfig={carouselItemImageComponentAnimationConfig}>
+      <Zoom style={styles.pinchable} doubleTapConfig={carouselItemImageComponentDoubleTapConfig}>
         <View style={containerStyle}>
           <Image
             source={media.src}
