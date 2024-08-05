@@ -2,7 +2,7 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import * as React from 'react';
 import Pdf from 'react-native-pdf';
 import Pinchable from 'react-native-pinchable';
-import Carousel from 'react-native-reanimated-carousel';
+import Carousel, { TCarouselProps } from 'react-native-reanimated-carousel';
 import { WebViewSourceUri } from 'react-native-webview/lib/WebViewTypes';
 import { connect } from 'react-redux';
 
@@ -32,16 +32,27 @@ export namespace CarouselScreen {
 
   const renderLoading = () => <LoadingIndicator />;
 
+  const getScreenTitle = (current: number, total: number) =>
+    total > 1 ? I18n.get('carousel-counter', { current: current + 1, total }) : '';
+
+  const getNavBarOptions = (
+    navigation: CarouselScreenProps.Navigation['navigation'],
+    route: CarouselScreenProps.Navigation['route'],
+    current: number,
+    total: number,
+  ) =>
+    navBarOptions({
+      navigation,
+      route,
+      title: getScreenTitle(current, total),
+      // titleStyle: styles.title,
+    });
+
   export const navOptions: CarouselScreenProps.NavBarConfig = ({ navigation, route }) => {
     const { medias, startIndex = 0 } = route.params;
     return {
       presentation: 'fullScreenModal',
-      ...navBarOptions({
-        navigation,
-        route,
-        title: medias.length !== 1 ? I18n.get('carousel-counter', { current: startIndex + 1, total: medias.length }) : '',
-        // titleStyle: styles.title,
-      }),
+      ...getNavBarOptions(navigation, route, startIndex, medias.length),
       headerTransparent: true,
       headerBlurEffect: 'dark',
       headerStyle: { backgroundColor: theme.ui.shadowColorTransparent.toString() },
@@ -117,7 +128,7 @@ export namespace CarouselScreen {
   export const CarouselScreenComponent = connect(() => ({
     queryParamToken: getCurrentQueryParamToken(),
   }))((props: CarouselScreenProps.All) => {
-    const { queryParamToken } = props;
+    const { queryParamToken, navigation, route } = props;
     const { startIndex = 0 } = props.route.params;
     const medias = React.useMemo(
       () => formatMediaSourceArray(props.route.params.medias, { absolute: true, queryParamToken }),
@@ -146,6 +157,13 @@ export namespace CarouselScreen {
       [carouselRef],
     );
 
+    const onSnapToItem = React.useCallback<NonNullable<TCarouselProps['onSnapToItem']>>(
+      index => {
+        navigation.setOptions({ headerTitle: getNavBarOptions(navigation, route, index, medias.length).headerTitle });
+      },
+      [medias.length, navigation, route],
+    );
+
     return (
       <PageView style={styles.page} showNetworkBar={false} showToast={false}>
         <StatusBar type="dark" hidden={navBarHidden} />
@@ -163,6 +181,8 @@ export namespace CarouselScreen {
             height={UI_SIZES.screen.height}
             windowSize={3}
             withAnimation={carouselAnimationConfig}
+            loop={false}
+            onSnapToItem={onSnapToItem}
           />
         )}
       </PageView>
