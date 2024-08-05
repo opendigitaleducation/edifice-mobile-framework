@@ -15,6 +15,7 @@ import { urlSigner } from '~/infra/oauth';
 import TouchableOpacity from './CustomTouchableOpacity';
 import { Row } from './Grid';
 import ImageOptional from './ImageOptional';
+import { navigateCarousel } from '~/framework/components/carousel';
 
 const ContainerImage = styled.View({});
 
@@ -116,13 +117,14 @@ class Images extends React.Component<
 > {
   public openImage(startIndex: any) {
     const { images } = this.props;
-    const data = images.map(img => ({
+    const medias = images.map(img => ({
       type: 'image' as 'image',
       src: img.src,
       ...(img.alt ? { alt: img.alt } : undefined),
       ...(img.linkTo ? { link: img.linkTo } : undefined),
     }));
-    openCarousel({ data, startIndex, referer: this.props.referer });
+    //openCarousel({ data, startIndex, referer: this.props.referer });
+    navigateCarousel({ medias, startIndex, referer: this.props.referer });
   }
 
   public images() {

@@ -3,7 +3,7 @@ import { Keyboard, Platform, StyleSheet, TextInput, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import theme from '~/app/theme';
-import { openCarousel } from '~/framework/components/carousel-old/openCarousel';
+import { navigateCarousel } from '~/framework/components/carousel';
 import { MediaType, openMediaPlayer } from '~/framework/components/media/player';
 import { getSession } from '~/framework/modules/auth/reducer';
 import { openUrl } from '~/framework/util/linking';
@@ -193,7 +193,8 @@ export default class RichEditor extends Component {
         type: 'image',
         src: { uri: imgSrc },
       }));
-      openCarousel({ data: images, startIndex: imagesUrls.indexOf(url) });
+      // openCarousel({ data: images, startIndex: imagesUrls.indexOf(url) });
+      navigateCarousel({ medias: images, startIndex: imagesUrls.indexOf(url) });
     }
   }
 

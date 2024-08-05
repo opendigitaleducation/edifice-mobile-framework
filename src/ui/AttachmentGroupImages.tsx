@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import IconButton from '~/framework/components/buttons/icon';
-import { openCarousel } from '~/framework/components/carousel-old/openCarousel';
+import { navigateCarousel } from '~/framework/components/carousel';
 import { UI_SIZES } from '~/framework/components/constants';
 import { ImagePicked, cameraAction, galleryAction } from '~/framework/components/menus/actions';
 import BottomMenu from '~/framework/components/menus/bottom';
@@ -85,7 +85,8 @@ export class AttachmentGroupImages extends React.PureComponent<{
     const { images, moduleName } = this.props;
     const carouselImages = images.map(image => ({ src: { uri: image.uri }, type: 'image' as 'image', alt: 'image' }));
     Trackers.trackEvent(moduleName, 'OPEN ATTACHMENT', 'Edit mode');
-    openCarousel({ data: carouselImages });
+    // openCarousel({ data: carouselImages });
+    navigateCarousel({ medias: carouselImages, referer: undefined });
   };
 
   public renderItemSeparator() {

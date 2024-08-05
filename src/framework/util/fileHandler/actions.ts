@@ -4,7 +4,7 @@
 import FileViewer from 'react-native-file-viewer';
 import type { ThunkDispatch } from 'redux-thunk';
 
-import { openCarousel } from '~/framework/components/carousel-old/openCarousel';
+import { navigateCarousel } from '~/framework/components/carousel';
 import { MediaType, openMediaPlayer } from '~/framework/components/media/player';
 import { assertSession } from '~/framework/modules/auth/reducer';
 import fileTransferService, {
@@ -161,14 +161,24 @@ export const openDocument = async (document: IDistantFile | LocalFile | IMedia) 
 
   switch (mediaType) {
     case 'image':
-      openCarousel({
-        data: [
+      // openCarousel({
+      //   data: [
+      //     onlineMedia ?? {
+      //       type: 'image',
+      //       src: localFile?.filepath!,
+      //       mime: localFile?.filetype,
+      //     },
+      //   ],
+      // });
+      navigateCarousel({
+        medias: [
           onlineMedia ?? {
             type: 'image',
             src: localFile?.filepath!,
             mime: localFile?.filetype,
           },
         ],
+        referer: undefined,
       });
       break;
     case 'audio':
