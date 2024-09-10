@@ -7,6 +7,6 @@ export default new NavigableModuleConfig<'element', null>({
   storageName: 'element',
 
   displayI18n: 'element-moduleconfig-appname',
-  displayAs: 'myAppsModule',
+  displayAs: 'myAppsConnector',
   displayPicture: { type: 'NamedSvg', name: 'element' },
 });

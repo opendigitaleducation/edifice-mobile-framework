@@ -12,7 +12,7 @@ node_require('react-native-permissions/scripts/setup.rb')
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
-flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+#flipper_config = ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
 
 linkage = ENV['USE_FRAMEWORKS']
 
@@ -42,7 +42,7 @@ target 'appe' do
   pod 'ZendeskAnswerBotSDK'
   pod 'ZendeskChatSDK'
   pod 'ZendeskSupportSDK'
-  
+
   #
   # react-native-permissions : @see: https://github.com/zoontek/react-native-permissions#ios
   #
@@ -81,7 +81,7 @@ target 'appe' do
     :path => config[:reactNativePath],
     #:hermes_enabled => flags[:hermes_enabled],
     #:fabric_enabled => flags[:fabric_enabled],
-    :flipper_configuration => flipper_config,
+    #:flipper_configuration => flipper_config,
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 

@@ -13,6 +13,6 @@ export default new NavigableModuleConfig<'lvs', null>({
   storageName: 'lvs',
 
   displayI18n: 'lvs-moduleconfig-appname',
-  displayAs: 'myAppsModule',
+  displayAs: 'myAppsConnector',
   displayPicture: { type: 'NamedSvg', name: 'lvs' },
 });

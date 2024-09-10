@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unstable-nested-components */
 import { DrawerNavigationOptions, DrawerScreenProps } from '@react-navigation/drawer';
 import { HeaderBackButton } from '@react-navigation/elements';
-import { UNSTABLE_usePreventRemove } from '@react-navigation/native';
+import { UNSTABLE_usePreventRemove, useIsFocused } from '@react-navigation/native';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { Alert, RefreshControl, ScrollView, View } from 'react-native';
@@ -69,6 +69,7 @@ const ZimbraMailListScreen = (props: ZimbraMailListScreenPrivateProps) => {
   const [selectedMails, setSelectedMails] = React.useState<string[]>([]);
   const listRef = React.useRef<SwipeListView<any>>(null);
   const moveModalRef = React.useRef<ModalBoxHandle>(null);
+  const isFocused = useIsFocused();
 
   const [loadingState, setLoadingState] = React.useState(props.initialLoadingState ?? AsyncPagedLoadingState.PRISTINE);
   const loadingRef = React.useRef<AsyncPagedLoadingState>();
@@ -76,21 +77,26 @@ const ZimbraMailListScreen = (props: ZimbraMailListScreenPrivateProps) => {
   // /!\ Need to use Ref of the state because of hooks Closure issue. @see https://stackoverflow.com/a/56554056/6111343
 
   const fetchMails = async (page: number = 0, ignoreQuery?: boolean) => {
-    try {
-      const { folderPath } = props.route.params;
+    const { folderPath } = props.route.params;
 
-      if (page !== currentPage) setCurrentPage(page);
-      let newMails = await props.tryFetchMailsFromFolder(folderPath, page, ignoreQuery ? undefined : query);
-      setSearchActive(query.length > 0 && !ignoreQuery);
-      if (page > 0) {
-        newMails = mails.concat(newMails).filter((mail, index, array) => array.findIndex(m => m.id === mail.id) === index);
-      } else {
-        setFetchNextCallable(true);
-      }
-      setMails(newMails);
-    } catch {
-      throw new Error();
+    if (page !== currentPage) setCurrentPage(page);
+
+    const timeoutPromise = new Promise((resolve, reject) => {
+      setTimeout(() => reject(new Error('Timeout occurred')), 20000);
+    });
+
+    let newMails = await Promise.race([
+      props.tryFetchMailsFromFolder(folderPath, page, ignoreQuery ? undefined : query),
+      timeoutPromise,
+    ]);
+
+    setSearchActive(query.length > 0 && !ignoreQuery);
+    if (page > 0) {
+      newMails = mails.concat(newMails).filter((mail, index, array) => array.findIndex(m => m.id === mail.id) === index);
+    } else {
+      setFetchNextCallable(true);
     }
+    setMails(newMails);
   };
 
   const init = () => {
@@ -123,17 +129,22 @@ const ZimbraMailListScreen = (props: ZimbraMailListScreenPrivateProps) => {
 
   React.useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
-      if (loadingRef.current === AsyncPagedLoadingState.PRISTINE) init();
+      if (loadingRef.current === AsyncPagedLoadingState.PRISTINE) {
+        init();
+      }
     });
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.navigation]);
+  }, [props.navigation, props.route.params.folderPath]);
 
   React.useEffect(() => {
-    setQuery('');
-    init();
+    if (isFocused) {
+      setQuery('');
+      init();
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.route.params.folderPath]);
+  }, [props.route.params.folderPath, isFocused]);
 
   React.useEffect(() => {
     if (selectedMails.length) setSelectedMails([]);
@@ -240,6 +251,7 @@ const ZimbraMailListScreen = (props: ZimbraMailListScreenPrivateProps) => {
       if (!session) throw new Error();
       await zimbraService.mails.toggleUnread(session, ids, unread);
       setSelectedMails([]);
+      console.log(mails, 'test lea 3');
       setMails(
         mails.map(mail => ({
           ...mail,

@@ -14,6 +14,9 @@ import AuthForgotAddAccountScreen from '~/framework/modules/auth/screens/add-acc
 import AuthLoginCredentialsScreen, {
   computeNavBar as loginCredentialsNavBar,
 } from '~/framework/modules/auth/screens/add-account/login-credentials';
+import AuthLoginRedirectAddAccountScreen, {
+  computeNavBar as loginRedirectNavBar,
+} from '~/framework/modules/auth/screens/add-account/login-redirect';
 import AuthLoginWayfAddAccountScreen, {
   computeNavBar as loginWayfNavBar,
 } from '~/framework/modules/auth/screens/add-account/login-wayf';
@@ -51,6 +54,11 @@ export default function () {
       />
 
       <Stack.Screen name={authRouteNames.addAccountLoginWayf} component={AuthLoginWayfAddAccountScreen} options={loginWayfNavBar} />
+      <Stack.Screen
+        name={authRouteNames.addAccountLoginRedirect}
+        component={AuthLoginRedirectAddAccountScreen}
+        options={loginRedirectNavBar}
+      />
       <Stack.Screen name={authRouteNames.addAccountWayf} component={AuthWayfAddAccountScreen} options={wayfNavBar} />
       <Stack.Screen
         name={authRouteNames.addAccountChangePassword}

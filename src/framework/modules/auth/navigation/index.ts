@@ -10,6 +10,7 @@ import type { AuthChangeMobileScreenNavParams } from '~/framework/modules/auth/s
 import type { AuthDiscoveryClassScreenNavParams } from '~/framework/modules/auth/screens/discovery-class';
 import type { AuthAccountSelectionScreenNavParams } from '~/framework/modules/auth/screens/main-account/account-selection/types';
 import type { AuthAddAccountModalScreenNavParams } from '~/framework/modules/auth/screens/main-account/add-account-modal';
+import { AuthLoginRedirectScreenNavParams } from '~/framework/modules/auth/screens/main-account/login-redirect';
 import type { AuthLoginWayfScreenNavParams } from '~/framework/modules/auth/screens/main-account/login-wayf';
 import type { AuthOnboardingScreenNavParams } from '~/framework/modules/auth/screens/main-account/onboarding';
 import type { AuthPlatformsScreenNavParams } from '~/framework/modules/auth/screens/main-account/platforms';
@@ -28,6 +29,7 @@ export const authRouteNames = {
   platforms: `${moduleConfig.name}/platforms` as 'platforms',
   loginCredentials: `${moduleConfig.name}/login/credentials` as 'loginCredentials',
   loginWayf: `${moduleConfig.name}/login/wayf` as 'loginWayf',
+  loginRedirect: `${moduleConfig.name}/login/redirect` as 'loginRedirect',
   wayf: `${moduleConfig.name}/wayf` as 'wayf',
   activation: `${moduleConfig.name}/activation` as 'activation',
   changePassword: `${moduleConfig.name}/changePassword` as 'changePassword',
@@ -39,6 +41,7 @@ export const authRouteNames = {
   addAccountLoginCredentials: `${moduleConfig.name}/add-account/login/credentials` as 'addAccountLoginCredentials',
   addAccountLoginWayf: `${moduleConfig.name}/add-account/login/wayf` as 'addAccountLoginWayf',
   addAccountWayf: `${moduleConfig.name}/add-account/wayf` as 'addAccountWayf',
+  addAccountLoginRedirect: `${moduleConfig.name}/add-account/redirect` as 'addAccountLoginRedirect',
   addAccountActivation: `${moduleConfig.name}/add-account/activation` as 'addAccountActivation',
   addAccountChangePassword: `${moduleConfig.name}/add-account/changePassword` as 'addAccountChangePassword',
   addAccountForgot: `${moduleConfig.name}/add-account/forgot` as 'addAccountForgot',
@@ -65,6 +68,7 @@ export interface AuthNavigationParams extends ParamListBase {
   accounts: AuthAccountSelectionScreenNavParams;
   loginCredentials: LoginCredentialsScreenNavParams;
   loginWayf: AuthLoginWayfScreenNavParams;
+  loginRedirect: AuthLoginRedirectScreenNavParams;
   wayf: { platform: Platform; accountId?: string };
   activation: ActivationScreenNavParams;
   changePassword: ChangePasswordScreenNavParams;
@@ -74,6 +78,7 @@ export interface AuthNavigationParams extends ParamListBase {
   addAccountOnboarding: AuthOnboardingAddAccountScreenNavParams;
   addAccountLoginCredentials: LoginCredentialsScreenNavParams;
   addAccountLoginWayf: AuthLoginWayfScreenNavParams;
+  addAccountLoginRedirect: AuthLoginRedirectScreenNavParams;
   addAccountWayf: { platform: Platform };
   addAccountActivation: ActivationScreenNavParams;
   addAccountChangePassword: ChangePasswordScreenNavParams;

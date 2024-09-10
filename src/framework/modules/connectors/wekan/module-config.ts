@@ -7,6 +7,6 @@ export default new NavigableModuleConfig<'wekan', null>({
   storageName: 'wekan',
 
   displayI18n: 'wekan-moduleconfig-appname',
-  displayAs: 'myAppsModule',
+  displayAs: 'myAppsConnector',
   displayPicture: { type: 'NamedSvg', name: 'wekan' },
 });

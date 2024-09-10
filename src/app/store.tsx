@@ -54,11 +54,6 @@ export function createMainStore() {
 
   const middlewares = [thunkMiddleware];
 
-  if (__DEV__) {
-    const createDebugger = require('redux-flipper').default;
-    middlewares.push(createDebugger());
-  }
-
   const enhancer = applyMiddleware(...middlewares);
 
   const store = window.__REDUX_DEVTOOLS_EXTENSION__

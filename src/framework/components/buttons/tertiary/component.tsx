@@ -7,14 +7,14 @@ import DefaultButton from '~/framework/components/buttons/default';
 import { TertiaryButtonProps } from './types';
 
 const TertiaryButton = (props: TertiaryButtonProps) => {
-  const initialContentColor = theme.palette.primary.regular;
+  const initialContentColor = props.contentColor ?? theme.palette.primary.regular;
 
   const [contentColor, setContentColor] = useState(initialContentColor);
 
   useEffect(() => {
     if (props.disabled) setContentColor(theme.palette.primary.light);
     if (!props.disabled && contentColor === theme.palette.primary.light) setContentColor(initialContentColor);
-  });
+  }, [contentColor, initialContentColor, props.disabled]);
   return (
     <DefaultButton
       {...props}

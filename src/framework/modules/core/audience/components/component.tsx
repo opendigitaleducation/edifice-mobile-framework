@@ -1,24 +1,26 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
+import { connect } from 'react-redux';
 import { Fade, Placeholder, PlaceholderLine } from 'rn-placeholder';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
 import { NamedSVG } from '~/framework/components/picture';
 import { SmallBoldText, SmallText } from '~/framework/components/text';
+import { getValidReactionTypes } from '~/framework/modules/auth/reducer';
 import { audienceService } from '~/framework/modules/core/audience/service';
 import { IModalsNavigationParams, ModalsRouteNames } from '~/framework/navigation/modals';
 import { isEmpty } from '~/framework/util/object';
 
 import AudienceReactButton from './button';
 import styles from './styles';
-import { AudienceProps } from './types';
+import { AudienceAllProps } from './types';
 
-const Audience = (props: AudienceProps) => {
-  const [totalReactions, setTotalReactions] = React.useState<number>(props.infosReactions?.total ?? 0);
-  const [typesReactions, setTypesReactions] = React.useState<string[]>(props.infosReactions?.types ?? []);
-  const [userReaction, setUserReaction] = React.useState<string | null>(props.infosReactions?.userReaction ?? null);
+const Audience = (props: AudienceAllProps) => {
+  const [totalReactions, setTotalReactions] = React.useState<number>(0);
+  const [typesReactions, setTypesReactions] = React.useState<string[]>([]);
+  const [userReaction, setUserReaction] = React.useState<string | null>(null);
 
   const Component = props.preview ? View : TouchableOpacity;
 
@@ -26,6 +28,12 @@ const Audience = (props: AudienceProps) => {
     useNavigation<
       NavigationProp<IModalsNavigationParams, typeof ModalsRouteNames.AudienceReactions | typeof ModalsRouteNames.AudienceViews>
     >();
+
+  React.useEffect(() => {
+    setTotalReactions(props.infosReactions?.total ?? 0);
+    setTypesReactions(props.infosReactions?.types ?? []);
+    setUserReaction(props.infosReactions?.userReaction ?? null);
+  }, [props]);
 
   const refreshData = async () => {
     try {
@@ -82,6 +90,8 @@ const Audience = (props: AudienceProps) => {
   };
 
   const TextComponent = userReaction ? SmallBoldText : SmallText;
+
+  if (isEmpty(props.validReactionTypes)) return renderPlaceholder();
   return (
     <View style={props.containerStyle}>
       <View style={styles.stats}>
@@ -140,4 +150,6 @@ const Audience = (props: AudienceProps) => {
   );
 };
 
-export default Audience;
+export default connect(() => ({
+  validReactionTypes: getValidReactionTypes(),
+}))(Audience);

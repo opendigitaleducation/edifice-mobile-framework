@@ -24,6 +24,9 @@ import AuthForgotScreen from '~/framework/modules/auth/screens/main-account/forg
 import AuthLoginCredentialsScreen, {
   computeNavBar as loginCredentialsNavBar,
 } from '~/framework/modules/auth/screens/main-account/login-credentials';
+import AuthLoginRedirectScreen, {
+  computeNavBar as loginRedirectNavBar,
+} from '~/framework/modules/auth/screens/main-account/login-redirect';
 import AuthLoginWayfScreen, { computeNavBar as loginWayfNavBar } from '~/framework/modules/auth/screens/main-account/login-wayf';
 import AuthOnboardingScreen, { computeNavBar as onboardingNavBar } from '~/framework/modules/auth/screens/main-account/onboarding';
 import AuthPlatformsScreen, { computeNavBar as platformsNavBar } from '~/framework/modules/auth/screens/main-account/platforms';
@@ -54,6 +57,7 @@ export default function () {
       <Stack.Screen name={authRouteNames.accounts} component={AuthAccountSelectionScreen} options={authAccountSelectionNavBar} />
 
       <Stack.Screen name={authRouteNames.loginWayf} component={AuthLoginWayfScreen} options={loginWayfNavBar} />
+      <Stack.Screen name={authRouteNames.loginRedirect} component={AuthLoginRedirectScreen} options={loginRedirectNavBar} />
       <Stack.Screen name={authRouteNames.wayf} component={AuthWayfScreen} options={wayfNavBar} />
       <Stack.Screen name={authRouteNames.activation} component={AuthActivationScreen} options={authActivationNavBar} />
       <Stack.Screen

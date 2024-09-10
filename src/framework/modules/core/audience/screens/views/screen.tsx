@@ -5,7 +5,7 @@ import { ColorValue, View } from 'react-native';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { EmptyContentScreen } from '~/framework/components/empty-screens';
+import { EmptyConnectionScreen } from '~/framework/components/empty-screens';
 import { PageView } from '~/framework/components/page';
 import { NamedSVG } from '~/framework/components/picture';
 import { BodyText, HeadingMText } from '~/framework/components/text';
@@ -45,6 +45,7 @@ const AudienceViewsScreen = (props: AudienceViewsScreenProps) => {
       setViewsPerProfile(dt.uniqueViewsPerProfile);
     } catch (e) {
       console.error('[BlogAudienceScreen] error :', e);
+      throw new Error();
     }
   }, [module, resourceId, resourceType]);
 
@@ -61,7 +62,6 @@ const AudienceViewsScreen = (props: AudienceViewsScreenProps) => {
     color: ColorValue;
     last?: boolean;
   }) => {
-    console.log(label, color);
     return (
       <View style={[styles.item, last ? styles.lastItem : {}]}>
         <View style={[styles.icon, { backgroundColor: color ?? theme.palette.grey.pearl }]}>
@@ -80,7 +80,7 @@ const AudienceViewsScreen = (props: AudienceViewsScreenProps) => {
 
   const renderContent = () => {
     return (
-      <PageView style={styles.container}>
+      <PageView style={styles.container} showNetworkBar={false}>
         {renderItem({ nb: nbViews, label: I18n.get('audience-views-views'), icon: 'ui-see' })}
         {renderItem({ nb: nbUniqueViews, label: I18n.get('audience-views-uniqueviews'), icon: 'ui-users' })}
         <View style={styles.subItems}>
@@ -98,7 +98,7 @@ const AudienceViewsScreen = (props: AudienceViewsScreenProps) => {
     );
   };
 
-  return <ContentLoader loadContent={loadData} renderContent={renderContent} renderError={() => <EmptyContentScreen />} />;
+  return <ContentLoader loadContent={loadData} renderContent={renderContent} renderError={() => <EmptyConnectionScreen />} />;
 };
 
 export default AudienceViewsScreen;

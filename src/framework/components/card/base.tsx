@@ -16,7 +16,7 @@ const cardStyle: ViewStyle = {
   borderRadius: UI_SIZES.radius.card,
 };
 
-const cardShadow: ViewStyle = {
+export const cardShadow: ViewStyle = {
   shadowColor: theme.ui.shadowColor,
   shadowOffset: { width: 0, height: 1 },
   shadowOpacity: 0.3,

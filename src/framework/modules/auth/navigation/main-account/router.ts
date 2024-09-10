@@ -29,6 +29,13 @@ const getNavRoutesForLoginRedirection = (
   },
   loginUsed?: string,
 ) => {
+  if (platform.redirect)
+    return [
+      {
+        name: authRouteNames.loginRedirect,
+        params: { platform },
+      },
+    ];
   if (platform.wayf) {
     if (account?.method === InitialAuthenticationMethod.LOGIN_PASSWORD) {
       if (getAccountsNumber() > 1) {

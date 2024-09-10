@@ -8,6 +8,6 @@ export default new NavigableModuleConfig<'peertube', null>({
   storageName: 'peertube',
 
   displayI18n: 'peertube-moduleconfig-appname',
-  displayAs: 'myAppsModule',
+  displayAs: 'myAppsConnector',
   displayPicture: { type: 'NamedSvg', name: 'peertube', fill: theme.palette.complementary.red.regular },
 });

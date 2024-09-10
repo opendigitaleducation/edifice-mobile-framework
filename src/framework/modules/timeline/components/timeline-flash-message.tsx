@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { LayoutChangeEvent, ScrollView as RNScrollView, StyleSheet, View } from 'react-native';
+import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 import { I18n } from '~/app/i18n';
-import theme from '~/app/theme';
-import { TouchableContentCard } from '~/framework/components/card';
-import { UI_SIZES, getScaleHeight } from '~/framework/components/constants';
-import { Icon } from '~/framework/components/picture/Icon';
-import { SmallBoldText, SmallItalicText, TextFontStyle } from '~/framework/components/text';
+import theme, { IShades } from '~/app/theme';
+import IconButton from '~/framework/components/buttons/icon';
+import TertiaryButton from '~/framework/components/buttons/tertiary';
+import { getScaleFontSize, getScaleWidth, UI_SIZES } from '~/framework/components/constants';
+import { NamedSVG } from '~/framework/components/picture';
+import { SmallItalicText, TextFontStyle } from '~/framework/components/text';
 import { IEntcoreFlashMessage } from '~/framework/modules/timeline/reducer/flash-messages';
-import { ArticleContainer } from '~/ui/ContainerContent';
 import HtmlContentView from '~/ui/HtmlContentView';
 
 interface ITimelineFlashMessageProps {
@@ -17,122 +18,216 @@ interface ITimelineFlashMessageProps {
 }
 
 interface ITimelineFlashMessageState {
-  longText: boolean;
-  measuredText: boolean;
-  isExtended: boolean;
+  expandable: boolean | undefined;
+  expanded: boolean;
 }
 
+const flashMessageColors: Record<NonNullable<IEntcoreFlashMessage['color']>, Pick<IShades, 'pale' | 'light' | 'regular'>> = {
+  red: theme.palette.complementary.red,
+  blue: theme.palette.complementary.blue,
+  green: theme.palette.complementary.green,
+  orange: theme.palette.complementary.orange,
+  'grey-dark': {
+    pale: theme.palette.grey.pearl,
+    light: theme.palette.grey.cloudy,
+    regular: theme.palette.grey.stone,
+  },
+};
+
 const styles = StyleSheet.create({
-  containerOpaque: {
-    width: '100%',
-    opacity: 1,
+  shadowWrapper: {
+    borderRadius: UI_SIZES.radius.medium,
+    paddingLeft: UI_SIZES.spacing.tiny,
+    paddingBottom: UI_SIZES.spacing.tiny,
+    marginHorizontal: UI_SIZES.spacing.medium,
+    marginBottom: UI_SIZES.spacing.medium,
+    marginTop: UI_SIZES.spacing.minor,
   },
-  containerTransparent: {
-    width: '100%',
-    opacity: 0,
+  contentWrapper: {
+    paddingTop: getScaleWidth(36),
+    paddingHorizontal: getScaleWidth(24),
+    paddingBottom: getScaleWidth(24),
+    borderTopLeftRadius: UI_SIZES.radius.medium,
+    borderTopRightRadius: UI_SIZES.radius.medium,
+    borderBottomLeftRadius: UI_SIZES.radius.small,
+    borderBottomRightRadius: UI_SIZES.radius.medium,
   },
-  header: {
-    maxHeight: getScaleHeight(20) * (4 + 1),
-    overflow: 'hidden',
+  iconShadow: {
+    position: 'absolute',
+    top: -getScaleWidth(20),
+    left: getScaleWidth(24),
+    width: getScaleWidth(52),
+    height: getScaleWidth(52),
+    borderRadius: getScaleWidth(52) / 2,
+    padding: UI_SIZES.spacing.tiny,
   },
-  seeMore: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+  iconWrapper: {
+    width: getScaleWidth(52) - 2 * UI_SIZES.spacing.tiny,
+    height: getScaleWidth(52) - 2 * UI_SIZES.spacing.tiny,
+    borderRadius: (getScaleWidth(52) - 2 * UI_SIZES.spacing.tiny) / 2,
+    borderWidth: getScaleWidth(4),
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    padding: UI_SIZES.spacing.minor,
+  },
+  signature: {
+    marginTop: getScaleFontSize(22),
+  },
+  postContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  moreLessButton: {
+    paddingVertical: 0,
+  },
+  lessButton: {
+    alignSelf: 'flex-end',
+  },
+  moreButtonWrapper: {
+    position: 'absolute',
+    bottom: getScaleWidth(24),
+    right: getScaleWidth(24),
+  },
+  buttonGradient: {
+    position: 'absolute',
+    left: -getScaleWidth(64),
+    top: 0,
+    height: '100%',
+    width: getScaleWidth(64),
   },
 });
 
 export class TimelineFlashMessage extends React.PureComponent<ITimelineFlashMessageProps, ITimelineFlashMessageState> {
   state = {
-    longText: false,
-    measuredText: false,
-    isExtended: false,
+    expandable: undefined,
+    expanded: false,
   };
+
+  wrapperHeightRef: React.MutableRefObject<number | null> = React.createRef<number>();
+
+  htmlHeightRef: React.MutableRefObject<number | null> = React.createRef<number>();
+
+  private onHtmlWrapperLayout({ nativeEvent }: LayoutChangeEvent) {
+    this.wrapperHeightRef.current = this.wrapperHeightRef.current ?? nativeEvent.layout.height;
+    this.computeLayout();
+  }
+
+  private onContentSizeChanges(w: number, h: number) {
+    this.htmlHeightRef.current = this.htmlHeightRef.current ?? h;
+    this.computeLayout();
+  }
+
+  private computeLayout() {
+    if (this.wrapperHeightRef.current && this.htmlHeightRef.current) {
+      const expandable = this.wrapperHeightRef.current < this.htmlHeightRef.current;
+      this.setState({ expandable });
+    }
+  }
+
+  public toggleExpand() {
+    this.setState(state => ({ expanded: !state.expanded }));
+  }
 
   public render() {
     const { flashMessage, flashMessageAction } = this.props;
-    const { isExtended, longText, measuredText } = this.state;
+    const { expandable, expanded } = this.state;
     const color = flashMessage && flashMessage.color;
-    const customColor = flashMessage && flashMessage.customColor;
     const signature = flashMessage && flashMessage.signature;
-    const signatureColor = flashMessage && flashMessage.signatureColor;
     const contents = flashMessage && flashMessage.contents;
     const appLanguage = I18n.getLanguage();
     const contentsHasAppLanguage = contents && Object.prototype.hasOwnProperty.call(contents, appLanguage);
     const contentsLanguages = contents && Object.keys(contents);
     const flashMessageHtml = contentsHasAppLanguage ? contents[appLanguage] : contents && contents[contentsLanguages[0]];
     const maxLines = 4,
-      maxHeight = getScaleHeight(20) * maxLines;
+      maxHeight = getScaleFontSize(22) * maxLines;
+    const messageTint = flashMessageColors[color ?? 'blue'];
+    const messageIcon = color === 'red' ? 'ui-alert-triangle' : 'ui-infoCircle';
+    const iconStyle = color === 'red' ? { transform: [{ translateY: -1 }] } : undefined;
 
     return flashMessageHtml && flashMessageHtml.length > 0 ? (
-      <ArticleContainer style={measuredText ? styles.containerOpaque : styles.containerTransparent}>
-        <TouchableContentCard
-          activeOpacity={1}
-          onPress={() => {
-            this.setState({ isExtended: true });
-          }}
-          headerIndicator={
-            <TouchableOpacity onPress={flashMessageAction}>
-              <Icon
-                name="close"
-                color={theme.ui.text.inverse}
-                style={{
-                  paddingVertical: UI_SIZES.spacing.tiny,
-                  paddingLeft: UI_SIZES.spacing.minor,
-                }}
+      <View style={[styles.shadowWrapper, { backgroundColor: messageTint.light }]}>
+        <View style={[styles.contentWrapper, { backgroundColor: messageTint.pale }]}>
+          <RNScrollView
+            onLayout={this.onHtmlWrapperLayout.bind(this)}
+            style={expandable !== false && !expanded ? { maxHeight } : null}
+            scrollEnabled={false}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            onContentSizeChange={this.onContentSizeChanges.bind(this)}>
+            <HtmlContentView
+              html={flashMessageHtml}
+              opts={{
+                linkTextStyle: {
+                  ...TextFontStyle.Bold,
+                  textDecorationLine: 'underline',
+                },
+                textColor: false,
+                images: false,
+                iframes: false,
+                audio: false,
+                video: false,
+              }}
+            />
+          </RNScrollView>
+          <View style={styles.postContent}>
+            {(!expandable && signature) || expanded ? (
+              <SmallItalicText style={styles.signature}>{signature ?? ''}</SmallItalicText>
+            ) : null}
+            {expandable && expanded ? (
+              <TertiaryButton
+                style={[styles.lessButton, styles.moreLessButton, { backgroundColor: messageTint.pale }]}
+                text="Voir moins"
+                contentColor={theme.ui.text.regular}
+                action={this.toggleExpand.bind(this)}
               />
-            </TouchableOpacity>
-          }
-          style={{
-            backgroundColor: color ? theme.palette.flashMessages[color] : customColor || theme.palette.secondary.regular,
-          }}
-          header={
-            <View style={isExtended ? {} : longText ? styles.header : {}}>
-              <HtmlContentView
-                html={flashMessageHtml}
-                opts={{
-                  globalTextStyle: {
-                    color: theme.ui.text.inverse,
-                  },
-                  boldTextStyle: {
-                    color: theme.ui.text.inverse,
-                  },
-                  linkTextStyle: {
-                    ...TextFontStyle.Bold,
-                    color: theme.ui.text.inverse,
-                    textDecorationLine: 'underline',
-                  },
-                  textColor: false,
-                  images: false,
-                  iframes: false,
-                  audio: false,
-                  video: false,
-                }}
-                onLayout={e => {
-                  if (!measuredText) {
-                    this.setState({ longText: e.nativeEvent.layout.height >= maxHeight, measuredText: true });
-                  }
-                }}
-              />
-
-              {signature ? <SmallItalicText style={{ color: signatureColor }}>{signature}</SmallItalicText> : null}
-            </View>
-          }>
-          {longText && !isExtended ? (
-            <View style={styles.seeMore}>
-              <SmallBoldText style={{ color: theme.ui.text.inverse }}>{I18n.get('timeline-seemore')}</SmallBoldText>
-              <Icon
-                name="arrow_down"
-                color={theme.ui.text.inverse}
-                style={{
-                  marginLeft: UI_SIZES.spacing.minor,
-                  paddingTop: UI_SIZES.spacing.tiny,
-                }}
+            ) : null}
+          </View>
+          {expandable && !expanded ? (
+            <View style={[styles.moreButtonWrapper, { backgroundColor: messageTint.pale }]}>
+              <Svg style={styles.buttonGradient} viewBox="0 0 1 1">
+                <Defs>
+                  <LinearGradient id="grad" x1="0" y1="0" x2="1" y2="0">
+                    <Stop offset="0" stopColor={messageTint.pale} stopOpacity="0" />
+                    <Stop offset="0.3" stopColor={messageTint.pale} stopOpacity="0.5" />
+                    <Stop offset="0.5" stopColor={messageTint.pale} stopOpacity="0.8" />
+                    <Stop offset="0.75" stopColor={messageTint.pale} stopOpacity="0.95" />
+                    <Stop offset="1" stopColor={messageTint.pale} stopOpacity="1" />
+                  </LinearGradient>
+                </Defs>
+                <Rect x="-1" y="0" width="3" height="1" fill="url(#grad)" />
+              </Svg>
+              <TertiaryButton
+                text="Voir plus"
+                contentColor={theme.ui.text.regular}
+                action={this.toggleExpand.bind(this)}
+                style={styles.moreLessButton}
               />
             </View>
           ) : null}
-        </TouchableContentCard>
-      </ArticleContainer>
+        </View>
+        <IconButton
+          icon="ui-close"
+          style={styles.closeButton}
+          color={theme.ui.text.regular}
+          action={flashMessageAction.bind(this)}
+        />
+        <View style={[styles.iconShadow, { backgroundColor: messageTint.pale }]}>
+          <View style={[styles.iconWrapper, { borderColor: messageTint.light, backgroundColor: messageTint.regular }]}>
+            <NamedSVG
+              name={messageIcon}
+              fill={theme.palette.grey.white}
+              width={getScaleWidth(24)}
+              height={getScaleWidth(24)}
+              style={iconStyle}
+            />
+          </View>
+        </View>
+      </View>
     ) : null;
   }
 }

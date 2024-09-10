@@ -12,6 +12,6 @@ export default new NavigableModuleConfig<'pronote', ReturnType<typeof reducer>>(
   displayI18n: (matchingApps, matchingWidgets) => {
     return matchingWidgets.length > 0 ? 'carnetdebord' : 'pronote';
   },
-  displayAs: 'myAppsModule',
+  displayAs: (matchingApps, matchingWidgets) => (matchingWidgets.length > 0 ? 'myAppsSecondaryModule' : 'myAppsConnector'),
   displayPicture: { type: 'Image', source: require('ASSETS/images/logo-pronote.png') },
 });

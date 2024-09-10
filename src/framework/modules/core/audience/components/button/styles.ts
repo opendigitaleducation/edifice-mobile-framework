@@ -19,10 +19,8 @@ const styles = StyleSheet.create({
     borderColor: theme.palette.grey.cloudy,
     borderWidth: UI_SIZES.border.thin,
     borderRadius: UI_SIZES.radius.medium,
-    padding: UI_SIZES.spacing.medium,
     alignSelf: 'flex-start',
     flexDirection: 'row',
-    columnGap: UI_SIZES.spacing.big,
     position: 'absolute',
     left: 0,
     backgroundColor: theme.palette.grey.white,
@@ -34,6 +32,10 @@ const styles = StyleSheet.create({
       height: 4,
     },
     elevation: 16,
+  },
+  reactionsIcon: {
+    paddingVertical: UI_SIZES.spacing.medium,
+    paddingHorizontal: UI_SIZES.spacing.small,
   },
   reactionsText: {
     color: theme.palette.grey.white,

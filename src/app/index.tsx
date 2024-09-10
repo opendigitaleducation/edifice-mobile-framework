@@ -13,12 +13,10 @@ import { Provider } from 'react-redux';
 import AppModules from '~/app/modules';
 import { UI_STYLES } from '~/framework/components/constants';
 import Navigation from '~/framework/navigation/RootNavigator';
-import { useNavigationDevPlugins } from '~/framework/navigation/helper';
 import { reducer as navigationReducer } from '~/framework/navigation/redux';
 import appConf from '~/framework/util/appConf';
 import { getCurrentBadgeValue, setCurrentBadgeValue } from '~/framework/util/badge';
 import { isEmpty } from '~/framework/util/object';
-import { FlipperMMKVElement } from '~/framework/util/storage/mmkv';
 import { Trackers } from '~/framework/util/tracker';
 import { ZendeskProvider } from '~/framework/util/zendesk';
 import { AllModulesBackup } from '~/infra/oauth';
@@ -26,9 +24,6 @@ import connectionTrackerReducer from '~/infra/reducers/connectionTracker';
 
 import { I18n } from './i18n';
 import { IStoreProp, Reducers, connectWithStore } from './store';
-
-const FlipperAsyncStorage = __DEV__ ? require('rn-flipper-async-storage-advanced').default : undefined;
-const FlipperAsyncStorageElement = FlipperAsyncStorage ? <FlipperAsyncStorage /> : null;
 
 function useAppState() {
   const [currentLocale, setCurrentLocale] = React.useState(I18n.getLanguage());
@@ -96,7 +91,6 @@ function App(props: AppProps) {
       : undefined;
 
   useTrackers();
-  useNavigationDevPlugins();
 
   React.useEffect(() => {
     if (Platform.OS !== 'ios') return;
@@ -119,8 +113,6 @@ function App(props: AppProps) {
           </BottomSheetModalProvider>
         </Provider>
       </SafeAreaProvider>
-      {FlipperAsyncStorageElement}
-      {FlipperMMKVElement}
     </GestureHandlerRootView>
   );
   return appConf.zendeskEnabled ? <ZendeskProvider zendeskConfig={appConf.zendesk!}>{content}</ZendeskProvider> : <>{content}</>;

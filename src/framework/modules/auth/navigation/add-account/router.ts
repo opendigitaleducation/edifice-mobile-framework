@@ -10,7 +10,9 @@ import appConf, { Platform } from '~/framework/util/appConf';
 export const getAddAccountLoginNextScreen: (platform: Platform) => PartialState<NavigationState>['routes'][0] = platform => {
   return platform.wayf
     ? { name: authRouteNames.addAccountLoginWayf, params: { platform } }
-    : { name: authRouteNames.addAccountLoginCredentials, params: { platform } };
+    : platform.redirect
+      ? { name: authRouteNames.addAccountLoginRedirect, params: { platform } }
+      : { name: authRouteNames.addAccountLoginCredentials, params: { platform } };
 };
 
 export const getAddAccountLoginNextScreenNavAction = (platform: Platform) => {

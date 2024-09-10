@@ -32,16 +32,6 @@ export const resetNavigation = (routes: RouteStack, index?: number) => {
 export const navigate = navigationRef.navigate;
 export const reset = navigationRef.reset;
 
-// === Initialize React Navigation Flipper Plugin ===
-export const useNavigationDevPlugins = () => {
-  // It is safe to use hooks as __DEV__ will not change over time.
-  if (__DEV__) {
-    const rnDevTools = require('@react-navigation/devtools');
-    rnDevTools?.useFlipper(navigationRef);
-    rnDevTools?.useReduxDevToolsExtension(navigationRef);
-  }
-};
-
 export const handleRemoveConfirmNavigationEvent = (action: NavigationAction, navigation: NavigationProp<ParamListBase>) => {
   const [nextJumps, delayed] = consumeConfirmQuitAction();
   nextJumps.unshift(action);

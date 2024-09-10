@@ -200,7 +200,10 @@ export default function FileImportScreen(props: FileImportScreenProps.AllProps) 
             }}
             disabled={
               !listReady ||
-              (fileCount > 0 && filesRef.current.some(f => f.status === UploadStatus.PENDING || f.status === UploadStatus.IDLE))
+              (fileCount > 0 &&
+                filesRef.current.some(
+                  f => f.status === UploadStatus.PENDING || f.status === UploadStatus.IDLE || f.status === UploadStatus.KO,
+                ))
             }
           />
         ),

@@ -3,6 +3,7 @@ import * as React from 'react';
 import { FlatList as RNFlatList, FlatListProps as RNFlatListProps, View } from 'react-native';
 
 import { UI_SIZES } from '~/framework/components/constants';
+import { ScrollContext } from '~/framework/components/scrollView';
 import { useSyncRef } from '~/framework/hooks/ref';
 
 export interface FlatListProps<ItemT> extends RNFlatListProps<ItemT> {
@@ -35,13 +36,15 @@ export default React.forwardRef<RNFlatList, FlatListProps<any>>((props, ref) => 
   useScrollToTop(listRef);
 
   return (
-    <RNFlatList
-      {...otherProps}
-      ref={syncRef}
-      ListFooterComponent={realListFooterComponent}
-      scrollIndicatorInsets={scrollIndicatorInsets || SCROLL_INDICATOR_INSETS} // 🍎 Hack to guarantee the scrollbar sticks to the right edge of the screen.
-      onScrollToIndexFailed={() => {}} // 🍎 Hack to avoid crash (scrollToIndex should be used in conjunction with getItemLayout or onScrollToIndexFailed).
-    />
+    <ScrollContext.Provider value={listRef}>
+      <RNFlatList
+        {...otherProps}
+        ref={syncRef}
+        ListFooterComponent={realListFooterComponent}
+        scrollIndicatorInsets={scrollIndicatorInsets || SCROLL_INDICATOR_INSETS} // 🍎 Hack to guarantee the scrollbar sticks to the right edge of the screen.
+        onScrollToIndexFailed={() => {}} // 🍎 Hack to avoid crash (scrollToIndex should be used in conjunction with getItemLayout or onScrollToIndexFailed).
+      />
+    </ScrollContext.Provider>
   );
 });
 

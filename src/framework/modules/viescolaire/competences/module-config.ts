@@ -17,6 +17,6 @@ export default new NavigableModuleConfig<'competences', ICompetencesReduxState>(
   storageName: 'competences',
 
   displayI18n: 'competences-moduleconfig-appname',
-  displayAs: 'myAppsModule',
+  displayAs: 'myAppsSecondaryModule',
   displayPicture: { type: 'NamedSvg', name: 'competences', fill: theme.palette.complementary.red.regular },
 });

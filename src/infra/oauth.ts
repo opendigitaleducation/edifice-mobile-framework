@@ -631,7 +631,6 @@ export const scopes = `infra
  presences
  incidents
  competences
- communication
  diary
  viescolaire
  edt

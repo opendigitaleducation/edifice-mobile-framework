@@ -21,6 +21,6 @@ export default new NavigableModuleConfig<'diary', IDiaryReduxState>({
   storageName: 'diary',
 
   displayI18n: 'diary-moduleconfig-appname',
-  displayAs: 'myAppsModule',
+  displayAs: 'myAppsSecondaryModule',
   displayPicture: { type: 'NamedSvg', name: 'diary', fill: theme.palette.complementary.green.regular },
 });

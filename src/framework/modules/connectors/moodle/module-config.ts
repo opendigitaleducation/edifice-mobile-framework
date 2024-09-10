@@ -7,6 +7,6 @@ export default new NavigableModuleConfig<'moodle', null>({
   storageName: 'moodle',
 
   displayI18n: 'moodle-moduleconfig-appname',
-  displayAs: 'myAppsModule',
+  displayAs: 'myAppsConnector',
   displayPicture: { type: 'NamedSvg', name: 'moodle' },
 });
