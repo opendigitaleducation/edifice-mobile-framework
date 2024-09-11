@@ -21,6 +21,7 @@ export const computeNavBar = ({
     navigation,
     route,
     title: '',
+    backButtonTestID: 'splash-ads-close',
   }),
   headerStyle: {
     backgroundColor: theme.palette.grey.white,
@@ -82,6 +83,7 @@ const SplashadsScreen = (props: SplashadsScreenProps) => {
       incognito
       onHttpError={() => setIsTimeout(true)}
       onError={() => setIsTimeout(true)}
+      testID="splash-ads-view"
     />
   );
 };
