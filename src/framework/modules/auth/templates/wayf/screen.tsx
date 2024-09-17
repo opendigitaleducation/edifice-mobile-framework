@@ -416,7 +416,10 @@ class WayfScreen extends React.Component<IWayfScreenProps, IWayfScreenState> {
         console.debug('WAYFScreen::onMessage: SAMLResponse retrieved');
       }
       // SP-Initiated WAYF stuff => Call oauth2 token api with received SAML if any
-      if (this.authUrl && this.samlResponse) this.loginWithSaml();
+      if (this.authUrl && this.samlResponse) {
+        console.debug('WAYFScreen::onMessage: SP-Initiated WAYF stuff');
+        this.loginWithSaml();
+      }
     } else {
       // Retrieve potential OpenID custom token (Stored via customToken=“..." format)
       // Call oauth2 token api with received OpenID custom token if any
@@ -428,7 +431,10 @@ class WayfScreen extends React.Component<IWayfScreenProps, IWayfScreenState> {
           console.debug('WAYFScreen::onMessage: customToken retrieved');
         }
         // SP-Initiated WAYF stuff => Call oauth2 token api with received SAML if any
-        if (this.authUrl && this.oidResponse) this.loginWithOpenID();
+        if (this.authUrl && this.oidResponse) {
+          console.debug('WAYFScreen::onMessage: SP-Initiated WAYF stuff');
+          this.loginWithOpenID();
+        }
       }
     }
   }
@@ -453,7 +459,7 @@ class WayfScreen extends React.Component<IWayfScreenProps, IWayfScreenState> {
     if (this.wayfUrl && this.isFirstLoadFinished && !url.startsWith(this.wayfUrl)) {
       if (this.authUrl) {
         // SP-Initiated WAYF stuff
-        console.debug(' SP-Initiated WAYF stuff');
+        console.debug('WAYFScreen::onShouldStartLoadWithRequest: SP-Initiated WAYF stuff');
         // Allow navigation to SP-Initiated WAYFs via auth config field
         if (url.startsWith(this.authUrl)) {
           console.debug('WAYFScreen::onShouldStartLoadWithRequest: authUrl received => Navigation allowed');
