@@ -30,11 +30,11 @@ const AudienceReactButton = (props: AudienceReactButtonAllProps) => {
   const [cPageX, setPageX] = React.useState<number>(0)
   const [cPageY, setPageY] = React.useState<number>(0)
 
-  const [reactionWidth, setReactionWidth] = React.useState<number>(0)
+  const [reactionWidth, setReactionWidth] = React.useState<number>(0);
 
-  const scrollRef = React.useContext(ScrollContext)
-  const opacityBlocReactions = React.useRef(new Animated.Value(0)).current
-  const scaleReactionButton = React.useRef(new Animated.Value(1)).current
+  const scrollRef = React.useContext(ScrollContext);
+  const opacityBlocReactions = React.useRef(new Animated.Value(0)).current;
+  const scaleReactionButton = React.useRef(new Animated.Value(1)).current;
   const animationReactions = props.validReactionTypes.reduce((acc, reaction) => {
     acc[reaction] = {
       // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -47,10 +47,10 @@ const AudienceReactButton = (props: AudienceReactButtonAllProps) => {
       rotate: React.useRef(new Animated.Value(0)).current,
       // eslint-disable-next-line react-hooks/rules-of-hooks
       textOpacity: React.useRef(new Animated.Value(0)).current,
-    }
-    return acc
-  }, {})
-  const numberOfReactions = props.validReactionTypes.length
+    };
+    return acc;
+  }, {});
+  const numberOfReactions = props.validReactionTypes.length;
 
   const showReactions = () => {
     setIsOpen(true)
@@ -228,8 +228,25 @@ const AudienceReactButton = (props: AudienceReactButtonAllProps) => {
         gestureState.moveX >= cPageX &&
         gestureState.moveX <= cPageX + cWidth
       ) {
-        const x = gestureState.moveX - cPageX
-        const targetIndex = Math.floor(x / reactionWidth)
+        const x = gestureState.moveX - cPageX;
+        const targetIndex = Math.floor(x / reactionWidth);
+
+        zoomOnItem(props.validReactionTypes[targetIndex]);
+      } else {
+        removeZoomOnSelectedItem();
+      }
+    },
+    onPanResponderTerminationRequest: (evt, gestureState) => {
+      return false;
+    },
+    onPanResponderRelease: (evt, gestureState) => {
+      if (itemSelected) {
+        postReaction(itemSelected);
+        removeZoomOnSelectedItem();
+      }
+      if (scrollRef?.current) scrollRef.current.setNativeProps({ scrollEnabled: true });
+    },
+  });
 
         zoomOnItem(props.validReactionTypes[targetIndex])
       } else {
@@ -249,12 +266,12 @@ const AudienceReactButton = (props: AudienceReactButtonAllProps) => {
 
   const onTouchStartButton = () => {
     component.measure((x, y, width, height, pageX, pageY) => {
-      setHeight(height)
-      setWidth(width)
-      setPageX(pageX)
-      setPageY(pageY)
-      setReactionWidth(width / numberOfReactions)
-    })
+      setHeight(height);
+      setWidth(width);
+      setPageX(pageX);
+      setPageY(pageY);
+      setReactionWidth(width / numberOfReactions);
+    });
     timerLongTouch = setTimeout(() => {
       openReactions()
       setIsLongTouch(true)

@@ -10,10 +10,10 @@
  * // With this, reducer will be registered automatically if the module is imported somewhere.
  * Reducers.register('REDUCER_NAME', reducer);
  */
-import * as React from 'react'
-import { connect } from 'react-redux'
-import { Reducer, Store, applyMiddleware, combineReducers, compose, createStore } from 'redux'
-import { thunk } from 'redux-thunk'
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Reducer, Store, applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { thunk } from 'redux-thunk';
 
 // eslint-disable-next-line no-var
 declare var window: any
@@ -52,7 +52,7 @@ export function createMainStore() {
     ...Reducers.all,
   })
 
-  const middlewares = [thunk]
+  const middlewares = [thunk];
 
   const enhancer = applyMiddleware(...middlewares)
 

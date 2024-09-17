@@ -3,13 +3,14 @@ import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { Fade, Placeholder, PlaceholderLine } from 'rn-placeholder'
 
-import theme from '~/app/theme'
-import { UI_SIZES } from '~/framework/components/constants'
-import { NamedSVG } from '~/framework/components/picture'
-import { SmallBoldText, SmallText } from '~/framework/components/text'
-import { audienceService } from '~/framework/modules/audience/service'
-import { IModalsNavigationParams, ModalsRouteNames } from '~/framework/navigation/modals'
-import { isEmpty } from '~/framework/util/object'
+import theme from '~/app/theme';
+import { UI_SIZES } from '~/framework/components/constants';
+import { NamedSVG } from '~/framework/components/picture';
+import { SmallBoldText, SmallText } from '~/framework/components/text';
+import { audienceService } from '~/framework/modules/audience/service';
+import { getValidReactionTypes } from '~/framework/modules/auth/reducer';
+import { IModalsNavigationParams, ModalsRouteNames } from '~/framework/navigation/modals';
+import { isEmpty } from '~/framework/util/object';
 
 import AudienceReactButton from './button'
 import styles from './styles'

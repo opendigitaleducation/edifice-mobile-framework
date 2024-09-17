@@ -1,6 +1,10 @@
 package com.ode.appe
 
 import android.app.Application
+import android.content.BroadcastReceiver
+import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactNativeHost
@@ -30,4 +34,13 @@ class MainApplication : Application(), ReactApplication {
         SoLoader.init(this,  /* native exopackage */false)
         if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) load()
     }
+
+    override fun registerReceiver(receiver: BroadcastReceiver?, filter: IntentFilter?): Intent? {
+        return if (Build.VERSION.SDK_INT >= 34 && applicationInfo.targetSdkVersion >= 34) {
+            super.registerReceiver(receiver, filter, RECEIVER_EXPORTED)
+        } else {
+            super.registerReceiver(receiver, filter)
+        }
+    }
+
 }
