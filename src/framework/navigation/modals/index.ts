@@ -9,6 +9,7 @@ import type { RichEditorFormReduxNavParams } from '~/framework/components/inputs
 import type { MediaPlayerParams } from '~/framework/components/media/player/types'
 import { AudienceReactionsScreenNavParams } from '~/framework/modules/audience/screens/reactions/types'
 import { AudienceViewsScreenNavParams } from '~/framework/modules/audience/screens/views/types'
+import { SplashadsScreenNavParams } from '~/framework/modules/splashads/screen/types'
 
 export enum ModalsRouteNames {
   Pdf = 'pdf',
@@ -18,6 +19,7 @@ export enum ModalsRouteNames {
   AudienceReactions = 'audience-reactions',
   AudienceViews = 'audience-views',
   FileImport = 'file-import',
+  SplashAds = 'splashads',
 }
 
 export interface IModalsNavigationParams extends ParamListBase {
@@ -28,4 +30,5 @@ export interface IModalsNavigationParams extends ParamListBase {
   [ModalsRouteNames.AudienceViews]: AudienceViewsScreenNavParams
   [ModalsRouteNames.FileImport]: FileImportScreenProps.NavParams
   [ModalsRouteNames.RichTextEditor]: RichEditorFormReduxNavParams
+  [ModalsRouteNames.SplashAds]: SplashadsScreenNavParams
 }

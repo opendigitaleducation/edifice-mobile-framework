@@ -1,19 +1,19 @@
-import * as React from 'react';
+import * as React from 'react'
 
-import CarouselScreen from '~/framework/components/carousel';
-import { computeNavBar as CarouselNavBar } from '~/framework/components/carousel/screen';
-import FileImportScreen, { computeNavBar as FileAddNavBar } from '~/framework/components/inputs/rich-text/file-import';
-import MediaPlayer from '~/framework/components/media/player';
-import { computeNavBar as PDFNavBar, PDFReader } from '~/framework/components/pdf/pdf-reader';
-import AudienceReactionsScreen, { computeNavBar as audienceReactionsNavBar } from '~/framework/modules/audience/screens/reactions';
-import AudienceViewsScreen, { computeNavBar as audienceViewsNavBar } from '~/framework/modules/audience/screens/views';
-import SplashadsScreen, { computeNavBar as SplashadsNavBar } from '~/framework/modules/splashads/screen';
-import { setCrossIconBlackForRoutes, setModalModeForRoutes } from '~/framework/navigation/hideTabBarAndroid';
-import { getTypedRootStack } from '~/framework/navigation/navigators';
+import CarouselScreen from '~/framework/components/carousel'
+import { computeNavBar as CarouselNavBar } from '~/framework/components/carousel/screen'
+import FileImportScreen, { computeNavBar as FileAddNavBar } from '~/framework/components/inputs/rich-text/file-import'
+import MediaPlayer from '~/framework/components/media/player'
+import { computeNavBar as PDFNavBar, PDFReader } from '~/framework/components/pdf/pdf-reader'
+import AudienceReactionsScreen, { computeNavBar as audienceReactionsNavBar } from '~/framework/modules/audience/screens/reactions'
+import AudienceViewsScreen, { computeNavBar as audienceViewsNavBar } from '~/framework/modules/audience/screens/views'
+import SplashadsScreen, { computeNavBar as SplashadsNavBar } from '~/framework/modules/splashads/screen'
+import { setCrossIconBlackForRoutes, setModalModeForRoutes } from '~/framework/navigation/hideTabBarAndroid'
+import { getTypedRootStack } from '~/framework/navigation/navigators'
 
-import { IModalsNavigationParams, ModalsRouteNames } from '.';
+import { IModalsNavigationParams, ModalsRouteNames } from '.'
 
-const RootStack = getTypedRootStack<IModalsNavigationParams>();
+const RootStack = getTypedRootStack<IModalsNavigationParams>()
 export default (
   <>
     <RootStack.Group
@@ -40,9 +40,15 @@ export default (
         component={FileImportScreen}
         initialParams={{}}
       />
+      <RootStack.Screen
+        name={ModalsRouteNames.SplashAds}
+        options={SplashadsNavBar}
+        component={SplashadsScreen}
+        initialParams={{}}
+      />
     </RootStack.Group>
   </>
-);
+)
 
 setModalModeForRoutes([
   ModalsRouteNames.Pdf,
@@ -52,6 +58,6 @@ setModalModeForRoutes([
   ModalsRouteNames.FileImport,
   ModalsRouteNames.AudienceReactions,
   ModalsRouteNames.AudienceViews,
-]);
+])
 
-setCrossIconBlackForRoutes([ModalsRouteNames.FileImport]);
+setCrossIconBlackForRoutes([ModalsRouteNames.FileImport, ModalsRouteNames.SplashAds])
