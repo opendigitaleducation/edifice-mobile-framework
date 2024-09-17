@@ -134,7 +134,6 @@ android {
 dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.facebook.react:react-android")
-    implementation("com.facebook.react:flipper-integration:0.73.7")
     implementation("com.fasterxml.jackson.core:jackson-core:2.11.1")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.11.1")
     implementation("com.google.android.gms:play-services-base:18.5.0")
