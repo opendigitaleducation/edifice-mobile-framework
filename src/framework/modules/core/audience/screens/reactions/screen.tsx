@@ -8,10 +8,8 @@ import { ThunkDispatch } from 'redux-thunk';
 import { I18n } from '~/app/i18n';
 import { IGlobalState } from '~/app/store';
 import { BadgeAvatar, BadgePosition } from '~/framework/components/badgeAvatar';
-import { UI_SIZES } from '~/framework/components/constants';
-import { EmptyConnectionScreen, EmptyScreen } from '~/framework/components/empty-screens';
+import { EmptyContentScreen, EmptyScreen } from '~/framework/components/empty-screens';
 import FlatList from '~/framework/components/list/flat-list';
-import { LoadingIndicator } from '~/framework/components/loading';
 import { PageView } from '~/framework/components/page';
 import { NamedSVG } from '~/framework/components/picture';
 import { BodyText, CaptionBoldText, SmallBoldText, SmallText } from '~/framework/components/text';
@@ -23,8 +21,6 @@ import { audienceReactionsInfos } from '~/framework/modules/core/audience/util';
 import { IModalsNavigationParams, ModalsRouteNames } from '~/framework/navigation/modals';
 import { navBarOptions } from '~/framework/navigation/navBar';
 import { accountTypeInfos } from '~/framework/util/accountType';
-import { isEmpty } from '~/framework/util/object';
-import { AsyncPagedLoadingState } from '~/framework/util/redux/asyncPaged';
 
 import styles from './styles';
 import { AudienceReactionsScreenProps } from './types';
@@ -52,8 +48,6 @@ const renderTabReaction = (key, nb, focused) => {
   );
 };
 
-const PAGE_SIZE = 20;
-
 const AudienceReactionsScreen = (props: AudienceReactionsScreenProps) => {
   const { module, resourceId, resourceType } = props.route.params.referer;
 
@@ -63,22 +57,9 @@ const AudienceReactionsScreen = (props: AudienceReactionsScreenProps) => {
     key: reactionType,
   }));
   const routes = [{ key: 'all' }, ...reactionRoutes];
-  const [countByType, setCountByType] = React.useState<Record<string, number>>({});
-  const [nextPageToFetchState, setNextPageToFetch] = React.useState(1);
-  const [loadingState, setLoadingState] = React.useState(AsyncPagedLoadingState.PRISTINE);
-
-  const listFooterComponent = React.useMemo(
-    () => (
-      <>
-        {loadingState === AsyncPagedLoadingState.FETCH_NEXT ? <LoadingIndicator withVerticalMargins /> : null}
-        <View style={{ paddingBottom: UI_SIZES.screen.bottomInset }} />
-      </>
-    ),
-    [loadingState],
-  );
+  const [countByType, setCountByType] = React.useState<Record<string, number>>();
 
   const loadData = React.useCallback(async () => {
-    if (nextPageToFetchState < 0) return;
     try {
       const dt = (await audienceService.reaction.getDetails(
         {
@@ -86,31 +67,20 @@ const AudienceReactionsScreen = (props: AudienceReactionsScreenProps) => {
           resourceType,
           resourceId,
         },
-        nextPageToFetchState,
-        PAGE_SIZE,
+        1,
+        20,
       )) as AudienceReactions;
-      setNextPageToFetch(dt.userReactions.length === 0 ? -1 : nextPageToFetchState + 1);
-      setUserReactions([...userReactions, ...dt.userReactions]);
-      if (isEmpty(countByType)) setCountByType(dt.reactionCounters.countByType);
+      setUserReactions(dt.userReactions);
+      setCountByType(dt.reactionCounters.countByType);
     } catch (e) {
       console.error('[AudienceReactionsScreen] error :', e);
-      throw new Error();
     }
-  }, [countByType, module, nextPageToFetchState, resourceId, resourceType, userReactions]);
-
-  const fetchNextPage = () => {
-    if (loadingState === AsyncPagedLoadingState.FETCH_NEXT) return;
-    setLoadingState(AsyncPagedLoadingState.FETCH_NEXT);
-    loadData()
-      .then(() => setLoadingState(AsyncPagedLoadingState.DONE))
-      .catch(() => setLoadingState(AsyncPagedLoadingState.FETCH_NEXT_FAILED));
-  };
+  }, [module, resourceId, resourceType]);
 
   const renderScene = ({ route }) => {
-    const data = route.key === 'all' ? userReactions : userReactions.filter(reaction => reaction.reactionType === route.key);
     return (
       <FlatList
-        data={data}
+        data={route.key === 'all' ? userReactions : userReactions.filter(reaction => reaction.reactionType === route.key)}
         renderItem={({ item }) => (
           <View style={styles.item}>
             <BadgeAvatar
@@ -125,7 +95,6 @@ const AudienceReactionsScreen = (props: AudienceReactionsScreenProps) => {
             </View>
           </View>
         )}
-        bounces={!isEmpty(data)}
         ListEmptyComponent={
           <EmptyScreen
             svgImage="empty-timeline"
@@ -135,11 +104,6 @@ const AudienceReactionsScreen = (props: AudienceReactionsScreenProps) => {
           />
         }
         contentContainerStyle={styles.flatlist}
-        ListFooterComponent={listFooterComponent}
-        onEndReached={() => {
-          if (userReactions.length >= (nextPageToFetchState - 1) * PAGE_SIZE) fetchNextPage();
-        }}
-        onEndReachedThreshold={0.5}
       />
     );
   };
@@ -157,7 +121,7 @@ const AudienceReactionsScreen = (props: AudienceReactionsScreenProps) => {
   };
   const renderContent = () => {
     return (
-      <PageView style={styles.container} showNetworkBar={false}>
+      <PageView style={styles.container}>
         <TabView
           navigationState={{ index, routes }}
           onIndexChange={setIndex}
@@ -167,7 +131,7 @@ const AudienceReactionsScreen = (props: AudienceReactionsScreenProps) => {
       </PageView>
     );
   };
-  return <ContentLoader loadContent={loadData} renderContent={renderContent} renderError={() => <EmptyConnectionScreen />} />;
+  return <ContentLoader loadContent={loadData} renderContent={renderContent} renderError={() => <EmptyContentScreen />} />;
 };
 
 export default connect(

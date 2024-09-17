@@ -8,16 +8,19 @@ import { IGlobalState } from '~/app/store';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
 import { Icon } from '~/framework/components/picture/Icon';
-import { SmallText } from '~/framework/components/text';
-import { ISearchUsers, IUser } from '~/framework/modules/conversation/service/newMail';
+import { HeadingSText, SmallText } from '~/framework/components/text';
+import { ISearchUsers } from '~/framework/modules/conversation/service/newMail';
 import {
-  IVisibleGroup,
-  IVisibleUser,
+  IVisible,
+  IVisibles,
   IVisiblesState,
+  VisibleRecipientType,
+  VisibleType,
+  filterVisibles,
   getVisiblesState,
-  searchVisibles,
 } from '~/framework/modules/conversation/state/visibles';
 import { IDistantFileWithId } from '~/framework/util/fileHandler';
+import { isEmpty } from '~/framework/util/object';
 import HtmlToText from '~/infra/htmlConverter/text';
 import TouchableOpacity from '~/ui/CustomTouchableOpacity';
 import HtmlContentView from '~/ui/HtmlContentView';
@@ -25,6 +28,7 @@ import { Loading } from '~/ui/Loading';
 
 import Attachment from './Attachment';
 import { FoundList, Input, SelectedList } from './SearchUserMail';
+import FoundListPlaceholder from './placeholder/foundlist';
 
 type HeadersProps = { to: ISearchUsers; cc: ISearchUsers; cci: ISearchUsers; subject: string };
 
@@ -84,6 +88,14 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   prevBodyAddtionalStyle: { flexGrow: 1 },
+  noResult: {
+    paddingTop: UI_SIZES.spacing.large,
+    paddingHorizontal: UI_SIZES.spacing.medium,
+    rowGap: UI_SIZES.spacing.small,
+  },
+  noResultText: {
+    textAlign: 'center',
+  },
 });
 
 const MailContactField = connect((state: IGlobalState) => ({
@@ -94,44 +106,50 @@ const MailContactField = connect((state: IGlobalState) => ({
   value,
   onChange,
   children,
-  autoFocus,
   rightComponent,
   onOpenSearch,
   visibles,
   key,
+  recipientType,
 }: {
   style?: ViewStyle;
   title: string;
-  value?: IUser[];
-  onChange?: (value: IUser[]) => void;
+  value?: IVisibles;
+  onChange?: (value: IVisibles) => void;
   children?: ReactChild;
-  autoFocus?: boolean;
   rightComponent?: ReactElement;
   onOpenSearch?: (searchIsOpen: boolean) => void;
   visibles: IVisiblesState;
   key: React.Key;
+  recipientType: VisibleRecipientType;
 }) => {
   const selectedUsersOrGroups = value || [];
   const [search, updateSearch] = React.useState('');
+  const [isFocus, setIsFocus] = React.useState(false);
+  const [isLoadingResult, setIsLoadingResult] = React.useState(false);
   const previousVisibles = React.useRef<IVisiblesState>();
-  const [foundUsersOrGroups, updateFoundUsersOrGroups] = React.useState<(IVisibleUser | IVisibleGroup)[]>([]);
+  const [foundUsersOrGroups, updateFoundUsersOrGroups] = React.useState<IVisibles>([]);
   const searchTimeout = React.useRef<NodeJS.Timeout>();
   const inputRef: { current: TextInput | undefined } = { current: undefined };
+  const bookmarkVisibles = visibles.data.filter(user => user.type === VisibleType.SHAREBOOKMARK);
 
   const onUserType = (s: string) => {
     updateSearch(s);
-    if (s.length >= 3) {
+    setIsLoadingResult(true);
+    if (s.length >= 1) {
       updateFoundUsersOrGroups([]);
       onOpenSearch?.(true);
       if (searchTimeout.current) clearTimeout(searchTimeout.current);
       searchTimeout.current = setTimeout(() => {
-        const searchResults = visibles.lastSuccess ? searchVisibles(visibles.data, s, value) : [];
+        const searchResults = visibles.lastSuccess ? filterVisibles(visibles.data, s) : [];
         updateFoundUsersOrGroups(searchResults);
+        setIsLoadingResult(false);
       }, 500);
     } else {
       updateFoundUsersOrGroups([]);
       onOpenSearch?.(false);
       clearTimeout(searchTimeout.current);
+      setIsLoadingResult(false);
     }
   };
 
@@ -151,7 +169,7 @@ const MailContactField = connect((state: IGlobalState) => ({
   const addUser = userOrGroup => {
     onChange?.([
       ...selectedUsersOrGroups,
-      { displayName: userOrGroup.name || userOrGroup.displayName, id: userOrGroup.id } as IUser,
+      { displayName: userOrGroup.name || userOrGroup.displayName, id: userOrGroup.id } as IVisible,
     ]);
     onUserType('');
     inputRef.current?.focus();
@@ -168,6 +186,22 @@ const MailContactField = connect((state: IGlobalState) => ({
     inputRef.current?.focus();
   };
 
+  const renderFoundList = () => {
+    if (isLoadingResult) return <FoundListPlaceholder />;
+    if (foundUsersOrGroups.length)
+      return <FoundList foundUserOrGroup={foundUsersOrGroups} addUser={addUser} recipientType={recipientType} />;
+    if (search.length > 0)
+      return (
+        <View style={styles.noResult}>
+          <HeadingSText style={styles.noResultText}>{I18n.get('conversation-newmail-noresulttitle', { search })}</HeadingSText>
+          <SmallText style={styles.noResultText}>{I18n.get('conversation-newmail-noresulttext')}</SmallText>
+        </View>
+      );
+    if (isFocus && !isEmpty(bookmarkVisibles))
+      return <FoundList foundUserOrGroup={bookmarkVisibles} addUser={addUser} recipientType={recipientType} isBookmarks />;
+    return children;
+  };
+
   return (
     <View style={styles.mailContactFieldContainer}>
       <View style={styles.mailContactFieldInputWrapper}>
@@ -177,27 +211,29 @@ const MailContactField = connect((state: IGlobalState) => ({
             <SelectedList selectedUsersOrGroups={selectedUsersOrGroups} onItemClick={removeUser} />
             <Input
               inputRef={inputRef}
-              autoFocus={autoFocus}
+              autoFocus={false}
               value={search}
               onChangeText={onUserType}
-              onSubmit={() => noUserFound(search)}
+              onSubmit={() => {
+                noUserFound(search);
+                setIsFocus(false);
+              }}
               onEndEditing={() => {
-                onOpenSearch?.(false);
                 clearTimeout(searchTimeout.current);
                 if (foundUsersOrGroups.length === 0) {
+                  onOpenSearch?.(false);
                   updateFoundUsersOrGroups([]);
                   updateSearch('');
                 }
               }}
+              onFocus={() => setIsFocus(true)}
               key={key}
             />
           </View>
           {rightComponent}
         </View>
       </View>
-      <View style={styles.foundListContainer}>
-        {foundUsersOrGroups.length ? <FoundList foundUserOrGroup={foundUsersOrGroups} addUser={addUser} /> : children}
-      </View>
+      <View style={styles.foundListContainer}>{renderFoundList()}</View>
     </View>
   );
 });
@@ -390,7 +426,6 @@ const Fields = ({
 
   return (
     <MailContactField
-      autoFocus={!isReplyDraft}
       value={headers.to}
       onChange={to => onHeaderChange({ ...headers, to })}
       rightComponent={
@@ -402,6 +437,7 @@ const Fields = ({
       }
       title={I18n.get('conversation-newmail-to')}
       key="to"
+      recipientType={VisibleRecipientType.TO}
       onOpenSearch={v => setIsSearchingUsers({ to: v })}>
       {showExtraFields ? (
         <MailContactField
@@ -409,12 +445,14 @@ const Fields = ({
           value={headers.cc}
           onChange={cc => onHeaderChange({ ...headers, cc })}
           key="cc"
+          recipientType={VisibleRecipientType.CC}
           onOpenSearch={v => setIsSearchingUsers({ cc: v })}>
           <MailContactField
             title={I18n.get('conversation-newmail-bcc')}
             value={headers.cci}
             onChange={cci => onHeaderChange({ ...headers, cci })}
             key="cci"
+            recipientType={VisibleRecipientType.CCI}
             onOpenSearch={v => setIsSearchingUsers({ cci: v })}>
             {commonFields}
           </MailContactField>

@@ -1,7 +1,6 @@
 import { useHeaderHeight } from '@react-navigation/elements';
 import { CommonActions, NavigationProp, useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationOptions, NativeStackScreenProps } from '@react-navigation/native-stack';
-import moment from 'moment';
 import * as React from 'react';
 import { Alert, ImageURISource, TouchableOpacity, View } from 'react-native';
 import RNConfigReader from 'react-native-config-reader';
@@ -41,7 +40,6 @@ import { AuthChangeMobileScreenNavParams } from '~/framework/modules/auth/screen
 import { LoginState } from '~/framework/modules/auth/screens/main-account/account-selection/types';
 import { AuthMFAScreenNavParams } from '~/framework/modules/auth/screens/mfa/types';
 import { getAuthContext, getMFAValidationInfos, getUserRequirements } from '~/framework/modules/auth/service';
-import { readSplashadsData } from '~/framework/modules/auth/storage';
 import { ChangePasswordScreenNavParams } from '~/framework/modules/auth/templates/change-password/types';
 import track, { trackingAccountEvents } from '~/framework/modules/auth/tracking';
 import { isWithinXmasPeriod } from '~/framework/modules/user/actions';
@@ -50,7 +48,6 @@ import BottomRoundDecoration from '~/framework/modules/user/components/bottom-ro
 import AddAccountButton from '~/framework/modules/user/components/buttons/add-account';
 import ChangeAccountButton from '~/framework/modules/user/components/buttons/change-account';
 import { UserNavigationParams, userRouteNames } from '~/framework/modules/user/navigation';
-import { ModalsRouteNames } from '~/framework/navigation/modals';
 import { navBarOptions } from '~/framework/navigation/navBar';
 import appConf from '~/framework/util/appConf';
 import { formatSource } from '~/framework/util/media';
@@ -114,7 +111,7 @@ useCurvedNavBarFeature.svgDisplayTopOffsetTolerance = 2;
  */
 function useProfileAvatarFeature(session: UserHomeScreenPrivateProps['session']) {
   const userProfilePicture = React.useMemo(() => {
-    const uri = session?.platform && session?.user.avatar ? new URL(session.user.avatar, session.platform.url) : undefined;
+    const uri = session?.platform && session?.user.avatar ? new URL(`${session.platform.url}${session.user.avatar}`) : undefined;
     if (uri) {
       const uti = OAuth2RessourceOwnerPasswordClient.connection?.getUniqueSessionIdentifier();
       if (uti) uri.searchParams.append('uti', uti);
@@ -246,12 +243,6 @@ function useAccountMenuFeature(session: UserHomeScreenPrivateProps['session'], f
   const isFederated = session?.method === InitialAuthenticationMethod.WAYF_SAML;
   const showWhoAreWe = session?.platform.showWhoAreWe;
 
-  const splashads = readSplashadsData();
-  const showSplashads =
-    session?.platform.name && splashads[session?.platform.name]
-      ? moment().startOf('day').toISOString() === splashads[session?.platform.name].date.toString()
-      : false;
-
   //
   // Zendesk stuff
   //
@@ -283,6 +274,7 @@ function useAccountMenuFeature(session: UserHomeScreenPrivateProps['session'], f
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const openHelpCenter = async () => {
     if (showHelpCenter)
       try {
@@ -368,16 +360,6 @@ function useAccountMenuFeature(session: UserHomeScreenPrivateProps['session'], f
                 title={I18n.get('user-whoarewe-title')}
                 onPress={() => {
                   navigation.navigate(userRouteNames.whoAreWe, {});
-                }}
-              />
-            ) : null}
-            {showSplashads && session?.platform.name ? (
-              <LineButton
-                title={I18n.get('user-page-splashads')}
-                onPress={() => {
-                  navigation.navigate(ModalsRouteNames.SplashAds, {
-                    resourceUri: splashads[session?.platform.name] ? splashads[session?.platform.name].url : '',
-                  });
                 }}
               />
             ) : null}

@@ -10,6 +10,6 @@ export default new NavigableModuleConfig<'support', ReturnType<typeof reducer>>(
   storageName: 'support',
 
   displayI18n: 'support-appname',
-  displayAs: 'myAppsSecondaryModule',
+  displayAs: 'myAppsModule',
   displayPicture: { type: 'NamedSvg', name: 'support', fill: theme.palette.complementary.green.regular },
 });

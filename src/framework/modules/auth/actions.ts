@@ -1,11 +1,9 @@
-import moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { I18n } from '~/app/i18n';
 import { IGlobalState } from '~/app/store';
-import { openSplashadsScreen } from '~/framework/components/splashads';
 import {
   ERASE_ALL_ACCOUNTS,
   IAuthState,
@@ -68,13 +66,11 @@ import {
   readSavedAccounts,
   readSavedStartup,
   readShowOnbording,
-  readSplashadsData,
   writeCreateAccount,
   writeDeleteAccount,
   writeLogout,
   writeRemoveToken,
   writeReplaceAccount,
-  writeSplashads,
 } from './storage';
 
 type AuthDispatch = ThunkDispatch<IAuthState, any, AnyAction>;
@@ -484,46 +480,8 @@ const performLogin = async (
   // Launch oneSessionId fetch to prevent errors in rich-content. This is non-preventing in case of fails, so no await !
   OAuth2RessourceOwnerPasswordClient.connection?.getOneSessionId();
 
-  // Splashads
-  const timeoutPromise = new Promise((resolve, reject) => {
-    setTimeout(() => reject(new global.Error('Request timed out')), 2000);
-  });
-
-  const fetchData = async url => {
-    try {
-      const response = await Promise.race([timeoutPromise, fetch(url)]);
-      return response;
-    } catch (error) {
-      console.error('[Splashads]: Fetch operation failed: ' + error.message);
-    }
-  };
-
-  const fetchSplashads = async () => {
-    const source = `${platform.splashads}/${user.infos.type?.toLowerCase()}/${I18n.getSplashadsLocale()}`;
-    try {
-      const response = await fetchData(source);
-      if (response && response.status === 200) {
-        writeSplashads(platform.name, moment().startOf('day'), source);
-        openSplashadsScreen({ resourceUri: source });
-      } else {
-        console.error('[Splashads]: Failed to fetch splashads: ', response.status);
-      }
-    } catch (error) {
-      console.error('[Splashads]: Failed to fetch splashads: ', error.message);
-    }
-  };
-
   // GET the audience valid reaction types for the platform
-  dispatch(loadValidReactionTypesAction());
-
-  if (platform.splashads) {
-    const splashads = readSplashadsData();
-    const today = moment().startOf('day');
-    const splashadsDay = splashads[platform.name];
-    if (splashadsDay && today.isAfter(moment(splashadsDay.date).clone())) fetchSplashads();
-    else if (splashadsDay && platform.splashads!.includes('test')) fetchSplashads();
-    if (!splashadsDay) fetchSplashads();
-  }
+  await dispatch(loadValidReactionTypesAction());
 
   return accountInfo;
 };

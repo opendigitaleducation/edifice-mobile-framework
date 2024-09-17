@@ -60,6 +60,7 @@ const BlogEditPostScreen = (props: BlogEditPostScreenProps) => {
       if (!blogPostRight) {
         throw new Error('[doEditPost] user has no post rights for this blog');
       }
+      setSaving(true);
       // Translate entered content to httml
       const htmlContent = content.replace(/\n/g, '<br>').trim();
       // console.debug(`SAVED HTML CONTENT:\r\n${htmlContent}`);
@@ -76,12 +77,12 @@ const BlogEditPostScreen = (props: BlogEditPostScreenProps) => {
   const doEdit = async () => {
     Keyboard.dismiss();
     try {
-      setSaving(true);
       setLoadingState(true);
+      setSaving(true);
       await doEditPost();
-    } catch {
-      setSaving(false);
+    } finally {
       setLoadingState(false);
+      setSaving(false);
     }
   };
 

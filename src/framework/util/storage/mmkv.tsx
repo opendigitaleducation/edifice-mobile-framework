@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as React from 'react';
 import RNConfigReader from 'react-native-config-reader';
 import { MMKV } from 'react-native-mmkv';
 
@@ -46,6 +47,11 @@ const mmkvInstance = new MMKV({
   id: getOverrideName(),
   encryptionKey: RNConfigReader.CFBundleIdentifier,
 }) satisfies IStorageBackend;
+
+const FlipperMMKV = __DEV__
+  ? require('react-native-mmkv-flipper-plugin').initializeMMKVFlipper({ default: mmkvInstance })
+  : undefined;
+export const FlipperMMKVElement = FlipperMMKV ? <FlipperMMKV /> : null;
 
 export const mmkvHandler = new StorageHandler(mmkvInstance, 'mmkv').setAppInit(async function () {
   await migrateFromAsyncStorage(this);

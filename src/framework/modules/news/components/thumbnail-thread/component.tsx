@@ -19,8 +19,6 @@ const Selected = () => (
 export default function ThumbnailThread({ status = ThreadItemStatus.DEFAULT, ...props }: ThumbnailThreadProps) {
   const { icon, square } = props;
 
-  const [error, setError] = React.useState(false);
-
   const globalStyle = [
     styles.thumbnailItem,
     { backgroundColor: theme.palette.complementary[fillColor].pale },
@@ -28,25 +26,25 @@ export default function ThumbnailThread({ status = ThreadItemStatus.DEFAULT, ...
   ];
   const heightSVGNoIcon = square ? getScaleHeight(12.5) : getScaleHeight(40);
 
-  if (icon && !error && status === ThreadItemStatus.SELECTED) {
+  if (icon && status === ThreadItemStatus.SELECTED) {
     return (
       <View style={styles.thumbnailContainerSelected}>
         <Selected />
-        <Image source={icon} style={globalStyle} onError={() => setError(true)} />
+        <Image source={icon} style={globalStyle} />
       </View>
     );
   }
-  if (icon && !error && status === ThreadItemStatus.DISABLED) {
+  if (icon && status === ThreadItemStatus.DISABLED) {
     return (
       <Grayscale>
-        <Image source={icon} style={globalStyle} onError={() => setError(true)} />
+        <Image source={icon} style={globalStyle} />
       </Grayscale>
     );
   }
-  if (icon && !error && status === ThreadItemStatus.DEFAULT) {
-    return <Image source={icon} style={globalStyle} onError={() => setError(true)} />;
+  if (icon && status === ThreadItemStatus.DEFAULT) {
+    return <Image source={icon} style={globalStyle} />;
   }
-  if (status === ThreadItemStatus.SELECTED) {
+  if (!icon && status === ThreadItemStatus.SELECTED) {
     return (
       <View style={[globalStyle, styles.thumbnailContainerSelected]}>
         <Selected />
@@ -54,7 +52,7 @@ export default function ThumbnailThread({ status = ThreadItemStatus.DEFAULT, ...
       </View>
     );
   }
-  if (status === ThreadItemStatus.DISABLED) {
+  if (!icon && status === ThreadItemStatus.DISABLED) {
     return (
       <View style={[globalStyle, styles.thumbnailNoIconDisabled]}>
         <NamedSVG name="newsFeed" fill={theme.palette.grey.graphite} height={heightSVGNoIcon} />

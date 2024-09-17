@@ -55,14 +55,13 @@ export function formatBytes(bytes, decimals = 2) {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
 
-const renameAssets = (assets: Asset[], type: LocalFile.IPickOptionsType) => {
+const renameAssets = (assets: Asset[]) => {
   const prefix = moment().format('YYYYMMDD-HHmmss');
   const renamedAssets = assets.map((asset, index) => {
-    let ext = getExtension(asset.fileName);
-    if (type === 'image') ext = '.jpg';
+    const ext = getExtension(asset.fileName);
     return {
       ...asset,
-      fileName: `${prefix}${index > 0 ? `-${index}` : ''}${ext ?? ''}`,
+      fileName: `${prefix}${index > 0 ? `-${index}` : ''}${ext ? `.${ext}` : ''}`,
     };
   });
   return renamedAssets;
@@ -139,7 +138,7 @@ export class LocalFile implements LocalFile.CustomUploadFileItem {
             resolve();
           } else if (!res.assets || res.errorCode) reject(res);
           else {
-            pickedFiles = renameAssets(res.assets, 'image');
+            pickedFiles = renameAssets(res.assets);
             resolve();
           }
         };
@@ -164,7 +163,7 @@ export class LocalFile implements LocalFile.CustomUploadFileItem {
             resolve();
           } else if (!res.assets || res.errorCode) reject(res);
           else {
-            pickedFiles = renameAssets(res.assets, 'image');
+            pickedFiles = renameAssets(res.assets);
             resolve();
           }
         };

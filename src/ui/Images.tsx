@@ -9,7 +9,6 @@ import { UI_SIZES, getScaleImageSize } from '~/framework/components/constants';
 import { NamedSVG } from '~/framework/components/picture';
 import { SmallInverseText } from '~/framework/components/text';
 import { AudienceParameter } from '~/framework/modules/core/audience/types';
-import { IMAGE_MAX_DIMENSION } from '~/framework/util/fileHandler';
 import { FastImage } from '~/framework/util/media';
 import { urlSigner } from '~/infra/oauth';
 
@@ -55,6 +54,11 @@ const BubbleView = styled.View({
   position: 'absolute',
   width: 30,
 });
+
+/*const StretchImage = style.image({
+  height: "100%",
+  width: "100%"
+});*/
 
 const errorImageWidth = getScaleImageSize(UI_SIZES.dimensions.height.huge);
 const errorImageHeight = getScaleImageSize(UI_SIZES.dimensions.height.huge);
@@ -128,7 +132,10 @@ class Images extends React.Component<
       if (!imageSrc || !imageSrc.uri) return imageSrc;
       const uri = new URL(urlSigner.getAbsoluteUrl(imageSrc.uri)!);
       uri.searchParams.delete('thumbnail');
-      uri.searchParams.append('thumbnail', `${IMAGE_MAX_DIMENSION}x0`);
+      uri.searchParams.append(
+        'thumbnail',
+        oneRow ? `${imageWidth}x${imageHeight}` : `${Math.floor(imageWidth / 2)}x${Math.floor(imageHeight / 2)}`,
+      );
       return { ...imageSrc, uri: uri.toString() };
     };
 

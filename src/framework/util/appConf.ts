@@ -24,12 +24,10 @@ export type IPlatformAccessDeclaration = {
   oauth: [string, string]; // oAuth2 configuration as [clientId, clientSecret]
   url: string; // Access url WITHOUT trailing slash and WITH protocol
   wayf?: string; // WAYF url to redirect onto federation login process instead of standard one
-  redirect?: string; // Redirect url to redirect in external browser
   webTheme: string; // web theme applied to the activated accounts
   webviewIdentifier?: string; // safe-webview unique key. In not provided, fallback to the application's one.
   showWhoAreWe?: boolean; // To show or not the team link in profile page
   showVieScolaireDashboard?: boolean; // To show or not the VieScolaire dashboard
-  splashads?: string; // splashads url
 };
 
 export class Platform {
@@ -55,15 +53,11 @@ export class Platform {
 
   wayf: IPlatformAccessDeclaration['wayf'];
 
-  redirect: IPlatformAccessDeclaration['redirect'];
-
   webTheme!: IPlatformAccessDeclaration['webTheme'];
 
   showWhoAreWe!: IPlatformAccessDeclaration['showWhoAreWe'];
 
   showVieScolaireDashboard!: IPlatformAccessDeclaration['showVieScolaireDashboard'];
-
-  splashads: IPlatformAccessDeclaration['splashads'];
 
   _webviewIdentifier: IPlatformAccessDeclaration['webviewIdentifier'];
 
@@ -79,11 +73,9 @@ export class Platform {
     this._oauth = pf.oauth;
     this.url = pf.url;
     this.wayf = pf.wayf;
-    this.redirect = pf.redirect;
     this.webTheme = pf.webTheme;
     this.showWhoAreWe = pf.showWhoAreWe;
     this.showVieScolaireDashboard = pf.showVieScolaireDashboard;
-    this.splashads = pf.splashads;
     this._webviewIdentifier = pf.webviewIdentifier;
   }
 
@@ -121,7 +113,6 @@ export interface IAppConfDeclaration {
     exceptionProject?: string[];
   };
   platforms: IPlatformAccessDeclaration[];
-  splashads?: string;
   webviewIdentifier: string;
   zendesk?: {
     appId?: string;
@@ -155,8 +146,6 @@ export class AppConf {
   };
 
   platforms: Platform[];
-
-  splashads?: string;
 
   webviewIdentifier: string;
 
@@ -204,10 +193,6 @@ export class AppConf {
 
   get isDevOrAlpha() {
     return __DEV__ || (RNConfigReader.BundleVersionType as string).toLowerCase().startsWith('alpha');
-  }
-
-  get splashadsEnabled() {
-    return this.splashads;
   }
 
   get zendeskEnabled() {

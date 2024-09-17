@@ -36,21 +36,6 @@ export const removeFirstWord = (str: string) => {
 };
 
 /**
- * Get a search query (an array of normalized string) from a input text.
- * Spaces are trimmed as separated words.
- * ToDo: make a special treatments for quoted strings
- * @param str
- * @returns
- */
-export const computeSearchQuery = (str: string) => {
-  return removeAccents(str).toLocaleLowerCase().split(/\s+/);
-};
-
-export const computeSearchValue = (str: string) => {
-  return removeAccents(str).toLocaleLowerCase();
-};
-
-/**
  * Returns a converted string from camelCase (or UppercasedCamelCase) to snake_case.
  * @param camelCase
  */

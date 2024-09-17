@@ -1,5 +1,4 @@
 import { DrawerContentComponentProps, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { useIsFocused } from '@react-navigation/native';
 import * as React from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
@@ -86,15 +85,12 @@ const DrawerContent = (props: CustomDrawerContentProps) => {
     { name: SystemFolder.TRASH, path: '/Trash' },
     { name: SystemFolder.JUNK, path: '/Junk' },
   ];
-  const isFocused = useIsFocused();
 
   React.useEffect(() => {
-    if (isFocused) {
-      props.tryFetchQuota();
-      props.tryFetchRootFolders();
-    }
+    props.tryFetchQuota();
+    props.tryFetchRootFolders();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFocused]);
+  }, []);
 
   const changeFolder = (folder: IFolder) => {
     if (folder.path !== selectedFolder) {

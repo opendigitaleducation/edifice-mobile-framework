@@ -16,6 +16,6 @@ export default new NavigableModuleConfig<'homeworkAssistance', IHomeworkAssistan
   storageName: 'homeworkAssistance',
 
   displayI18n: 'homeworkassistance-appname',
-  displayAs: 'myAppsSecondaryModule',
+  displayAs: 'myAppsModule',
   displayPicture: { type: 'NamedSvg', name: 'homeworkAssistance', fill: theme.palette.complementary.indigo.regular },
 });

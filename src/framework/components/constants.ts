@@ -103,7 +103,6 @@ export const UI_SIZES = {
       small: getScaleWidth(20),
       medium: getScaleWidth(22),
       default: getScaleWidth(24),
-      xlarge: getScaleWidth(36),
     },
     logoSize: { height: getScaleHeight(64), width: getScaleWidth(300) },
     /** @todo replace these constants by native ones. For the moment, use useHeaderHeight() instead if possible. */

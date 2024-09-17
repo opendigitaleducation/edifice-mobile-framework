@@ -9,7 +9,7 @@ import {
 // State
 
 export interface IEntcoreFlashMessage {
-  color: 'red' | 'blue' | 'green' | 'orange' | 'grey-dark' | null | undefined; // Background color
+  color: string | null; // Background color
   contents: {
     // Message content (several languages)
     fr?: string; // French version
