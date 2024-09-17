@@ -150,6 +150,4 @@ dependencies {
     implementation project(':react-native-action-sheet')
 }
 
-apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-
 apply plugin: 'com.google.gms.google-services'
