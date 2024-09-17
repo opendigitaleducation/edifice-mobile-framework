@@ -46,7 +46,7 @@ export default class MoveToFolderModal extends React.Component<
     const { openDropdown } = this.state;
     const isCurrentFolderInbox = currentFolder === 'inbox';
     const isCurrentFolderTrash = currentFolder === 'trash';
-    const modalTitle = `conversation-movetofolder-${isCurrentFolderTrash ? 'restore' : 'move'}to`;
+    const modalTitle = isCurrentFolderTrash ? 'conversation-movetofolder-restoreto' : 'conversation-movetofolder-moveto';
     const foldersWithoutCurrent = folders && folders.filter(folder => folder.folderName !== currentFolder);
     const options: any = [];
     if (!isCurrentFolderInbox) options.push({ label: I18n.get('conversation-movetofolder-inbox'), value: 'inbox' });
@@ -125,7 +125,7 @@ export default class MoveToFolderModal extends React.Component<
                 }}
               />
               <PrimaryButton
-                text={I18n.get(`conversation-movetofolder-${isCurrentFolderTrash ? 'restore' : 'move'}`)}
+                text={I18n.get(isCurrentFolderTrash ? 'conversation-movetofolder-restore' : 'conversation-movetofolder-move')}
                 style={{ marginLeft: UI_SIZES.spacing.medium }}
                 disabled={isMoveImpossible || !selectedFolder}
                 action={() => {

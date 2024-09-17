@@ -124,6 +124,9 @@ export namespace Error {
     PLATFORM_BLOCKED_TYPE = 'PLATFORM_BLOCKED_TYPE', // Distant platform refuses certain account types
     // Unknown reason
     UNKNOWN_DENIED = 'UNKNOWN_DENIED', // User denied for non-specified reason
+
+    ACTIVATION_CODE = 'ACTIVATION_CODE',
+    PASSWORD_RESET = 'PASSWORD_RESET',
   }
 
   export const OAuth2Error = ErrorWithType<OAuth2ErrorType | ErrorTypes<typeof FetchError>>;
@@ -178,6 +181,10 @@ export namespace Error {
         return I18n.get('auth-error-blockedtype');
       case Error.OAuth2ErrorType.ACCOUNT_BLOCKED:
         return I18n.get('auth-error-blockeduser');
+      case Error.OAuth2ErrorType.ACTIVATION_CODE:
+        return I18n.get('auth-error-activationcode');
+      case Error.OAuth2ErrorType.PASSWORD_RESET:
+        return I18n.get('auth-error-passwordreset');
 
       case Error.LoginErrorType.NO_SPECIFIED_PLATFORM:
       case Error.LoginErrorType.INVALID_PLATFORM:

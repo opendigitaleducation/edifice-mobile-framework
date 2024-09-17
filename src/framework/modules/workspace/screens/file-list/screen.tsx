@@ -50,6 +50,33 @@ import { AsyncPagedLoadingState } from '~/framework/util/redux/asyncPaged';
 import styles from './styles';
 import { IWorkspaceFileListScreenProps } from './types';
 
+const emptyTextsFolder = {
+  [Filter.OWNER]: {
+    text: 'workspace-filelist-emptyscreen-owner-text',
+    title: 'workspace-filelist-emptyscreen-owner-title',
+  },
+  [Filter.PROTECTED]: {
+    text: 'workspace-filelist-emptyscreen-protected-text',
+    title: 'workspace-filelist-emptyscreen-protected-title',
+  },
+  [Filter.ROOT]: {
+    text: 'workspace-filelist-emptyscreen-root-text',
+    title: 'workspace-filelist-emptyscreen-root-title',
+  },
+  [Filter.SHARED]: {
+    text: 'workspace-filelist-emptyscreen-shared-text',
+    title: 'workspace-filelist-emptyscreen-shared-title',
+  },
+  [Filter.TRASH]: {
+    text: 'workspace-filelist-emptyscreen-trash-text',
+    title: 'workspace-filelist-emptyscreen-trash-title',
+  },
+  subfolder: {
+    text: 'workspace-filelist-emptyscreen-subfolder-text',
+    title: 'workspace-filelist-emptyscreen-subfolder-title',
+  },
+};
+
 export const computeNavBar = ({
   navigation,
   route,
@@ -363,8 +390,8 @@ const WorkspaceFileListScreen = (props: IWorkspaceFileListScreenProps) => {
     return (
       <EmptyScreen
         svgImage={image}
-        title={I18n.get(`workspace-filelist-emptyscreen-${screen}-title`)}
-        text={I18n.get(`workspace-filelist-emptyscreen-${screen}-text`)}
+        title={I18n.get(emptyTextsFolder[screen].title)}
+        text={I18n.get(emptyTextsFolder[screen].text)}
       />
     );
   };

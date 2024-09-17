@@ -33,7 +33,7 @@ import { SingleAvatar } from '~/ui/avatars/SingleAvatar';
 import CardTopContentCategory from './cardtopcontent-category';
 
 const acknowledgementsString = (ackNumber: number, total: number) =>
-  `${ackNumber}/${total} ${I18n.get(`schoolbook-worddetails-acknowledgement${ackNumber === 1 ? '' : 's'}`).toLowerCase()}`;
+  `${ackNumber}/${total} ${I18n.get(ackNumber === 1 ? 'schoolbook-worddetails-acknowledgement' : 'schoolbook-worddetails-acknowledgements').toLowerCase()}`;
 const unacknowledgedString = (userType: AccountType) =>
   I18n.get(`schoolbook-worddetails-acknowledgementneeded-${userType.toLowerCase()}`);
 const recipientsString = (report: IConcernedStudent[]) =>
@@ -244,7 +244,7 @@ const SchoolbookWordDetailsCard = (
               }
               text={
                 <CaptionText numberOfLines={usersTextMaxLines}>
-                  {`${I18n.get(`schoolbook-worddetails-${isTeacher ? 'for' : 'from'}`)} `}
+                  {`${I18n.get(isTeacher ? 'schoolbook-worddetails-for' : 'schoolbook-worddetails-from')} `}
                   <CaptionBoldText
                     style={{
                       color: !isTeacher || hasSingleRecipientForTeacher ? theme.ui.text.regular : theme.palette.primary.regular,

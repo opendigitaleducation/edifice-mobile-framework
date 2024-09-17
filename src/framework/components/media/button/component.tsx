@@ -20,6 +20,13 @@ import { IPlayerProps } from './types';
 const iconSizeAudio = getScaleImageSize(20);
 const iconSizeVideo = getScaleImageSize(24);
 
+const notAvailableMediaText = {
+  video: 'mediabutton-video-notavailable',
+  audio: 'mediabutton-audio-notavailable',
+  media: 'mediabutton-media-notavailable',
+  image: 'mediabutton-image-notavailable',
+};
+
 const MediaButton = (props: IPlayerProps) => {
   const { type, source, ratio, posterSource, style } = props;
 
@@ -43,7 +50,7 @@ const MediaButton = (props: IPlayerProps) => {
 
   const getPreviewVideo = () => {
     return !source || !type ? (
-      <SmallItalicText>{I18n.get(`mediabutton-${type || 'media'}-notavailable`)}</SmallItalicText>
+      <SmallItalicText>{I18n.get(notAvailableMediaText[type || 'media'])}</SmallItalicText>
     ) : (
       <TouchableOpacity onPress={() => showMediaPlayer()} style={[styles.previewVideo, style]}>
         {posterSource ? <Image source={posterSource || {}} style={[playerStyle, styles.player]} resizeMode="contain" /> : null}

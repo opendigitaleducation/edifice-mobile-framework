@@ -1,0 +1,214 @@
+diff --git a/node_modules/react-native-media-console/lib/typescript/types.d.ts b/node_modules/react-native-media-console/lib/typescript/types.d.ts
+index baa4193..15e6cb9 100644
+--- a/node_modules/react-native-media-console/lib/typescript/types.d.ts
++++ b/node_modules/react-native-media-console/lib/typescript/types.d.ts
+@@ -1,8 +1,8 @@
+-import type { RefObject } from 'react';
+-import type { ViewStyle, StyleProp, Animated } from 'react-native';
++import type { ReactElement, RefObject } from 'react';
++import type { Animated, StyleProp, ViewStyle } from 'react-native';
+ import type Reanimated from 'react-native-reanimated';
+ import type { StyleProps } from 'react-native-reanimated';
+-import type { VideoRef, ReactVideoProps } from 'react-native-video';
++import type { ReactVideoProps, VideoRef } from 'react-native-video';
+ export declare type WithRequiredProperty<Type, Key extends keyof Type> = Type & {
+     [Property in Key]-?: Type[Property];
+ };
+@@ -230,4 +230,9 @@ export interface VideoPlayerProps extends ReactVideoProps {
+      * testID selector for testing
+      */
+     testID?: string;
++    /**
++     * Element to replace video
++     *
++    */
++    posterElement?: ReactElement;
+ }
+diff --git a/node_modules/react-native-media-console/src/VideoPlayer.tsx b/node_modules/react-native-media-console/src/VideoPlayer.tsx
+index ada0347..b983069 100644
+--- a/node_modules/react-native-media-console/src/VideoPlayer.tsx
++++ b/node_modules/react-native-media-console/src/VideoPlayer.tsx
+@@ -1,5 +1,5 @@
+-import React, {useCallback, useState, useEffect, useRef} from 'react';
+-import {View} from 'react-native';
++import React, { useCallback, useEffect, useRef, useState } from 'react';
++import { View } from 'react-native';
+ import Video, {
+   OnLoadData,
+   OnLoadStartData,
+@@ -8,19 +8,19 @@ import Video, {
+   ResizeMode,
+   VideoRef,
+ } from 'react-native-video';
+-import {useControlTimeout, useJSAnimations, usePanResponders} from './hooks';
+ import {
++  BottomControls,
+   Error,
+   Loader,
+-  TopControls,
+-  BottomControls,
+-  PlayPause,
+   Overlay,
++  PlayPause,
++  TopControls,
+ } from './components';
+-import {PlatformSupport} from './OSSupport';
+-import {_onBack} from './utils';
+-import {_styles} from './styles';
+-import type {VideoPlayerProps, WithRequiredProperty} from './types';
++import { useControlTimeout, useJSAnimations, usePanResponders } from './hooks';
++import { PlatformSupport } from './OSSupport';
++import { _styles } from './styles';
++import type { VideoPlayerProps, WithRequiredProperty } from './types';
++import { _onBack } from './utils';
+ 
+ const volumeWidth = 150;
+ const iconOffset = 0;
+@@ -76,6 +76,7 @@ const AnimatedVideoPlayer = (
+     rewindTime = 15,
+     pan: {horizontal: horizontalPan, inverted: invertedPan} = {},
+     testID,
++    posterElement,
+   } = props;
+ 
+   const mounted = useRef(false);
+@@ -107,6 +108,7 @@ const AnimatedVideoPlayer = (
+   const [currentTime, setCurrentTime] = useState(0);
+   const [error, setError] = useState(false);
+   const [duration, setDuration] = useState(0);
++  const [_isEnd, setIsEnd] = useState<boolean>(false);
+ 
+   const videoRef = props.videoRef || _videoRef;
+ 
+@@ -124,10 +126,12 @@ const AnimatedVideoPlayer = (
+   };
+ 
+   const _onSeek = (obj: OnSeekData) => {
+-    if (!seeking) {
+-      setControlTimeout();
++    setControlTimeout();
++    setCurrentTime(obj.currentTime);
++    if (_isEnd) {
++      setCurrentTime(duration);
++      setIsEnd(false)
+     }
+-    setCurrentTime(obj.seekTime);
+ 
+     if (typeof onSeek === 'function') {
+       onSeek(obj);
+@@ -138,6 +142,7 @@ const AnimatedVideoPlayer = (
+     if (currentTime < duration) {
+       setCurrentTime(duration);
+       setPaused(!props.repeat);
++      setIsEnd(true);
+ 
+       if (showOnEnd) {
+         setShowControls(!props.repeat);
+@@ -410,9 +415,10 @@ const AnimatedVideoPlayer = (
+           paused={_paused}
+           muted={_muted}
+           rate={rate}
+-          style={[_styles.player.video, styles.videoStyle]}
++          style={[_styles.player.video, styles.videoStyle, {...posterElement ? {opacity: 0}: {}}]}
+           source={source}
+         />
++        {posterElement ?? null}
+         {loading ? (
+           <Loader />
+         ) : (
+@@ -432,19 +438,32 @@ const AnimatedVideoPlayer = (
+               showControls={showControls}
+             />
+             <PlayPause
+-              animations={animations}
+-              disablePlayPause={disablePlayPause}
+-              disableSeekButtons={disableSeekButtons}
+-              paused={_paused}
+-              togglePlayPause={togglePlayPause}
+-              resetControlTimeout={resetControlTimeout}
+-              showControls={showControls}
+-              onPressRewind={() =>
+-                videoRef?.current?.seek(currentTime - rewindTime)
+-              }
+-              onPressForward={() =>
+-                videoRef?.current?.seek(currentTime + rewindTime)
+-              }
++                animations={animations}
++                disablePlayPause={disablePlayPause}
++                disableSeekButtons={disableSeekButtons}
++                paused={_paused}
++                togglePlayPause={togglePlayPause}
++                resetControlTimeout={resetControlTimeout}
++                showControls={showControls}
++                onPressRewind={() => {
++                  if (currentTime !== 0) {
++                    if (currentTime - rewindTime > 0) {
++                      videoRef?.current?.seek(currentTime - rewindTime)
++                    } else {
++                      setSeekerPosition(0)
++                      videoRef?.current?.seek(0)
++                    }
++                  }
++                }}
++                onPressForward={() => {
++                  if (Math.floor(currentTime) < Math.floor(duration)) {
++                    if (currentTime + rewindTime > duration) {
++                      videoRef?.current?.seek(duration - 0.01)
++                    } else {
++                      videoRef?.current?.seek(currentTime + rewindTime)
++                    }
++                  }
++                }}
+             />
+             <BottomControls
+               animations={animations}
+diff --git a/node_modules/react-native-media-console/src/components/Back/Back.tsx b/node_modules/react-native-media-console/src/components/Back/Back.tsx
+index ef51f8d..e24c1bf 100644
+--- a/node_modules/react-native-media-console/src/components/Back/Back.tsx
++++ b/node_modules/react-native-media-console/src/components/Back/Back.tsx
+@@ -1,6 +1,6 @@
+ import React from 'react';
+-import {Image} from 'react-native';
+-import {Control} from '../Control';
++import { Image } from 'react-native';
++import { Control } from '../Control';
+ 
+ interface BackProps {
+   onBack: () => void;
+@@ -11,7 +11,7 @@ interface BackProps {
+ export const Back = ({onBack, showControls}: BackProps) => {
+   return (
+     <Control callback={onBack} disabled={!showControls}>
+-      <Image source={require('../../assets/img/back.png')} />
++      <Image source={require('ASSETS/icons/bitmapIcons/close.png')} />
+     </Control>
+   );
+ };
+diff --git a/node_modules/react-native-media-console/src/types.ts b/node_modules/react-native-media-console/src/types.ts
+index 87c401b..781dd10 100644
+--- a/node_modules/react-native-media-console/src/types.ts
++++ b/node_modules/react-native-media-console/src/types.ts
+@@ -1,8 +1,8 @@
+-import type {RefObject} from 'react';
+-import type {ViewStyle, StyleProp, Animated} from 'react-native';
++import type { ReactElement, RefObject } from 'react';
++import type { Animated, StyleProp, ViewStyle } from 'react-native';
+ import type Reanimated from 'react-native-reanimated';
+-import type {StyleProps} from 'react-native-reanimated';
+-import type {VideoRef, ReactVideoProps} from 'react-native-video';
++import type { StyleProps } from 'react-native-reanimated';
++import type { ReactVideoProps, VideoRef } from 'react-native-video';
+ 
+ export type WithRequiredProperty<Type, Key extends keyof Type> = Type & {
+   [Property in Key]-?: Type[Property];
+@@ -268,4 +268,10 @@ export interface VideoPlayerProps extends ReactVideoProps {
+    * testID selector for testing
+    */
+   testID?: string;
++
++  /**
++  * Element to replace video
++  *
++  */
++  posterElement?: ReactElement;
+ }

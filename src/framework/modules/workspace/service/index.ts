@@ -100,13 +100,21 @@ const workspaceFileAdapter = (file: IEntcoreWorkspaceDocument | IEntcoreWorkspac
   return ret as IFile;
 };
 
+const i18nFolderName = {
+  [Filter.OWNER]: 'workspace-filelist-owner',
+  [Filter.PROTECTED]: 'workspace-filelist-protected',
+  [Filter.ROOT]: 'workspace-filelist-root',
+  [Filter.SHARED]: 'workspace-filelist-shared',
+  [Filter.TRASH]: 'workspace-filelist-trash',
+};
+
 export const factoryRootFolder = (filter: Filter): IFile => {
   return {
     id: filter,
     key: filter,
     date: 0,
     isFolder: true,
-    name: I18n.get(`workspace-filelist-${filter}`),
+    name: I18n.get(i18nFolderName[filter]),
     owner: '',
     ownerName: '',
     parentId: 'root',

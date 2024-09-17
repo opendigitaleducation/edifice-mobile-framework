@@ -150,10 +150,10 @@ const SchoolbookWordReportScreen = (props: SchoolbookWordReportScreenProps) => {
 
   const renderSchoolbookWordReport = () => {
     const acknowledgementsString = (ackNumber: number, total: number) =>
-      `${ackNumber}/${total} ${I18n.get(`schoolbook-wordreport-acknowledgement${ackNumber === 1 ? '' : 's'}`).toLowerCase()}`;
+      `${ackNumber}/${total} ${I18n.get(ackNumber === 1 ? 'schoolbook-wordreport-acknowledgement' : 'schoolbook-wordreport-acknowledgements').toLowerCase()}`;
     const unacknowledgementsString = (ackNumber: number, total: number) =>
       `${total - ackNumber}/${total} ${I18n.get(
-        `schoolbook-wordreport-unacknowledgement${total - ackNumber === 1 ? '' : 's'}`,
+        total - ackNumber === 1 ? 'schoolbook-wordreport-unacknowledgement' : 'schoolbook-wordreport-unacknowledgements',
       ).toLowerCase()}`;
     const acknowledgedByString = (acknowledgments: IAcknowledgment[]) =>
       `${I18n.get('schoolbook-wordreport-acknowledgedby')}${acknowledgments?.map(

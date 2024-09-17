@@ -200,7 +200,7 @@ const CommentField = (props: CommentFieldProps, ref) => {
     () => (
       <TextInput
         ref={inputRef}
-        placeholder={I18n.get(`comment-add-${props.isResponse ? 'response' : 'comment'}`)}
+        placeholder={I18n.get(props.isResponse ? 'comment-add-response' : 'comment-add-comment')}
         placeholderTextColor={theme.palette.grey.graphite}
         multiline
         scrollEnabled={!(props.isPublishingComment || isIdleExistingComment)}

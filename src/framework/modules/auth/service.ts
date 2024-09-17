@@ -1,4 +1,5 @@
 import CookieManager from '@react-native-cookies/cookies';
+import firebase from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging';
 import moment from 'moment';
 import { Platform as RNPlatform } from 'react-native';
@@ -433,17 +434,25 @@ export class FcmService {
 
   constructor(platform: Platform) {
     this.platform = platform;
+    // Network Connection Listener
     Connection.onEachNetworkBack(async () => {
       if (this.pendingRegistration === 'delayed') {
+        console.debug('FcmService - onEachNetworkBack - registerFCMToken');
         await this.registerFCMToken();
       }
       this._cleanQueue();
+    });
+    // FCM Token Listener
+    firebase.messaging().onTokenRefresh(async (token: string) => {
+      console.debug('FcmService - onEachNetworkBack - registerFCMToken');
+      await this.registerFCMToken(token);
     });
   }
 
   private async _cleanQueue() {
     const tokens = await this._getTokenToDeleteQueue();
     tokens.forEach(token => {
+      console.debug('FcmService - _cleanQueue - unregisterFCMToken');
       this.unregisterFCMToken(token);
     });
   }
@@ -483,7 +492,10 @@ export class FcmService {
         method: 'delete',
       });
       this._removeTokenFromDeleteQueue(token);
-    } catch {
+      console.debug('FcmService - unregisterFCMToken - OK - ', token);
+    } catch (err) {
+      console.error('FcmService - unregisterFCMToken - ERROR - ', token);
+      console.error((err as Error).message);
       //unregistering fcm token should not crash the login process
       if (!Connection.isOnline) {
         //when no connection => get it from property
@@ -508,7 +520,10 @@ export class FcmService {
 
       await fetch(req);
       this._removeTokenFromDeleteQueue(token);
-    } catch {
+      console.debug('FcmService - unregisterFCMTokenWithAccount - OK - ', token);
+    } catch (err) {
+      console.error('FcmService - unregisterFCMTokenWithAccount - ERROR - ', token);
+      console.error((err as Error).message);
       //unregistering fcm token should not crash the login process
       if (!Connection.isOnline) {
         //when no connection => get it from property
@@ -529,10 +544,12 @@ export class FcmService {
         method: 'put',
       });
       this.pendingRegistration = 'registered';
+      console.debug('FcmService - registerFCMToken - OK - ', token);
       //try to unregister queue
       this._cleanQueue(); //clean queue on login
-      //
-    } catch {
+    } catch (err) {
+      console.error('FcmService - registerFCMToken - ERROR - ', token);
+      console.error((err as Error).message);
       //registering fcm token should not crash the login process
       if (!Connection.isOnline) {
         this.pendingRegistration = 'delayed';
@@ -544,6 +561,7 @@ export class FcmService {
 export async function manageFirebaseToken(platform: Platform) {
   try {
     const fcm = new FcmService(platform);
+    console.debug('manageFirebaseToken - registerFCMToken');
     if (RNPlatform.OS === 'android') {
       const result = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
       if (result === RESULTS.GRANTED) {
@@ -564,6 +582,7 @@ export async function manageFirebaseToken(platform: Platform) {
 export async function removeFirebaseToken(platform: Platform) {
   try {
     const fcm = new FcmService(platform);
+    console.debug('removeFirebaseToken - unregisterFCMToken');
     if (RNPlatform.OS === 'android') {
       const result = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
       if (result === RESULTS.GRANTED) {
@@ -584,6 +603,7 @@ export async function removeFirebaseToken(platform: Platform) {
 export async function removeFirebaseTokenWithAccount(account: AuthLoggedAccount) {
   try {
     const fcm = new FcmService(account.platform);
+    console.debug('removeFirebaseTokenWithAccount - unregisterFCMToken');
     if (RNPlatform.OS === 'android') {
       const result = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
       if (result === RESULTS.GRANTED) {

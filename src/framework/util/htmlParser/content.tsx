@@ -7,7 +7,7 @@ import { IMedia } from '~/framework//util/notifications';
 import { UI_SIZES } from '~/framework/components/constants';
 import MediaButton from '~/framework/components/media/button';
 import { SmallItalicText } from '~/framework/components/text';
-import { AudienceParameter } from '~/framework/modules/core/audience/types';
+import { AudienceParameter } from '~/framework/modules/audience/types';
 import { computeVideoThumbnail } from '~/framework/modules/workspace/service';
 import { formatSource } from '~/framework/util/media';
 import { IRemoteAttachment } from '~/ui/Attachment';
@@ -152,13 +152,20 @@ export const extractVideoResolution = (resolutionAsString: string) => {
   return match ? [parseInt(match[1]), parseInt(match[2])] : undefined;
 };
 
+const notAvailableMediaTexts = {
+  audio: 'htmlparser-audio-notavailable',
+  video: 'htmlparser-video-notavailable',
+  image: 'htmlparser-image-notavailable',
+  media: 'htmlparser-media-notavailable',
+};
+
 const renderAudioVideoPreview = (media: IMedia, referer: AudienceParameter) => {
   const videoDimensions = media['video-resolution'] ? extractVideoResolution(media['video-resolution']) : undefined;
   const videoId = media['document-id'] as string | undefined;
   if (!media.src) {
     return (
       <SmallItalicText style={{ backgroundColor: theme.palette.grey.cloudy, width: '100%', padding: UI_SIZES.spacing.small }}>
-        {I18n.get(`htmlparser-${media.type || 'media'}-notavailable`)}
+        {I18n.get(notAvailableMediaTexts[media.type || 'media'])}
       </SmallItalicText>
     );
   }

@@ -5,11 +5,11 @@ import { I18n } from '~/app/i18n';
 import { ContentCardHeader, ContentCardIcon } from '~/framework/components/card';
 import { RichEditorViewer } from '~/framework/components/inputs/rich-text';
 import { HeadingSText, SmallBoldText } from '~/framework/components/text';
+import Audience from '~/framework/modules/audience/components';
 import { AuthActiveAccount } from '~/framework/modules/auth/model';
 import type { Blog, BlogPostWithAudience } from '~/framework/modules/blog/reducer';
 import { hasPermissionManager } from '~/framework/modules/blog/rights';
 import { DisplayedBlog } from '~/framework/modules/blog/screens/BlogExplorerScreen';
-import Audience from '~/framework/modules/core/audience/components';
 
 import styles from './style';
 
@@ -19,13 +19,6 @@ interface BlogPostDetailsProps {
   session: AuthActiveAccount;
   onReady?: () => void;
 }
-
-export const commentsString = (comments: number) =>
-  comments
-    ? comments === 1
-      ? `1 ${I18n.get('blog-postlist-comment').toLowerCase()}`
-      : `${comments} ${I18n.get('blog-postlist-comments').toLowerCase()}`
-    : I18n.get('blog-postlist-comment-nocomments');
 
 export function BlogPostDetails(props: BlogPostDetailsProps) {
   const { blog, post, session, onReady } = props;

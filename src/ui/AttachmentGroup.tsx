@@ -6,8 +6,8 @@ import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
 import { CaptionText, SmallBoldText } from '~/framework/components/text';
-import { markViewAudience } from '~/framework/modules/core/audience';
-import { AudienceParameter } from '~/framework/modules/core/audience/types';
+import { markViewAudience } from '~/framework/modules/audience';
+import { AudienceParameter } from '~/framework/modules/audience/types';
 
 import Attachment, { IRemoteAttachment } from './Attachment';
 
@@ -59,7 +59,7 @@ export class AttachmentGroup extends React.PureComponent<
       <TouchableOpacity activeOpacity={1} style={[styles.container, containerStyle]}>
         {editMode ? null : (
           <View style={styles.header}>
-            <SmallBoldText>{I18n.get(`attachment-attachment${attachments.length > 1 ? 's' : ''}`)}</SmallBoldText>
+            <SmallBoldText>{I18n.get(attachments.length > 1 ? 'attachment-attachments' : 'attachment-attachment')}</SmallBoldText>
             {attachments.length > 1 ? (
               <RNGHTouchableOpacity
                 onPress={() => {

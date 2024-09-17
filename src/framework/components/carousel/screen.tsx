@@ -25,9 +25,9 @@ import NavBarActionsGroup from '~/framework/components/navigation/navbar-actions
 import { PageView } from '~/framework/components/page';
 import Toast from '~/framework/components/toast';
 import { DEFAULTS, ToastHandler } from '~/framework/components/toast/component';
+import { markViewAudience } from '~/framework/modules/audience';
+import { AudienceParameter } from '~/framework/modules/audience/types';
 import { assertSession } from '~/framework/modules/auth/reducer';
-import { markViewAudience } from '~/framework/modules/core/audience';
-import { AudienceParameter } from '~/framework/modules/core/audience/types';
 import { IModalsNavigationParams, ModalsRouteNames } from '~/framework/navigation/modals';
 import { navBarOptions, navBarTitle } from '~/framework/navigation/navBar';
 import { IMAGE_MAX_DIMENSION, LocalFile, SyncedFile } from '~/framework/util/fileHandler';

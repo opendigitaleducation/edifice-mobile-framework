@@ -36,7 +36,7 @@ const ResourcePicker = ({ data, defaultThumbnail, emptyComponent, onPressItem, o
   const renderItem = ({ item }) => {
     const shareNumber = item.shared?.length;
     const numberOfLines = 1;
-    const shareText = I18n.get(`resourcepicker-sharedtonbperson${shareNumber === 1 ? '' : 's'}`, {
+    const shareText = I18n.get(shareNumber === 1 ? 'resourcepicker-sharedtonbperson' : 'resourcepicker-sharedtonbpersons', {
       nb: shareNumber || 0,
     });
     const defaultBackground = { backgroundColor: defaultThumbnail.background };

@@ -415,8 +415,11 @@ class WayfScreen extends React.Component<IWayfScreenProps, IWayfScreenState> {
         this.samlResponse = saml[1].substring(0, index);
         console.debug('WAYFScreen::onMessage: SAMLResponse retrieved');
       }
+      // SP-Initiated WAYF stuff => Call oauth2 token api with received SAML if any
+      if (this.authUrl && this.samlResponse) this.loginWithSaml();
     } else {
       // Retrieve potential OpenID custom token (Stored via customToken=“..." format)
+      // Call oauth2 token api with received OpenID custom token if any
       const oid = innerHTML.split('customToken=“');
       if (oid?.length === 2) {
         const index = oid[1].indexOf('"');
@@ -424,6 +427,8 @@ class WayfScreen extends React.Component<IWayfScreenProps, IWayfScreenState> {
           this.oidResponse = oid[1].substring(0, index);
           console.debug('WAYFScreen::onMessage: customToken retrieved');
         }
+        // SP-Initiated WAYF stuff => Call oauth2 token api with received SAML if any
+        if (this.authUrl && this.oidResponse) this.loginWithOpenID();
       }
     }
   }
@@ -446,34 +451,52 @@ class WayfScreen extends React.Component<IWayfScreenProps, IWayfScreenState> {
     console.debug('WAYFScreen::onShouldStartLoadWithRequest: url = ', url);
     // If current url is outside the WAYF
     if (this.wayfUrl && this.isFirstLoadFinished && !url.startsWith(this.wayfUrl)) {
-      // Allow navigation to SP-Initiated WAYFs via auth config field
-      if (this.authUrl && url.startsWith(this.authUrl)) {
-        console.debug('WAYFScreen::onShouldStartLoadWithRequest: authUrl received => Navigation allowed');
-        return true;
-      }
-      // If WAYF redirects to ENT
-      //   - Try to login with SAML token if any retrieved previously
-      //   - Try to login with OpenID custom token if any retrieved previously
-      //   - Otherwise go to standard login page
-      //   - Block navigation
-      if (this.pfUrl && url.startsWith(this.pfUrl)) {
-        if (this.samlResponse) {
-          console.debug(
-            'WAYFScreen::onShouldStartLoadWithRequest: pfUrl received => Try to login with SAML token\n' + this.samlResponse,
-          );
-          this.loginWithSaml();
-        } else if (this.oidResponse) {
-          console.debug(
-            'WAYFScreen::onShouldStartLoadWithRequest: pfUrl received => Try to login with OpenID custom token\n' +
-              this.oidResponse,
-          );
-          this.loginWithOpenID();
-        } else {
-          console.debug('WAYFScreen::onShouldStartLoadWithRequest: pfUrl received => Will show login page');
-          this.props.navigation.dispatch(this.props.loginCredentialsNavAction);
+      if (this.authUrl) {
+        // SP-Initiated WAYF stuff
+        console.debug(' SP-Initiated WAYF stuff');
+        // Allow navigation to SP-Initiated WAYFs via auth config field
+        if (url.startsWith(this.authUrl)) {
+          console.debug('WAYFScreen::onShouldStartLoadWithRequest: authUrl received => Navigation allowed');
+          return true;
         }
-        // Block navigation
-        return false;
+        // Go to standard login page and block navigation when
+        //   - No SAMLResponse has been detected
+        //   - No OpenID custom token has been detected
+        //   - WAYF redirects to ENT
+        if (this.pfUrl && url.startsWith(this.pfUrl)) {
+          if (!this.samlResponse && !this.oidResponse) {
+            if (__DEV__) console.debug('WAYFScreen::onShouldStartLoadWithRequest: pfUrl received => Will show login page');
+            this.props.navigation.dispatch(this.props.loginCredentialsNavAction);
+          }
+          return false;
+        }
+      } else {
+        // IDP-Initiated WAYF stuff
+        console.debug(' IDP-Initiated WAYF stuff');
+        // If WAYF redirects to ENT
+        //   - Try to login with SAML token if any retrieved previously
+        //   - Try to login with OpenID custom token if any retrieved previously
+        //   - Otherwise go to standard login page
+        //   - Block navigation
+        if (this.pfUrl && url.startsWith(this.pfUrl)) {
+          if (this.samlResponse) {
+            console.debug(
+              'WAYFScreen::onShouldStartLoadWithRequest: pfUrl received => Try to login with SAML token\n' + this.samlResponse,
+            );
+            this.loginWithSaml();
+          } else if (this.oidResponse) {
+            console.debug(
+              'WAYFScreen::onShouldStartLoadWithRequest: pfUrl received => Try to login with OpenID custom token\n' +
+                this.oidResponse,
+            );
+            this.loginWithOpenID();
+          } else {
+            console.debug('WAYFScreen::onShouldStartLoadWithRequest: pfUrl received => Will show login page');
+            this.props.navigation.dispatch(this.props.loginCredentialsNavAction);
+          }
+          // Block navigation
+          return false;
+        }
       }
     }
     // Allow navigation

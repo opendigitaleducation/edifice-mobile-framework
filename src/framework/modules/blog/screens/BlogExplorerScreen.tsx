@@ -142,7 +142,9 @@ const BlogExplorerScreen = (props: BlogExplorerScreenProps) => {
       <EmptyScreen
         svgImage="empty-search"
         title={I18n.get('blog-explorer-emptyscreen-title')}
-        text={I18n.get(`blog-explorer-emptyscreen-text${hasBlogCreationRights ? '' : '-nocreationrights'}`)}
+        text={I18n.get(
+          hasBlogCreationRights ? 'blog-explorer-emptyscreen-text' : 'blog-explorer-emptyscreen-text-nocreationrights',
+        )}
         buttonText={hasBlogCreationRights ? I18n.get('blog-explorer-emptyscreen-button') : undefined}
         buttonUrl="/blog#/edit/new"
       />

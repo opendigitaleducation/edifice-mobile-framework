@@ -1,4 +1,5 @@
 import { IGlobalState, Reducers, getStore } from '~/app/store';
+import { AudienceValidReactionTypes } from '~/framework/modules/audience/types';
 import {
   ANONYMOUS_ACCOUNT_ID,
   AccountType,
@@ -17,7 +18,6 @@ import {
   getSerializedLoggedOutAccountInfo,
 } from '~/framework/modules/auth/model';
 import moduleConfig from '~/framework/modules/auth/module-config';
-import { AudienceValidReactionTypes } from '~/framework/modules/core/audience/types';
 import { Platform } from '~/framework/util/appConf';
 import createReducer from '~/framework/util/redux/reducerFactory';
 

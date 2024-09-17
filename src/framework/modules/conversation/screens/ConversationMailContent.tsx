@@ -136,7 +136,7 @@ class MailContentScreen extends React.PureComponent<ConversationMailContentScree
         },
       },
       {
-        title: I18n.get(`conversation-mailcontent-${isCurrentFolderTrash ? 'restore' : 'move'}`),
+        title: I18n.get(isCurrentFolderTrash ? 'conversation-mailcontent-restore' : 'conversation-mailcontent-move'),
         action: () => this.showModal(),
         icon: {
           ios: `${isCurrentFolderTrash ? 'arrow.uturn.backward.circle' : 'arrow.up.square'}`,
@@ -156,8 +156,8 @@ class MailContentScreen extends React.PureComponent<ConversationMailContentScree
               isCurrentFolderTrash
                 ? popupActionsMenu.splice(1, 2)
                 : isCurrentFolderSentOrDrafts
-                ? popupActionsMenu.splice(2, 1)
-                : popupActionsMenu
+                  ? popupActionsMenu.splice(2, 1)
+                  : popupActionsMenu
             }>
             <NavBarAction icon="ui-options" testID="message-read-settings" />
           </PopupMenu>
@@ -221,7 +221,9 @@ class MailContentScreen extends React.PureComponent<ConversationMailContentScree
         await deleteMails([mailId]);
       } else await trashMails([mailId]);
       navigation.dispatch(CommonActions.goBack());
-      Toast.showSuccess(I18n.get(`conversation-mailcontent-message${isTrashedOrDrafts ? 'deleted' : 'trashed'}`));
+      Toast.showSuccess(
+        I18n.get(isTrashedOrDrafts ? 'conversation-mailcontent-messagedeleted' : 'conversation-mailcontent-messagetrashed'),
+      );
     } catch {
       // TODO: Manage error
     }

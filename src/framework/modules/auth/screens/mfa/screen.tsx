@@ -76,6 +76,24 @@ export const computeNavBar = ({
   };
 };
 
+const feedbackTexts = {
+  mfaEmail: {
+    [CodeState.CODE_CORRECT]: 'auth-mfa-email-feedback-codecorrect',
+    [CodeState.CODE_EXPIRED]: 'auth-mfa-email-feedback-codeexpired',
+    [CodeState.CODE_WRONG]: 'auth-mfa-email-feedback-codewrong',
+  },
+  mfaMobile: {
+    [CodeState.CODE_CORRECT]: 'auth-mfa-mobile-feedback-codecorrect',
+    [CodeState.CODE_EXPIRED]: 'auth-mfa-mobile-feedback-codeexpired',
+    [CodeState.CODE_WRONG]: 'auth-mfa-mobile-feedback-codewrong',
+  },
+  mfa: {
+    [CodeState.CODE_CORRECT]: 'auth-mfa-feedback-codecorrect',
+    [CodeState.CODE_EXPIRED]: 'auth-mfa-feedback-codeexpired',
+    [CodeState.CODE_WRONG]: 'auth-mfa-feedback-codewrong',
+  },
+};
+
 const AuthMFAScreen = (props: AuthMFAScreenPrivateProps) => {
   const { tryRefreshRequirements, tryUpdateProfile, navigation, route } = props;
 
@@ -118,7 +136,7 @@ const AuthMFAScreen = (props: AuthMFAScreenPrivateProps) => {
 
   const texts: PageTexts = isEmailMFA
     ? {
-        feedback: I18n.get(`auth-mfa-email-feedback-${codeState.toLowerCase()}`),
+        feedback: I18n.get(feedbackTexts.mfaEmail[codeState]),
         message: I18n.get('auth-mfa-email-message'),
         messageSent: `${I18n.get('auth-mfa-email-message-sent')} ${email}.`,
         resendToast: I18n.get('auth-mfa-email-toast'),
@@ -126,14 +144,14 @@ const AuthMFAScreen = (props: AuthMFAScreenPrivateProps) => {
       }
     : isMobileMFA
       ? {
-          feedback: I18n.get(`auth-mfa-mobile-feedback-${codeState.toLowerCase()}`),
+          feedback: I18n.get(feedbackTexts.mfaMobile[codeState]),
           message: I18n.get('auth-mfa-mobile-message'),
           messageSent: `${I18n.get('auth-mfa-mobile-message-sent')} ${mobile}.`,
           resendToast: I18n.get('auth-mfa-mobile-toast'),
           title: I18n.get('auth-mfa-mobile-title'),
         }
       : {
-          feedback: I18n.get(`auth-mfa-feedback-${codeState.toLowerCase()}`),
+          feedback: I18n.get(feedbackTexts.mfa[codeState]),
           message: I18n.get('auth-mfa-message'),
           messageSent: `${I18n.get('auth-mfa-message-sent')} ${mobile}.`,
           resendToast: I18n.get('auth-mfa-toast'),

@@ -63,7 +63,7 @@ export namespace I18n {
   const I18N_APP_LANG = 'appLang';
 
   // Define fallback locale
-  const fallbackLng = 'en';
+  export const fallbackLng = 'en';
 
   // Supported locales
   const supportedLanguages = ['co', 'en', 'es', 'fr', 'it'] as const;

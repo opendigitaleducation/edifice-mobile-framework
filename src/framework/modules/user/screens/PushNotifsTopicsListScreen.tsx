@@ -161,10 +161,15 @@ export class PushNotifsTopicsListScreen extends React.PureComponent<
           rightElement={
             <View style={styles.item}>
               <SmallActionText style={{ ...TextSizeStyle.Small }}>
-                {I18n.get(`user-pushnotifssettings-countoutoftotal-${isTotalOnSingle ? 'single' : 'other'}`, {
-                  count: totalOn,
-                  total,
-                })}
+                {I18n.get(
+                  isTotalOnSingle
+                    ? 'user-pushnotifssettings-countoutoftotal-single'
+                    : 'user-pushnotifssettings-countoutoftotal-other',
+                  {
+                    count: totalOn,
+                    total,
+                  },
+                )}
               </SmallActionText>
               <Icon name="arrow_down" color={theme.palette.primary.regular} style={styles.iconItem} />
             </View>

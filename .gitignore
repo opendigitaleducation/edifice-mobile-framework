@@ -1,10 +1,30 @@
-# OSX
-.DS_Store
-**/.DS_Store
-
-# Xcode
+# Android/IntelliJ
 build/
-ios/Pods/
+.idea
+.gradle
+local.properties
+*.iml
+*.hprof
+.cxx/
+android/app/release
+android/app/src/main/assets/index.android.bundle
+
+# BUCK & apk signature
+buck-out/
+\.buckd/
+*.keystore
+!debug.keystore
+
+# Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
+fastlane
+
+# iOS
+build/
+**/Pods/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -20,53 +40,9 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-ios/.xcode.env.local
-
-# VS Code
-.vscode/
-
-# Android/IntelliJ
-build/
-.idea
-.gradle
-local.properties
-*.iml
-*.hprof
-.cxx/
-android/app/release
-android/app/src/main/assets/index.android.bundle
-
-# node.js / npm / yarn
-node_modules/
-npm-debug.log
-yarn-error.log
-
-# BUCK & apk signature
-buck-out/
-\.buckd/
-*.keystore
-!debug.keystore
-
-# Fastlane
-**/fastlane/report.xml
-**/fastlane/Preview.html
-**/fastlane/screenshots
-**/fastlane/test_output
-fastlane
-
-# CREDENTIALS for AppCenter & Google Firebase.
-# These files are also ignored with override mechanics. These lines are additinal protection to prevent committing hem.
-# **/google-services.json
-# **/GoogleService-Info.plist
-# **/appcenter-config.json
-# **/AppCenter-Config.plist
-
-# Asset bundles automatically generated
+**/.xcode.env.local
 ios/assets
 ios/appe/main.jsbundle
-
-# Metals (scala)
-.metals
 
 # Lockfiles
 package-lock.json
@@ -75,16 +51,30 @@ ios/Podfile.lock
 Gemfile.lock
 yarn.lock
 
+# Metals (scala)
+.metals
+
+# node.js / npm / yarn
+node_modules/
+npm-debug.log
+yarn-error.log
+
 # Overrides
 __overrides__
 __stashSpec__
-# src/app/override and src/platforms/* are ingored by override.js cli tool.
+
+# OSX
+.DS_Store
+**/.DS_Store
 
 # Ruby
 vendor
 
 # Testing
 /coverage
+
+# VS Code
+.vscode/
 
 # Yarn
 .yarn/*

@@ -31,6 +31,33 @@ export const computeNavBar = ({
   }),
 });
 
+const i18nHobbies = {
+  animals: {
+    title: 'user-profile-editHobbies-animals',
+    empty: 'user-profile-editHobbies-emptyanimals',
+  },
+  books: {
+    title: 'user-profile-editHobbies-books',
+    empty: 'user-profile-editHobbies-emptybooks',
+  },
+  cinema: {
+    title: 'user-profile-editHobbies-cinema',
+    empty: 'user-profile-editHobbies-emptycinema',
+  },
+  music: {
+    title: 'user-profile-editHobbies-music',
+    empty: 'user-profile-editHobbies-emptymusic',
+  },
+  places: {
+    title: 'user-profile-editHobbies-places',
+    empty: 'user-profile-editHobbies-emptyplaces',
+  },
+  sport: {
+    title: 'user-profile-editHobbies-sport',
+    empty: 'user-profile-editHobbies-emptysport',
+  },
+};
+
 const UserEditHobbiesScreen = (props: UserEditHobbiesScreenProps) => {
   const { route, navigation } = props;
   const { userId, description, descriptionVisibility, mood, motto } = route.params;
@@ -123,10 +150,10 @@ const UserEditHobbiesScreen = (props: UserEditHobbiesScreenProps) => {
     return (
       <InputContainer
         style={styles.inputContainer}
-        label={{ text: I18n.get(`user-profile-editHobbies-${item.category}`) }}
+        label={{ text: I18n.get(i18nHobbies[item.category].title) }}
         input={
           <TextInput
-            placeholder={I18n.get(`user-profile-editHobbies-empty${item.category}`)}
+            placeholder={I18n.get(i18nHobbies[item.category].empty)}
             value={hobbies![item.category].values}
             toggleIconOn={hobbies![item.category].visibility === HobbieVisibility.PRIVE ? 'ui-lock' : 'ui-internet'}
             toggleIconOff={hobbies![item.category].visibility === HobbieVisibility.PRIVE ? 'ui-lock' : 'ui-internet'}

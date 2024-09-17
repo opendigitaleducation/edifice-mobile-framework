@@ -313,8 +313,16 @@ const SchoolbookWordListScreen = (props: ISchoolbookWordListScreenProps) => {
     return (
       <EmptyScreen
         svgImage="empty-schoolbook"
-        title={I18n.get(`schoolbook-wordlist-emptyscreen-title${hasSchoolbookWordCreationRights ? '' : '-nocreationrights'}`)}
-        text={I18n.get(`schoolbook-wordlist-emptyscreen-text${hasSchoolbookWordCreationRights ? '' : '-nocreationrights'}`)}
+        title={I18n.get(
+          hasSchoolbookWordCreationRights
+            ? 'schoolbook-wordlist-emptyscreen-title'
+            : 'schoolbook-wordlist-emptyscreen-title-nocreationrights',
+        )}
+        text={I18n.get(
+          hasSchoolbookWordCreationRights
+            ? 'schoolbook-wordlist-emptyscreen-text'
+            : 'schoolbook-wordlist-emptyscreen-text-nocreationrights',
+        )}
         {...(hasSchoolbookWordCreationRights
           ? {
               buttonText: I18n.get('schoolbook-wordlist-wordcreate'),

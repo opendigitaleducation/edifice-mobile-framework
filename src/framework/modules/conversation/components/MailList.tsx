@@ -110,6 +110,25 @@ const styles = StyleSheet.create({
   swipeableListStyle: { marginTop: 45, zIndex: 0 },
 });
 
+const emptyFolderTexts = {
+  drafts: {
+    title: 'conversation-maillist-emptyscreen-draftstitle',
+    text: 'conversation-maillist-emptyscreen-draftstext',
+  },
+  mailbox: {
+    title: 'conversation-maillist-emptyscreen-mailboxtitle',
+    text: 'conversation-maillist-emptyscreen-mailboxtext',
+  },
+  sent: {
+    title: 'conversation-maillist-emptyscreen-senttitle',
+    text: 'conversation-maillist-emptyscreen-senttext',
+  },
+  trash: {
+    title: 'conversation-maillist-emptyscreen-trashtitle',
+    text: 'conversation-maillist-emptyscreen-trashtext',
+  },
+};
+
 export default class MailList extends React.PureComponent<ConversationMailListComponentProps, ConversationMailListComponentState> {
   flatListRef = React.createRef<SwipeListView<any>>();
 
@@ -185,8 +204,8 @@ export default class MailList extends React.PureComponent<ConversationMailListCo
     const isFolderDrafts = navigationKey === 'drafts';
     const isFolderOutbox = navigationKey === 'sendMessages';
     const folder = isFolderDrafts ? 'drafts' : isFolderOutbox ? 'sent' : isTrashed ? 'trash' : 'mailbox';
-    const text = I18n.get(`conversation-maillist-emptyscreen-${folder}text`);
-    const title = I18n.get(`conversation-maillist-emptyscreen-${folder}title`);
+    const text = I18n.get(emptyFolderTexts[folder].text);
+    const title = I18n.get(emptyFolderTexts[folder].title);
     return <EmptyScreen svgImage={isTrashed ? 'empty-trash' : 'empty-conversation'} text={text} title={title} />;
   }
 
@@ -244,7 +263,9 @@ export default class MailList extends React.PureComponent<ConversationMailListCo
       } else await trashMails([mailId]);
       await this.refreshMailList();
       await fetchInit();
-      Toast.showSuccess(I18n.get(`conversation-maillist-message${isTrashedOrDraft ? 'deleted' : 'trashed'}`));
+      Toast.showSuccess(
+        I18n.get(isTrashedOrDraft ? 'conversation-maillist-messagedeleted' : 'conversation-maillist-messagetrashed'),
+      );
     } catch {
       // TODO: Manage error
     }
@@ -513,7 +534,9 @@ export default class MailList extends React.PureComponent<ConversationMailListCo
                                 row[item.key]?.closeRow();
                               },
                               backgroundColor: theme.palette.secondary.regular,
-                              actionText: I18n.get(`conversation-maillist-mark${item.unread ? 'read' : 'unread'}`),
+                              actionText: I18n.get(
+                                item.unread ? 'conversation-maillist-markread' : 'conversation-maillist-markunread',
+                              ),
                               actionIcon: item.unread ? 'ui-eye' : 'ui-eyeSlash',
                             },
                           ]

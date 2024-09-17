@@ -6,7 +6,7 @@ import { encode as btoa } from 'base-64';
 import moment from 'moment';
 import querystring from 'querystring';
 import { ImageRequireSource, ImageURISource } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
+import DeviceInfo, { getDeviceId } from 'react-native-device-info';
 import { Source } from 'react-native-fast-image';
 
 import { I18n } from '~/app/i18n';
@@ -157,6 +157,10 @@ export class OAuth2RessourceOwnerPasswordClient {
           type = Error.OAuth2ErrorType.PLATFORM_UNAVAILABLE;
         } else if (bodyOrType.error_description === 'auth.error.ban') {
           type = Error.OAuth2ErrorType.SECURITY_TOO_MANY_TRIES;
+        } else if (bodyOrType.error_description === 'auth.error.activation.code') {
+          type = Error.OAuth2ErrorType.ACTIVATION_CODE;
+        } else if (bodyOrType.error_description === 'auth.error.password.reset') {
+          type = Error.OAuth2ErrorType.PASSWORD_RESET;
         } else {
           type = Error.OAuth2ErrorType.UNKNOWN_DENIED;
         }
@@ -250,7 +254,13 @@ export class OAuth2RessourceOwnerPasswordClient {
     try {
       response = await fetch(url, {
         body,
-        headers: options.headers,
+        headers: {
+          ...options.headers,
+          'X-APP': 'mobile',
+          'X-APP-NAME': DeviceInfo.getApplicationName(),
+          'X-APP-VERSION': DeviceInfo.getReadableVersion(),
+          'X-Device-Id': getDeviceId(),
+        },
         method: options.method,
       });
     } catch (err) {
@@ -551,7 +561,6 @@ export class OAuth2RessourceOwnerPasswordClient {
       const request = this.signRequest(`${assertSession().platform.url}/auth/oauth2/token-as-cookie`, { method: 'POST' });
       const response = await fetch(request);
       const cookie = response.headers.get('set-cookie') || undefined;
-
       let newSessionId: string | undefined;
       // Continue if set-cookie header found
       // Otherwise, last oneSessionId will be returned

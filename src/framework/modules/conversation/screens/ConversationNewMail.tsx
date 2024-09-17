@@ -289,8 +289,8 @@ class NewMailScreen extends React.PureComponent<ConversationNewMailScreenProps, 
       } else if (!mail.body || !mail.subject) {
         Keyboard.dismiss();
         Alert.alert(
-          I18n.get(`conversation-newmail-missing${!mail.body ? 'body' : 'subject'}-title`),
-          I18n.get(`conversation-newmail-missing${!mail.body ? 'body' : 'subject'}-message`),
+          I18n.get(!mail.body ? 'conversation-newmail-missingbody-title' : 'conversation-newmail-missingsubject-title'),
+          I18n.get(!mail.body ? 'conversation-newmail-missingbody-message' : 'conversation-newmail-missingsubject-message'),
           [
             {
               text: I18n.get('common-send'),

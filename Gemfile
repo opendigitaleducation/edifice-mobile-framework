@@ -2,8 +2,8 @@ source 'https://rubygems.org'
 
 ruby '>= 2.6.10'
 
-gem 'activesupport', '~> 7.0.8'
-gem 'cocoapods', '~> 1.13'
+gem 'activesupport', '>= 6.1.7.5', '!= 7.1.0'
+gem 'cocoapods', '>= 1.13', '!= 1.15.0', '!= 1.15.1'
 gem 'fastlane'
 gem 'nokogiri', '~> 1.15.5'
 

@@ -410,7 +410,11 @@ const NewsDetailsScreen = (props: NewsDetailsScreenProps) => {
 
   UNSTABLE_usePreventRemove(infoComment.changed, ({ data }) => {
     Alert.alert(
-      I18n.get(`news-details-confirmation-unsaved-${infoComment.isPublication ? 'publication' : 'modification'}`),
+      I18n.get(
+        infoComment.isPublication
+          ? 'news-details-confirmation-unsaved-publication'
+          : 'news-details-confirmation-unsaved-modification',
+      ),
       I18n.get(
         `news-details-${infoComment.type}-confirmation-unsaved-${infoComment.isPublication ? 'publication' : 'modification'}`,
       ),

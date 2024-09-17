@@ -136,7 +136,7 @@ export default function FileImportScreen(props: FileImportScreenProps.AllProps) 
           updateFileStatusAndID({ file, status: UploadStatus.OK, id: resp.df.id });
         })
         .catch(error => {
-          console.debug(`Import File Upload Failed: ${error}`);
+          console.error(`Import File Upload Failed: ${error}`);
           updateFileStatusAndID({ file, status: UploadStatus.KO, error: textErrorUploadFile(error) });
         })
         .finally(() => {

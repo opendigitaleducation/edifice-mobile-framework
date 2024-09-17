@@ -7,6 +7,7 @@ import TertiaryButton from '~/framework/components/buttons/tertiary';
 import { cameraAction, galleryAction } from '~/framework/components/menus/actions';
 import BottomMenu from '~/framework/components/menus/bottom';
 import { HeadingXSText, SmallBoldText } from '~/framework/components/text';
+import { i18nAccountTypes } from '~/framework/components/text/account-type';
 import { IconButton } from '~/ui/IconButton';
 import { Loading } from '~/ui/Loading';
 import Avatar, { Size } from '~/ui/avatars/Avatar';
@@ -75,9 +76,7 @@ export const UserCard = ({
       </View>
       <View style={styles.boxTexts}>
         <HeadingXSText style={styles.name}>{displayName}</HeadingXSText>
-        <SmallBoldText style={{ color: theme.color.profileTypes[type] }}>
-          {I18n.get(`user-profiletypes-${type.toLocaleLowerCase()}`)}
-        </SmallBoldText>
+        <SmallBoldText style={{ color: theme.color.profileTypes[type] }}>{I18n.get(i18nAccountTypes[type])}</SmallBoldText>
         {!canEdit ? (
           <TertiaryButton
             style={styles.sendMessage}

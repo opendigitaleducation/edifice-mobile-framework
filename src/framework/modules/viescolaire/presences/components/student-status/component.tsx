@@ -63,7 +63,11 @@ export default function StudentStatus({
             fill={exemption_attendance ? theme.palette.status.warning.regular : theme.palette.status.failure.regular}
           />
           <SmallText>
-            {I18n.get(`presences-call-studentstatus-info-${exemption_attendance ? 'exemptionattendance' : 'lastcourseabsent'}`)}
+            {I18n.get(
+              exemption_attendance
+                ? 'presences-call-studentstatus-info-exemptionattendance'
+                : 'presences-call-studentstatus-info-lastcourseabsent',
+            )}
           </SmallText>
         </View>
       );

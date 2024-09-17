@@ -230,11 +230,15 @@ const SchoolbookWordDetailsScreen = (props: SchoolbookWordDetailsScreenProps) =>
   ]);
 
   usePreventBack({
-    title: I18n.get(`schoolbook-worddetails-confirmation-unsaved-${infoComment.isPublication ? 'publication' : 'modification'}`),
+    title: I18n.get(
+      infoComment.isPublication
+        ? 'schoolbook-worddetails-confirmation-unsaved-publication'
+        : 'schoolbook-worddetails-confirmation-unsaved-modification',
+    ),
     text: I18n.get(
-      `schoolbook-worddetails-${infoComment.type}-confirmation-unsaved-${
-        infoComment.isPublication ? 'publication' : 'modification'
-      }`,
+      infoComment.isPublication
+        ? `schoolbook-worddetails-${infoComment.type}-confirmation-unsaved-publication`
+        : `schoolbook-worddetails-${infoComment.type}-confirmation-unsaved-modification`,
     ),
     showAlert: infoComment.changed,
   });

@@ -481,6 +481,7 @@ const UserProfileScreen = (props: ProfilePageProps) => {
       const index = hobbies?.findIndex(hobbieItem => hobbieItem.category === hobbie);
       if (index === -1 || (index! >= 0 && hobbies![index!].values === '')) emptyHobbie += `${renderEmoji[hobbie]} `;
     });
+    console.log('emptyHobbie', emptyHobbie, emptyHobbie.length);
     return (
       <View style={styles.bloc}>
         <View style={styles.blocTitle}>

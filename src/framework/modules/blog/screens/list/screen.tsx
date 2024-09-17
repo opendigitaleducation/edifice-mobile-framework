@@ -17,6 +17,7 @@ import FlatList from '~/framework/components/list/flat-list';
 import { LoadingIndicator } from '~/framework/components/loading';
 import NavBarAction from '~/framework/components/navigation/navbar-action';
 import { PageView } from '~/framework/components/page';
+import { audienceService } from '~/framework/modules/audience/service';
 import { AuthActiveAccount } from '~/framework/modules/auth/model';
 import { getSession } from '~/framework/modules/auth/reducer';
 import BlogPlaceholderList from '~/framework/modules/blog/components/placeholder/list';
@@ -26,7 +27,6 @@ import { BlogNavigationParams, blogRouteNames } from '~/framework/modules/blog/n
 import { Blog, BlogPost, BlogPostList, BlogPostWithAudience } from '~/framework/modules/blog/reducer';
 import { getBlogPostRight, hasPermissionManager } from '~/framework/modules/blog/rights';
 import { blogService } from '~/framework/modules/blog/service';
-import { audienceService } from '~/framework/modules/core/audience/service';
 import { navBarOptions, navBarTitle } from '~/framework/navigation/navBar';
 import { AsyncPagedLoadingState } from '~/framework/util/redux/asyncPaged';
 
@@ -273,8 +273,12 @@ const BlogPostListScreen = (props: BlogPostListScreenProps) => {
     return (
       <EmptyScreen
         svgImage="empty-blog"
-        title={I18n.get(`blog-postlist-emptyscreen-title${hasBlogPostCreationRights ? '' : '-nocreationrights'}`)}
-        text={I18n.get(`blog-postlist-emptyscreen-text${hasBlogPostCreationRights ? '' : '-nocreationrights'}`)}
+        title={I18n.get(
+          hasBlogPostCreationRights ? 'blog-postlist-emptyscreen-title' : 'blog-postlist-emptyscreen-title-nocreationrights',
+        )}
+        text={I18n.get(
+          hasBlogPostCreationRights ? 'blog-postlist-emptyscreen-text' : 'blog-postlist-emptyscreen-text-nocreationrights',
+        )}
         {...(hasBlogPostCreationRights
           ? {
               buttonText: I18n.get('blog-postlist-emptyscreen-button'),

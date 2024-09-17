@@ -287,7 +287,9 @@ class HomeworkTaskListScreen extends React.PureComponent<IHomeworkTaskListScreen
   private renderListHeaderComponent() {
     const noRemainingPastHomework = this.remainingPastHomework().length === 0;
     const labelColor = noRemainingPastHomework ? theme.palette.grey.grey : theme.palette.grey.black;
-    const labelText = I18n.get(`homework-tasklist-${noRemainingPastHomework ? 'nomorepasthomework' : 'displaypastdays'}`);
+    const labelText = I18n.get(
+      noRemainingPastHomework ? 'homework-tasklist-nomorepasthomework' : 'homework-tasklist-displaypastdays',
+    );
     const icon = noRemainingPastHomework ? undefined : 'back';
     return this.hasPastHomeWork() ? (
       <TouchableOpacity style={styles.buttonPastHomework} disabled={noRemainingPastHomework} onPress={this.displayPastHomework}>
@@ -305,20 +307,20 @@ class HomeworkTaskListScreen extends React.PureComponent<IHomeworkTaskListScreen
 
   private renderListEmptyComponent() {
     const title = I18n.get(
-      `homework-tasklist-emptyscreen-title${
-        this.hasPastHomeWork() ? '' : this.canCreateEntry() ? '-notasks' : '-notasks-nocreationrights'
-      }`,
+      this.hasPastHomeWork()
+        ? 'homework-tasklist-emptyscreen-title'
+        : this.canCreateEntry()
+          ? 'homework-tasklist-emptyscreen-title-notasks'
+          : 'homework-tasklist-emptyscreen-title-notasks-nocreationrights',
     );
     const text = I18n.get(
-      `homework-tasklist-emptyscreen-text${
-        this.hasPastHomeWork()
-          ? this.canCreateEntry()
-            ? ''
-            : '-nocreationrights'
-          : this.canCreateEntry()
-            ? '-notasks'
-            : '-notasks-nocreationrights'
-      }`,
+      this.hasPastHomeWork()
+        ? this.canCreateEntry()
+          ? 'homework-tasklist-emptyscreen-text'
+          : 'homework-tasklist-emptyscreen-text-nocreationrights'
+        : this.canCreateEntry()
+          ? 'homework-tasklist-emptyscreen-text-notasks'
+          : 'homework-tasklist-emptyscreen-text-notasks-nocreationrights',
     );
     const buttonText = this.canCreateEntry() ? I18n.get('homework-tasklist-createactivity') : undefined;
 

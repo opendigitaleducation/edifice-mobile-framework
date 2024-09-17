@@ -101,8 +101,17 @@ const RichEditorForm = (props: RichEditorFormAllProps) => {
       }
       if (nbErrorFiles > 0) {
         Alert.alert(
-          I18n.get(`richeditor-showfilesresult-addfileswitherror${nbErrorFiles > 1 ? 's' : ''}title`),
-          I18n.get(`richeditor-showfilesresult-addfileswitherror${nbErrorFiles > 1 ? 's' : ''}text`, { nb: nbErrorFiles }),
+          I18n.get(
+            nbErrorFiles > 1
+              ? 'richeditor-showfilesresult-addfileswitherrorstitle'
+              : 'richeditor-showfilesresult-addfileswitherrortitle',
+          ),
+          I18n.get(
+            nbErrorFiles > 1
+              ? 'richeditor-showfilesresult-addfileswitherrorstext'
+              : 'richeditor-showfilesresult-addfileswitherrortext',
+            { nb: nbErrorFiles },
+          ),
           [
             {
               text: I18n.get('common-cancel'),

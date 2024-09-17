@@ -24,9 +24,9 @@ import { SingleAvatar } from '~/ui/avatars/SingleAvatar';
 import CardTopContentCategory from './cardtopcontent-category';
 
 const acknowledgementsString = (ackNumber: number, total: number) =>
-  `${ackNumber}/${total} ${I18n.get(`schoolbook-wordlist-acknowledgement${ackNumber === 1 ? '' : 's'}`).toLowerCase()}`;
+  `${ackNumber}/${total} ${I18n.get(ackNumber === 1 ? 'schoolbook-wordlist-acknowledgement' : 'schoolbook-wordlist-acknowledgements').toLowerCase()}`;
 const acknowledgedString = (isWordAcknowledged: boolean) =>
-  I18n.get(`schoolbook-wordlist-${isWordAcknowledged ? 'acknowledged' : 'acknowledge'}`);
+  I18n.get(isWordAcknowledged ? 'schoolbook-wordlist-acknowledged' : 'schoolbook-wordlist-acknowledge');
 const responsesString = (responses: number) =>
   responses === 1
     ? `1 ${I18n.get('schoolbook-wordlist-response').toLowerCase()}`

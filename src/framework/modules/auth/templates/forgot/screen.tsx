@@ -121,10 +121,10 @@ export class ForgotPage extends React.PureComponent<ForgotScreenPrivateProps, IF
               <FormContainer>
                 <LogoWrapper>
                   <HeadingSText style={styles.textColorLight}>
-                    {I18n.get(`auth-forgot-${forgotMode === 'id' ? 'id' : 'password'}`)}
+                    {I18n.get(forgotMode === 'id' ? 'auth-forgot-id' : 'auth-forgot-password')}
                   </HeadingSText>
                   <SmallText style={styles.textColorLight}>
-                    {I18n.get(`auth-forgot-${forgotMode === 'id' ? 'id' : 'password'}-instructions`)}
+                    {I18n.get(forgotMode === 'id' ? 'auth-forgot-id-instructions' : 'auth-forgot-password-instructions')}
                   </SmallText>
                 </LogoWrapper>
                 {!isSuccess ? (

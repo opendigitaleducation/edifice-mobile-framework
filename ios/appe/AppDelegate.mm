@@ -29,12 +29,12 @@ static NSString* RECEIVED_PUSHES_KEY = @"RECEIVED_PUSHES";
 }
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  
+
   //
   // Force portrait mode
   //
   [Orientation setOrientation:UIInterfaceOrientationMaskPortrait];
-  
+
   //
   // AppCenter Initialization
   //
@@ -46,26 +46,26 @@ static NSString* RECEIVED_PUSHES_KEY = @"RECEIVED_PUSHES";
   // React Native Firebase Initialization
   //
   if (![FIRApp defaultApp]) [FIRApp configure];
-  
+
   // Define UNUserNotificationCenter
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
   [[UIApplication sharedApplication] registerForRemoteNotifications];
-  
+
   //
   // Launch App
   //
   self.moduleName = @"appe";
   self.initialProps = @{};
   [super application:application didFinishLaunchingWithOptions:launchOptions];
-  
+
   //
   // Show SplashScreen
   //
   [RNSplashScreen showSplash:@"SplashScreen" inRootView:[[[self window] rootViewController] view]];
-  
+
   return YES;
-  
+
 }
 
 -(void)applicationDidBecomeActive:(UIApplication *)application {
@@ -85,10 +85,10 @@ static NSString* RECEIVED_PUSHES_KEY = @"RECEIVED_PUSHES";
 }
 
 -(NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
-  return [self getBundleURL];
+  return [self bundleURL];
 }
 
--(NSURL *)getBundleURL {
+-(NSURL *)bundleURL {
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else

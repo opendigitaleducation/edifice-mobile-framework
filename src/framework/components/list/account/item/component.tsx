@@ -8,6 +8,7 @@ import IconButton from '~/framework/components/buttons/icon';
 import styles from '~/framework/components/list/account/item/styles';
 import { AccountListItemProps } from '~/framework/components/list/account/item/types';
 import { SmallBoldText, SmallText } from '~/framework/components/text';
+import { i18nAccountTypes } from '~/framework/components/text/account-type';
 import { AuthLoggedAccount, AuthSavedAccount } from '~/framework/modules/auth/model';
 
 const AccountListItem = <ItemT extends AuthSavedAccount | AuthLoggedAccount>({
@@ -24,7 +25,7 @@ const AccountListItem = <ItemT extends AuthSavedAccount | AuthLoggedAccount>({
 }: AccountListItemProps<ItemT>) => {
   const containerBackgroundColor = { backgroundColor: selected ? theme.palette.primary.pale : theme.ui.background.card };
   const typeColor = { color: theme.color.profileTypes[type] };
-  const typeText = I18n.get(`user-profiletypes-${type}`.toLowerCase());
+  const typeText = I18n.get(i18nAccountTypes[type]);
   const numberOfLines = 1;
   const onSelectAccount = async () => {
     onPress?.(item, index);

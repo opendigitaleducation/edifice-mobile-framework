@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
+import { AudienceParameter } from '~/framework/modules/audience/types';
 import type { AuthActiveAccount } from '~/framework/modules/auth/model';
-import { AudienceParameter } from '~/framework/modules/core/audience/types';
 import { IModalsNavigationParams, ModalsRouteNames } from '~/framework/navigation/modals';
 
 export enum MediaType {

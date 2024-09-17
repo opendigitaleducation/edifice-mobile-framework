@@ -2,25 +2,31 @@ module.exports = {
   root: true,
   env: {
     browser: true,
+    es2021: true,
     es6: true,
     node: true,
     'react-native/react-native': true,
   },
   extends: [
     '@react-native',
+    'airbnb',
     'airbnb-typescript',
     'eslint:recommended',
     'prettier',
+    'prettier/react',
     'universe/native',
     'plugin:import/typescript',
     'plugin:prettier/recommended',
+    'plugin:react/recommended',
+    'standard-with-typescript',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
     ecmaFeatures: {
       jsx: true,
     },
+    ecmaVersion: 'latest',
+    project: './tsconfig.json',
   },
   plugins: ['@typescript-eslint', 'prettier', 'import', 'react', 'react-hooks', 'react-native', 'jest', 'eslint-plugin-import'],
   rules: {

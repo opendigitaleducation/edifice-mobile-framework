@@ -16,7 +16,7 @@ import { openPDFReader } from '~/framework/components/pdf/pdf-reader';
 import { PFLogo } from '~/framework/components/pfLogo';
 import { SmallActionText, SmallText } from '~/framework/components/text';
 import { useConstructor } from '~/framework/hooks/constructor';
-import { loadAuthContextAction, loadPlatformLegalUrlsAction, loadValidReactionTypesAction } from '~/framework/modules/auth/actions';
+import { loadAuthContextAction, loadPlatformLegalUrlsAction } from '~/framework/modules/auth/actions';
 import {
   ActivationFormModel,
   InputEmail,
@@ -201,9 +201,6 @@ const ActivationScreenLoader = (props: ActivationScreenProps) => {
     }
     if (!legalUrls && platform) {
       dispatch(loadPlatformLegalUrlsAction(platform));
-    }
-    if (!validReactionTypes && platform) {
-      dispatch(loadValidReactionTypesAction());
     }
   });
 
