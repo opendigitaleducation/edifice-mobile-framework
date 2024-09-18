@@ -6,9 +6,9 @@
  * To add an SVG in the app, add its path to the "imports" list below.
  * ToDo: make this list compute automatically.
  */
-import React, { useEffect, useRef } from 'react';
-import { Platform } from 'react-native';
-import type { SvgProps } from 'react-native-svg';
+import React, { useEffect, useRef } from 'react'
+import { Platform } from 'react-native'
+import type { SvgProps } from 'react-native-svg'
 
 const imports = {
   // UI Icons
@@ -28,6 +28,7 @@ const imports = {
   'ui-block': async () => import('ASSETS/icons/uiIcons/block.svg'),
   'ui-bold': async () => import('ASSETS/icons/uiIcons/bold.svg'),
   'ui-book': async () => import('ASSETS/icons/uiIcons/book.svg'),
+  'ui-bookmark': async () => import('ASSETS/icons/uiIcons/bookmark.svg'),
   'ui-burgerMenu': async () => import('ASSETS/icons/uiIcons/burgerMenu.svg'),
   'ui-calendar': async () => import('ASSETS/icons/uiIcons/calendar.svg'),
   'ui-calendarLight': async () => import('ASSETS/icons/uiIcons/calendarLight.svg'),
@@ -262,59 +263,59 @@ const imports = {
   'user-smartphone': async () => import('ASSETS/images/user/smartphone.svg'),
   'userpage-header': async () => import('ASSETS/images/userpage-header.svg'),
   xmas: async () => import('ASSETS/images/xmas.svg'),
-};
+}
 
-let importsCache = {};
+let importsCache = {}
 
 export const addToCache = async (name: string) => {
   if (!importsCache[name]) {
-    let svg = null;
+    let svg = null
     try {
-      svg = (await imports[name]()).default;
+      svg = (await imports[name]()).default
     } finally {
-      if (svg) importsCache[name] = svg;
+      if (svg) importsCache[name] = svg
     }
   }
-};
+}
 
 export const clearCache = () => {
-  importsCache = {};
-};
+  importsCache = {}
+}
 
 export const removeFromCache = (name: string) => {
-  delete importsCache[name];
-};
+  delete importsCache[name]
+}
 
 export interface NamedSVGProps extends SvgProps {
-  name: string;
-  cached?: boolean;
+  name: string
+  cached?: boolean
 }
 
 export const NamedSVG = ({ name, cached, ...rest }: NamedSVGProps): React.JSX.Element | null => {
-  const ImportedSVGRef = useRef<any>(importsCache[name]);
-  const [loading, setLoading] = React.useState(false);
+  const ImportedSVGRef = useRef<any>(importsCache[name])
+  const [loading, setLoading] = React.useState(false)
   useEffect((): void => {
     if (!importsCache[name]) {
       // We use the cached item even if props.cached === false, if it has already been cached in another context.
-      setLoading(true);
+      setLoading(true)
       const importSVG = async (): Promise<void> => {
         try {
-          ImportedSVGRef.current = (await imports[name]()).default;
+          ImportedSVGRef.current = (await imports[name]()).default
           if (cached) {
-            importsCache[name] = ImportedSVGRef.current;
+            importsCache[name] = ImportedSVGRef.current
           }
         } finally {
-          setLoading(false);
+          setLoading(false)
         }
-      };
-      importSVG();
+      }
+      importSVG()
     }
-  }, [cached, name]);
+  }, [cached, name])
   if (!loading && ImportedSVGRef.current) {
-    const { current: ImportedSVG } = ImportedSVGRef;
-    return <ImportedSVG {...rest} />;
+    const { current: ImportedSVG } = ImportedSVGRef
+    return <ImportedSVG {...rest} />
   }
-  return null;
-};
+  return null
+}
 
-export default NamedSVG;
+export default NamedSVG
