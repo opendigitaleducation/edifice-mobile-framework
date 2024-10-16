@@ -1,96 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-	<dict>
-		<key>BundleVersionOverride</key>
-		<string>empty</string>
-		<key>BundleVersionType</key>
-		<string>alpha.2</string>
-		<key>CFBundleDevelopmentRegion</key>
-		<string>fr_FR</string>
-		<key>CFBundleDisplayName</key>
-		<string>Édifice mobile</string>
-		<key>CFBundleExecutable</key>
-		<string>$(EXECUTABLE_NAME)</string>
-		<key>CFBundleIdentifier</key>
-		<string>com.ode.appe</string>
-		<key>CFBundleInfoDictionaryVersion</key>
-		<string>6.0</string>
-		<key>CFBundleName</key>
-		<string>$(PRODUCT_NAME)</string>
-		<key>CFBundlePackageType</key>
-		<string>APPL</string>
-		<key>CFBundleShortVersionString</key>
-		<string>1.13.6</string>
-		<key>CFBundleSignature</key>
-		<string>????</string>
-		<key>CFBundleVersion</key>
-		<string>1130602</string>
-		<key>LSApplicationQueriesSchemes</key>
-		<array>
-			<string>http</string>
-			<string>https</string>
-			<string>moodlemobile</string>
-		</array>
-		<key>LSRequiresIPhoneOS</key>
-		<true />
-		<key>NSAppTransportSecurity</key>
+<dict>
+	<key>BundleVersionOverride</key>
+	<string>empty</string>
+	<key>BundleVersionType</key>
+	<string>alpha.2</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>fr_FR</string>
+	<key>CFBundleDisplayName</key>
+	<string>Édifice mobile</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.ode.appe</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.13.6</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
 		<dict>
-			<key>NSAllowsArbitraryLoads</key>
-			<false />
-			<key>NSAllowsArbitraryLoadsForMedia</key>
-			<true />
-			<key>NSAllowsArbitraryLoadsInWebContent</key>
-			<true />
-			<key>NSAllowsLocalNetworking</key>
-			<true />
-			<key>NSExceptionDomains</key>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.ode.appe</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>appeapp</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>1130602</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>http</string>
+		<string>https</string>
+		<string>moodlemobile</string>
+	</array>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsArbitraryLoadsForMedia</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
 			<dict>
-				<key>localhost</key>
-				<dict>
-					<key>NSExceptionAllowsInsecureHTTPLoads</key>
-					<true />
-				</dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
 			</dict>
 		</dict>
-		<key>NSCameraUsageDescription</key>
-		<string>L&apos;appareil photo sera utilisé pour envoyer des photos à votre réseau éducatif et pour choisir votre photo de profil.</string>
-		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>La galerie photos sera utilisée pour envoyer des photos à votre réseau éducatif et pour choisir votre photo de profil.</string>
-		<key>NSPhotoLibraryUsageDescription</key>
-		<string>La galerie photos sera utilisée pour envoyer des photos à votre réseau éducatif et pour choisir votre photo de profil.</string>
-		<key>UIAppFonts</key>
-		<array>
-			<string>icomoon.ttf</string>
-			<string>MaterialIcons.ttf</string>
-			<string>Font-Bold.ttf</string>
-			<string>Font-BoldItalic.ttf</string>
-			<string>Font-Italic.ttf</string>
-			<string>Font-Regular.ttf</string>
-			<string>Comfortaa-Bold.ttf</string>
-		</array>
-		<key>UIBackgroundModes</key>
-		<array>
-			<string>fetch</string>
-			<string>remote-notification</string>
-		</array>
-		<key>UILaunchStoryboardName</key>
-		<string>SplashScreen.xib</string>
-		<key>UIRequiredDeviceCapabilities</key>
-		<array>
-			<string>armv7</string>
-		</array>
-		<key>UIRequiresFullScreen</key>
-		<true />
-		<key>UISupportedInterfaceOrientations</key>
-		<array>
-			<string>UIInterfaceOrientationPortrait</string>
-		</array>
-		<key>UISupportedInterfaceOrientations~ipad</key>
-		<array>
-			<string>UIInterfaceOrientationPortrait</string>
-		</array>
-		<key>UIViewControllerBasedStatusBarAppearance</key>
-		<false />
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>L'appareil photo sera utilisé pour envoyer des photos à votre réseau éducatif et pour choisir votre photo de profil.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>La galerie photos sera utilisée pour envoyer des photos à votre réseau éducatif et pour choisir votre photo de profil.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>La galerie photos sera utilisée pour envoyer des photos à votre réseau éducatif et pour choisir votre photo de profil.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>icomoon.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>Font-Bold.ttf</string>
+		<string>Font-BoldItalic.ttf</string>
+		<string>Font-Italic.ttf</string>
+		<string>Font-Regular.ttf</string>
+		<string>Comfortaa-Bold.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>SplashScreen.xib</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
 </plist>
