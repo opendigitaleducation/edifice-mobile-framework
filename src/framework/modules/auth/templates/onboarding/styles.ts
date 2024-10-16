@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 import theme from '~/app/theme';
-import { UI_SIZES } from '~/framework/components/constants';
+import { getScaleWidth, UI_SIZES } from '~/framework/components/constants';
 
-const pictureSize = UI_SIZES.screen.width * 0.8;
+const pictureSize = getScaleWidth(207);
 
 export default StyleSheet.create({
   buttons: {
@@ -14,7 +14,7 @@ export default StyleSheet.create({
     marginTop: UI_SIZES.spacing.medium,
   },
   mainContainer: {
-    flex: 4,
+    flex: 5,
   },
   page: {
     paddingBottom: UI_SIZES.screen.bottomInset + UI_SIZES.spacing.big,
@@ -33,27 +33,23 @@ export default StyleSheet.create({
     borderWidth: 0,
   },
   swiperItem: {
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    height: '85%',
-    width: '80%',
+    flex: 1,
+    paddingBottom: 80,
   },
   swiperItemImage: {
     width: pictureSize,
     height: pictureSize,
-    maxHeight: '60%',
-    maxWidth: '80%',
-    marginTop: UI_SIZES.spacing.tiny,
-    marginBottom: UI_SIZES.spacing.large,
+    marginVertical: UI_SIZES.spacing.large,
   },
   swiperItemText: {
     textAlign: 'center',
+    paddingHorizontal: UI_SIZES.spacing.large,
   },
   title: {
     color: theme.palette.primary.regular,
     alignSelf: 'center',
-    height: 80,
-    lineHeight: undefined,
   },
 });

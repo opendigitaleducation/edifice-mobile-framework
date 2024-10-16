@@ -51,6 +51,8 @@ export const computeNavBar = ({
       navigation,
       route,
       title: getNavBarTitle(route),
+      titleTestID: 'phone-title',
+      backButtonTestID: 'phone-back',
     }),
   };
 };
@@ -248,9 +250,13 @@ const AuthChangeMobileScreen = (props: AuthChangeMobileScreenPrivateProps) => {
           <View style={styles.imageContainer}>
             <NamedSVG name="user-smartphone" width={UI_SIZES.elements.thumbnail} height={UI_SIZES.elements.thumbnail} />
           </View>
-          <HeadingSText style={styles.title}>{texts.title}</HeadingSText>
-          <SmallText style={styles.content}>{texts.message}</SmallText>
-          <View style={styles.inputTitleContainer}>
+          <HeadingSText style={styles.title} testID="phone-new-title">
+            {texts.title}
+          </HeadingSText>
+          <SmallText style={styles.content} testID="phone-new-subtitle">
+            {texts.message}
+          </SmallText>
+          <View style={styles.inputTitleContainer} testID="phone-new-label">
             <Picture
               type="NamedSvg"
               name="pictos-smartphone"
@@ -292,6 +298,7 @@ const AuthChangeMobileScreen = (props: AuthChangeMobileScreenPrivateProps) => {
               },
               language: countryListLanguages[I18n.getLanguage()] ?? countryListLanguages.DEFAULT,
             }}
+            testIDCountryWithCode="phone-new-country"
             textInputProps={{
               hitSlop: {
                 top: -UI_SIZES.spacing.big,
@@ -302,9 +309,10 @@ const AuthChangeMobileScreen = (props: AuthChangeMobileScreenPrivateProps) => {
               keyboardType: 'phone-pad',
               inputMode: 'tel',
               placeholderTextColor: theme.palette.grey.stone,
+              testID: 'phone-new-field',
             }}
           />
-          <CaptionItalicText style={styles.errorText}>
+          <CaptionItalicText style={styles.errorText} testID="phone-new-error">
             {isMobileStateClean ? I18n.get('common-space') : I18n.get('auth-change-mobile-error-invalid')}
           </CaptionItalicText>
           <PrimaryButton
@@ -313,6 +321,7 @@ const AuthChangeMobileScreen = (props: AuthChangeMobileScreenPrivateProps) => {
             disabled={isMobileEmpty}
             loading={isSendingCode}
             action={onSendSMS}
+            testID="phone-change"
           />
           {isModifyingMobile ? null : (
             <DefaultButton

@@ -1,25 +1,27 @@
 diff --git a/node_modules/react-native-phone-number-input/.DS_Store b/node_modules/react-native-phone-number-input/.DS_Store
 new file mode 100644
-index 0000000..e1d93b2
-Binary files /dev/null and b/node_modules/react-native-phone-number-input/.DS_Store differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-phone-number-input/lib/index.d.ts b/node_modules/react-native-phone-number-input/lib/index.d.ts
-index cd625e5..f4ffec8 100644
+index cd625e5..ab051ba 100644
 --- a/node_modules/react-native-phone-number-input/lib/index.d.ts
 +++ b/node_modules/react-native-phone-number-input/lib/index.d.ts
-@@ -1,10 +1,11 @@
+@@ -1,11 +1,12 @@
 -import { Component } from "react";
+-import { TextInputProps, StyleProp, TextStyle, ViewStyle } from "react-native";
 +import { Component, ReactElement } from "react";
- import { TextInputProps, StyleProp, TextStyle, ViewStyle } from "react-native";
++import { StyleProp, TextInputProps, TextStyle, ViewStyle } from "react-native";
  import {
-   CountryCode,
+-  CountryCode,
    CallingCode,
    Country,
++  CountryCode,
  } from "react-native-country-picker-modal";
-+export { Country, CountryCode } from "react-native-country-picker-modal";
  import { CountryFilterProps } from "react-native-country-picker-modal/lib/CountryFilter";
++export { Country, CountryCode } from "react-native-country-picker-modal";
  export interface PhoneInputProps {
    withDarkTheme?: boolean;
-@@ -27,9 +28,11 @@ export interface PhoneInputProps {
+   withShadow?: boolean;
+@@ -27,9 +28,12 @@ export interface PhoneInputProps {
    codeTextStyle?: StyleProp<TextStyle>;
    flagButtonStyle?: StyleProp<ViewStyle>;
    countryPickerButtonStyle?: StyleProp<ViewStyle>;
@@ -29,10 +31,11 @@ index cd625e5..f4ffec8 100644
    countryPickerProps?: any;
 +  flagSize?: number;
 +  drowDownImage?: ReactElement;
++  testIDCountryWithCode?: string;
  }
  export interface PhoneInputState {
    code: CallingCode | undefined;
-@@ -304,4 +307,8 @@ export default class PhoneInput extends Component<
+@@ -304,4 +308,8 @@ export default class PhoneInput extends Component<
    render(): JSX.Element;
  }
  
@@ -44,17 +47,22 @@ index cd625e5..f4ffec8 100644
 +export function getRegionCodeAndNationalNumber(number: string): { regionCode: CountryCode, nationalNumber: string };
 +
 diff --git a/node_modules/react-native-phone-number-input/lib/index.js b/node_modules/react-native-phone-number-input/lib/index.js
-index b89c388..be6fc55 100644
+index b89c388..f3151cf 100644
 --- a/node_modules/react-native-phone-number-input/lib/index.js
 +++ b/node_modules/react-native-phone-number-input/lib/index.js
-@@ -1,3 +1,4 @@
+@@ -1,13 +1,13 @@
 +import { PhoneNumberFormat, PhoneNumberType, PhoneNumberUtil } from "google-libphonenumber";
  import React, { PureComponent } from "react";
- import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
+-import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
++import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
  import CountryPicker, {
-@@ -7,7 +8,6 @@ import CountryPicker, {
-   CountryModalProvider,
+-  getCallingCode,
++  CountryModalProvider,
+   DARK_THEME,
+   DEFAULT_THEME,
+-  CountryModalProvider,
    Flag,
++  getCallingCode,
  } from "react-native-country-picker-modal";
 -import { PhoneNumberUtil } from "google-libphonenumber";
  import styles from "./styles";
@@ -85,7 +93,7 @@ index b89c388..be6fc55 100644
        );
      }
      return <View />;
-@@ -173,7 +173,7 @@ export default class PhoneInput extends PureComponent {
+@@ -173,12 +173,13 @@ export default class PhoneInput extends PureComponent {
            <TouchableOpacity
              style={[
                styles.flagButtonView,
@@ -94,7 +102,13 @@ index b89c388..be6fc55 100644
                flagButtonStyle ? flagButtonStyle : {},
                countryPickerButtonStyle ? countryPickerButtonStyle : {},
              ]}
-@@ -192,10 +192,12 @@ export default class PhoneInput extends PureComponent {
+             disabled={disabled}
+             onPress={() => this.setState({ modalVisible: true })}
++            testID={this.props.testIDCountryWithCode}
+           >
+             <CountryPicker
+               onSelect={this.onSelect}
+@@ -192,10 +193,12 @@ export default class PhoneInput extends PureComponent {
                visible={modalVisible}
                theme={withDarkTheme ? DARK_THEME : DEFAULT_THEME}
                renderFlagButton={this.renderFlagButton}
@@ -109,25 +123,26 @@ index b89c388..be6fc55 100644
                <Text
                  style={[styles.codeText, codeTextStyle ? codeTextStyle : {}]}
                >{`+${code}`}</Text>
-@@ -230,6 +232,8 @@ export default class PhoneInput extends PureComponent {
+@@ -230,6 +233,9 @@ export default class PhoneInput extends PureComponent {
                keyboardType="number-pad"
                autoFocus={autoFocus}
                {...textInputProps}
 +              textAlignVertical="center"
 +              blurOnSubmit={true}
++              testID={this.props.textInputProps.testID}
              />
            </View>
          </View>
-@@ -241,8 +245,39 @@ export default class PhoneInput extends PureComponent {
+@@ -241,8 +247,39 @@ export default class PhoneInput extends PureComponent {
  export const isValidNumber = (number, countryCode) => {
    try {
      const parsedNumber = phoneUtil.parse(number, countryCode);
 -    return phoneUtil.isValidNumber(parsedNumber);
 +    return phoneUtil.isValidNumberForRegion(parsedNumber, countryCode);
-   } catch (err) {
-     return false;
-   }
- };
++  } catch (err) {
++    return false;
++  }
++};
 +
 +const validNumberTypes = [PhoneNumberType.MOBILE, PhoneNumberType.FIXED_LINE_OR_MOBILE];
 +
@@ -135,10 +150,10 @@ index b89c388..be6fc55 100644
 +  try {
 +    const parsedNumber = phoneUtil.parse(number, countryCode);
 +    return validNumberTypes.includes(phoneUtil.getNumberType(parsedNumber));
-+  } catch (err) {
-+    return false;
-+  }
-+};
+   } catch (err) {
+     return false;
+   }
+ };
 +
 +export const getFormattedNumber = (number, countryCode) => {
 +  try {

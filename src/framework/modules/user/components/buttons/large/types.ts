@@ -5,4 +5,5 @@ export interface LargeButtonProps {
   icon: string;
   text: string;
   style?: ViewStyle;
+  testID?: string;
 }

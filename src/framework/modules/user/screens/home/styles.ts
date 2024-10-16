@@ -12,9 +12,6 @@ export default StyleSheet.create({
     alignSelf: 'center',
     marginTop: UI_SIZES.spacing.medium,
   },
-  debugButton: {
-    //marginTop: UI_SIZES.spacing.medium,
-  },
   logoutButton: {
     color: theme.palette.status.failure.regular,
     textAlign: 'center',

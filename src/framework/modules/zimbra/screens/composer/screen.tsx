@@ -2,7 +2,6 @@ import { CommonActions, NavigationProp, ParamListBase, UNSTABLE_usePreventRemove
 import type { NativeStackNavigationOptions, NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { Alert, Platform, ScrollView, TextInput, View } from 'react-native';
-import { Asset } from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -30,11 +29,11 @@ import { initDraftFromMail } from '~/framework/modules/zimbra/utils/drafts';
 import { handleRemoveConfirmNavigationEvent } from '~/framework/navigation/helper';
 import { navBarOptions } from '~/framework/navigation/navBar';
 import { LocalFile } from '~/framework/util/fileHandler';
-import { handleAction, tryAction } from '~/framework/util/redux/actions';
+import { tryAction } from '~/framework/util/redux/actions';
 import { Trackers } from '~/framework/util/tracker';
-import { pickFileError } from '~/infra/actions/pickFile';
 import HtmlContentView from '~/ui/HtmlContentView';
 
+import { Asset } from '~/framework/util/fileHandler/types';
 import styles from './styles';
 import { ZimbraComposerScreenDispatchProps, ZimbraComposerScreenPrivateProps } from './types';
 
@@ -148,7 +147,6 @@ class ZimbraComposerScreen extends React.PureComponent<ZimbraComposerScreenPriva
     } catch {
       this.setState({ tempAttachment: undefined });
       Toast.showError(I18n.get('zimbra-composer-attachmenterror'));
-      this.props.handlePickFileError('conversation');
       Trackers.trackEventOfModule(moduleConfig, 'Ajouter une pièce jointe', 'Rédaction mail - Insérer - Pièce jointe - Échec');
     }
   };
@@ -482,7 +480,6 @@ export default connect(
   dispatch =>
     bindActionCreators<ZimbraComposerScreenDispatchProps>(
       {
-        handlePickFileError: handleAction(pickFileError),
         tryFetchMail: tryAction(fetchZimbraMailAction),
         tryFetchSignature: tryAction(fetchZimbraSignatureAction),
       },

@@ -1,10 +1,16 @@
 import * as React from 'react';
-import { ColorValue, StyleProp, TextInput, TextInputProps, View, ViewStyle } from 'react-native';
+import { ColorValue, StyleProp, StyleSheet, TextInput, TextInputProps, View, ViewStyle } from 'react-native';
 import { TextField } from 'rn-material-ui-textfield';
 
 import theme from '~/app/theme';
 import PasswordInput from '~/framework/components/passwordInput';
 import { TextFontStyle, TextSizeStyle } from '~/framework/components/text';
+
+const styles = StyleSheet.create({
+  container: {
+    alignSelf: 'stretch',
+  },
+});
 
 export type TextInputLineProps = {
   hasError: boolean;
@@ -54,9 +60,10 @@ export class TextInputLine extends React.Component<
       tintColor: hasError ? theme.palette.status.failure.regular : theme.palette.primary.regular,
       invertVisibilityIcon: true,
     };
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const TextComponent = isPasswordField ? PasswordInput : TextField;
     return (
-      <View style={{ alignSelf: 'stretch' }}>
+      <View style={styles.container}>
         <TextComponent {...inputProps} />
       </View>
     );

@@ -14,6 +14,7 @@ export interface ToastOptions {
   onLabelPress?: () => void;
   duration?: number;
   icon?: PictureProps;
+  testID?: string;
 }
 
 export interface ToastProps {
@@ -25,4 +26,5 @@ export type ToastParams = ToastConfigParams<{
   picture?: PictureProps;
   duration: number;
   onLabelPress?: () => void;
+  testID?: string;
 }>;

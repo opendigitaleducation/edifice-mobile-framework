@@ -488,11 +488,15 @@ export class FcmService {
       if (!token) {
         token = await messaging().getToken();
       }
-      await signedFetch(`${this.platform.url}/timeline/pushNotif/fcmToken?fcmToken=${token}`, {
-        method: 'delete',
-      });
-      this._removeTokenFromDeleteQueue(token);
-      console.debug('FcmService - unregisterFCMToken - OK - ', token);
+      if (token) {
+        await signedFetch(`${this.platform.url}/timeline/pushNotif/fcmToken?fcmToken=${token}`, {
+          method: 'delete',
+        });
+        this._removeTokenFromDeleteQueue(token);
+        console.debug('FcmService - unregisterFCMToken - OK - ', token);
+      } else {
+        console.debug('FcmService - unregisterFCMToken - NO TOKEN - ');
+      }
     } catch (err) {
       console.error('FcmService - unregisterFCMToken - ERROR - ', token);
       console.error((err as Error).message);
@@ -564,7 +568,7 @@ export async function manageFirebaseToken(platform: Platform) {
     console.debug('manageFirebaseToken - registerFCMToken');
     if (RNPlatform.OS === 'android') {
       const result = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
-      if (result === RESULTS.GRANTED) {
+      if (result === RESULTS.GRANTED || result === RESULTS.UNAVAILABLE) {
         await fcm.registerFCMToken();
       }
     } else {
@@ -583,17 +587,7 @@ export async function removeFirebaseToken(platform: Platform) {
   try {
     const fcm = new FcmService(platform);
     console.debug('removeFirebaseToken - unregisterFCMToken');
-    if (RNPlatform.OS === 'android') {
-      const result = await request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS);
-      if (result === RESULTS.GRANTED) {
-        await fcm.unregisterFCMToken();
-      }
-    } else {
-      const authorizationStatus = await messaging().requestPermission();
-      if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED) {
-        await fcm.unregisterFCMToken();
-      }
-    }
+    fcm.unregisterFCMToken();
   } catch (err) {
     if (err instanceof Error.ErrorWithType) throw err;
     else throw new global.Error('Firebase unregister error', { cause: err });

@@ -9,14 +9,16 @@ import { addTime, displayWeekRange, isDateGivenWeekday, isDateWeekend, subtractT
 import styles from './styles';
 import { DaySelectorProps } from './types';
 
-const DaySelector = (props: DaySelectorProps) => {
+const daySelector = (_props: DaySelectorProps) => {
   const isTodayWeekend = isDateWeekend(today());
   const defaultSelectedDate = isTodayWeekend
     ? addTime(today(), 1, 'week').startOf('week')
     : addTime(today(), 1, 'day').startOf('day');
   const defaultStartDate = defaultSelectedDate.clone().startOf('week');
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [selectedDate, setSelectedDate] = React.useState(defaultSelectedDate);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [startDate, setStartDate] = React.useState(defaultStartDate);
 
   const isPastDisabled = startDate.isSame(subtractTime(defaultStartDate, 8, 'week'));
@@ -74,4 +76,4 @@ const DaySelector = (props: DaySelectorProps) => {
   );
 };
 
-export default DaySelector;
+export default daySelector;

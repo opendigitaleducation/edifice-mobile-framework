@@ -48,8 +48,8 @@ const DayCell = ({ dayOfTheWeek, dayReference, isSelected, onPress }: DayCellPro
           borderWidth: UI_SIZES.border.small,
         }
       : isToday
-      ? { borderColor: theme.palette.grey.graphite }
-      : undefined),
+        ? { borderColor: theme.palette.grey.graphite }
+        : undefined),
   };
   const textStyle = { width: textWidth, ...(isPastDay && { color: theme.palette.grey.graphite }) };
   const text = I18n.get(`date-${dayOfTheWeek}`);

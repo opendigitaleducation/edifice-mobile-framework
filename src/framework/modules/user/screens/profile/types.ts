@@ -19,7 +19,6 @@ export type ProfilePageProps = ProfilePageDataProps &
   NativeStackScreenProps<UserNavigationParams, typeof userRouteNames.profile> & {
     onUploadAvatar: (avatar: LocalFile) => Promise<SyncedFile>;
     onUpdateAvatar: (uploadedAvatarUrl: string) => Promise<void>;
-    onPickFileError: (notifierId: string) => void;
     onUploadAvatarError: () => void;
   };
 

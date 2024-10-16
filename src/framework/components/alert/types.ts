@@ -15,4 +15,5 @@ export interface AlertCardProps {
   shadow?: boolean;
   containerProps?: ViewProps;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 }

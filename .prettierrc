@@ -7,7 +7,7 @@
   "importOrderSortSpecifiers": true,
   "jsxBracketSameLine": true,
   "printWidth": 132,
-  "semi": false,
+  "semi": true,
   "singleQuote": true,
   "tabWidth": 2,
   "trailingComma": "all"

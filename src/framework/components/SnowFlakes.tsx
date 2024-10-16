@@ -67,7 +67,7 @@ const SnowFlakes = ({ session, isXmasActivated, isFlakesFalling }: SnowFlakesRed
   }, [isXmasActivated, isFlakesFalling]);
 
   const isFocused = useIsFocused();
-  const snowStyle = React.useMemo(() => ({ position: 'absolute' as 'absolute', opacity: fadeAnim }), [fadeAnim]);
+  const snowStyle = React.useMemo(() => ({ position: 'absolute' as const, opacity: fadeAnim }), [fadeAnim]);
   const isSnowEligible = isXmasActivated && isFocused && session?.user?.id; // No session, no flakes !
 
   return snowfall && isSnowEligible ? (

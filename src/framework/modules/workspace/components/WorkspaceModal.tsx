@@ -4,13 +4,13 @@ import { FlatList, StyleSheet, TextInput, View } from 'react-native';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import ModalBox, { ModalBoxHandle } from '~/framework/components/ModalBox';
+import PrimaryButton from '~/framework/components/buttons/primary';
 import { UI_SIZES } from '~/framework/components/constants';
 import { BodyText } from '~/framework/components/text';
 import { Filter, IFile, IFolder } from '~/framework/modules/workspace/reducer';
 
 import { WorkspaceFileListItem } from './WorkspaceFileListItem';
 import { WorkspaceFolderSelector } from './WorkspaceFolderSelector';
-import PrimaryButton from '~/framework/components/buttons/primary';
 
 const styles = StyleSheet.create({
   flatListContainer: {

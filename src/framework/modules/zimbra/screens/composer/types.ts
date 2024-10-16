@@ -25,7 +25,6 @@ export interface ZimbraComposerScreenStoreProps {
 }
 
 export interface ZimbraComposerScreenDispatchProps {
-  handlePickFileError: (notifierId: string) => void;
   tryFetchMail: (...args: Parameters<typeof fetchZimbraMailAction>) => Promise<IMail>;
   tryFetchSignature: (...args: Parameters<typeof fetchZimbraSignatureAction>) => Promise<ISignature>;
 }

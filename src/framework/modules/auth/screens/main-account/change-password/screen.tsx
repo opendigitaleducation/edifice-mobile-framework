@@ -32,6 +32,8 @@ export const computeNavBar = ({
     navigation,
     route,
     title: I18n.get('user-page-editpassword'),
+    titleTestID: 'change-password-title',
+    backButtonTestID: 'change-password-back',
   }),
 });
 

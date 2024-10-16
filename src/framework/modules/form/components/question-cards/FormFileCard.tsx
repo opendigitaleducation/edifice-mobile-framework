@@ -1,6 +1,5 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Asset } from 'react-native-image-picker';
 
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
@@ -14,6 +13,7 @@ import { IQuestion, IQuestionResponse, IResponseFile } from '~/framework/modules
 import { Attachment } from '~/framework/modules/zimbra/components/Attachment';
 import { LocalFile } from '~/framework/util/fileHandler';
 
+import { Asset } from '~/framework/util/fileHandler/types';
 import { FormAnswerText } from './FormAnswerText';
 
 const styles = StyleSheet.create({

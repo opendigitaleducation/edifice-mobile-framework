@@ -86,7 +86,6 @@ class OnboardingScreen extends React.PureComponent<AuthOnboardingScreenPrivatePr
             {texts.map((onboardingText, index) => (
               <View key={index} style={styles.swiperItem}>
                 <Image source={pictures[index]} style={styles.swiperItemImage} />
-
                 <HeadingSText style={styles.swiperItemText}>{onboardingText}</HeadingSText>
               </View>
             ))}

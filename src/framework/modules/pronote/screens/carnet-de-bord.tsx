@@ -174,7 +174,7 @@ function CarnetDeBordScreen({ data, error, session, handleLoadData, navigation, 
 CarnetDeBordScreen.getRenderContent =
   (
     data: ICarnetDeBord | undefined,
-    users: Readonly<IUserListItem[]>,
+    users: readonly IUserListItem[],
     selectedId: string | undefined,
     setSelected: (id: string) => void,
     isUserListShown: boolean,

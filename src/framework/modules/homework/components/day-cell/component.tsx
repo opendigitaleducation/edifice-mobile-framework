@@ -2,12 +2,12 @@ import * as React from 'react';
 import { TouchableOpacity } from 'react-native';
 
 import { I18n } from '~/app/i18n';
+import theme from '~/app/theme';
+import { UI_SIZES } from '~/framework/components/constants';
 import { SmallBoldText } from '~/framework/components/text';
 
 import styles from './styles';
 import { DayCellProps } from './types';
-import { UI_SIZES } from '~/framework/components/constants';
-import theme from '~/app/theme';
 
 const DayCell = ({ dayOfTheWeek, isSelected, onPress }: DayCellProps) => {
   const dayColor = {

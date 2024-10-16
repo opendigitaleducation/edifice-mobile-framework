@@ -10,5 +10,6 @@ export interface TextInputProps extends RNTextInputProps {
   toggleIconOff?: string;
   disabled?: boolean;
   testIDToggle?: string;
+  testIDCaption?: string;
   onToggle?: () => void;
 }

@@ -3,7 +3,6 @@ import type { NativeStackNavigationOptions, NativeStackScreenProps } from '@reac
 import moment from 'moment';
 import React from 'react';
 import { Alert, AlertButton, Keyboard, Platform, StyleSheet } from 'react-native';
-import { Asset } from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -39,9 +38,9 @@ import { handleRemoveConfirmNavigationEvent } from '~/framework/navigation/helpe
 import { navBarOptions, navBarTitle } from '~/framework/navigation/navBar';
 import { IDistantFile, LocalFile, SyncedFileWithId } from '~/framework/util/fileHandler';
 import { IUploadCallbaks } from '~/framework/util/fileHandler/service';
+import { Asset } from '~/framework/util/fileHandler/types';
 import { isEmpty } from '~/framework/util/object';
 import { Trackers } from '~/framework/util/tracker';
-import { pickFileError } from '~/infra/actions/pickFile';
 
 const styles = StyleSheet.create({
   title: { width: undefined },
@@ -82,7 +81,6 @@ interface ConversationNewMailScreenEventProps {
   updateDraft: (mailId: string, mailDatas: object) => void;
   trashMessage: (mailId: string[]) => void;
   deleteMessage: (mailId: string[]) => void;
-  onPickFileError: (notifierId: string) => void;
   addAttachment: (draftId: string, files: LocalFile, callbacks?: IUploadCallbaks) => Promise<SyncedFileWithId>;
   deleteAttachment: (draftId: string, attachmentId: string) => void;
   fetchMailContent: (mailId: string) => void;
@@ -260,7 +258,6 @@ class NewMailScreen extends React.PureComponent<ConversationNewMailScreenProps, 
 
   navigationHeaderFunction = {
     addGivenAttachment: async (file: Asset | DocumentPicked, sourceType: string) => {
-      const { onPickFileError } = this.props;
       const actionName =
         'Rédaction mail - Insérer - Pièce jointe - ' +
         ({
@@ -272,7 +269,7 @@ class NewMailScreen extends React.PureComponent<ConversationNewMailScreenProps, 
         await this.getAttachmentData(new LocalFile(file, { _needIOSReleaseSecureAccess: false }));
         Trackers.trackEventOfModule(moduleConfig, 'Ajouter une pièce jointe', actionName + ' - Succès');
       } catch {
-        onPickFileError('conversation');
+        Toast.showError('pickfile-error-storageaccess');
         Trackers.trackEventOfModule(moduleConfig, 'Ajouter une pièce jointe', actionName + ' - Échec');
       }
     },
@@ -742,7 +739,6 @@ const mapDispatchToProps = (dispatch: any) => {
       updateDraft: updateDraftMailAction,
       trashMessage: trashMailsAction,
       deleteMessage: deleteMailsAction,
-      onPickFileError: (notifierId: string) => dispatch(pickFileError(notifierId)),
       addAttachment: addAttachmentAction,
       deleteAttachment: deleteAttachmentAction,
       clearContent: clearMailContentAction,

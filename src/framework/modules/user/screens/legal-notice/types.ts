@@ -4,6 +4,11 @@ import { Dispatch } from 'redux';
 import { LegalUrls } from '~/framework/modules/auth/model';
 import type { UserNavigationParams } from '~/framework/modules/user/navigation';
 
+export interface LegalItem {
+  item: string;
+  testID?: string;
+}
+
 export interface UserLegalNoticeScreenProps {}
 
 export interface UserLegalNoticeScreenNavParams {}

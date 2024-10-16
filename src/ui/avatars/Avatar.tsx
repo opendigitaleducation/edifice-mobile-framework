@@ -260,6 +260,7 @@ export interface IAvatarProps {
   width?: number;
   fallback?: ImageURISource;
   session?: AuthLoggedAccount;
+  testID?: string;
 }
 
 class Avatar extends React.PureComponent<IAvatarProps, { status: 'initial' | 'loading' | 'success' | 'failed' }> {

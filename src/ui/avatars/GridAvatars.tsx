@@ -7,10 +7,10 @@ import Avatar, { Size } from './Avatar';
 export interface IAvatarsProps {
   users:
     | string[]
-    | Array<{
+    | {
         id?: string;
         isGroup: boolean;
-      }>;
+      }[];
   fallback?: ImageURISource;
 }
 

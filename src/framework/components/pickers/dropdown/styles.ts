@@ -4,7 +4,7 @@ import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
 import { TextFontStyle, TextSizeStyle } from '~/framework/components/text';
 
-import { DropdownSize, DropdownType } from './types';
+import { DropdownSize, DropdownVariant } from './types';
 
 const styles = StyleSheet.create({
   bigPaddingGhost: {
@@ -16,13 +16,15 @@ const styles = StyleSheet.create({
     paddingVertical: UI_SIZES.spacing.small,
   },
   bodyContainer: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     columnGap: UI_SIZES.spacing.minor,
   },
+  // eslint-disable-next-line react-native/no-color-literals
   containerGhost: {
     minHeight: 0,
-    backgroundColor: theme.palette.grey.white,
+    backgroundColor: 'transparent',
     borderWidth: 0,
     borderRadius: UI_SIZES.radius.medium,
   },
@@ -81,13 +83,13 @@ const styles = StyleSheet.create({
 });
 
 export const getToggleStyle = (
-  type: DropdownType,
+  type: DropdownVariant,
   size: DropdownSize,
   isOpened: boolean,
   isItemSelected: boolean,
   style?: StyleProp<ViewStyle>,
 ) => {
-  if (type === 'outline') {
+  if (type === 'outlined') {
     return {
       style: [
         styles.containerOutline,
@@ -96,8 +98,8 @@ export const getToggleStyle = (
           borderColor: isOpened
             ? theme.palette.primary.light
             : isItemSelected
-            ? theme.palette.grey.graphite
-            : theme.palette.grey.cloudy,
+              ? theme.palette.grey.graphite
+              : theme.palette.grey.cloudy,
         },
         style,
       ],

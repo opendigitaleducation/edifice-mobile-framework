@@ -14,7 +14,7 @@ import { DropdownPickerProps } from './types';
 export const BUTTON_ICON_SIZE = UI_SIZES.elements.icon.small;
 
 export const DropdownPicker = <T extends ValueType>(props: DropdownPickerProps<T>) => {
-  const { disabled, iconName, items, open, placeholder, size = 'big', style, type = 'outline', value } = props;
+  const { disabled, iconName, items, open, placeholder, size = 'big', style, variant = 'outlined', value } = props;
 
   const getSelectedItemLabel = (): string => items.find(item => item.value === value)?.label ?? ' ';
 
@@ -51,7 +51,7 @@ export const DropdownPicker = <T extends ValueType>(props: DropdownPickerProps<T
         style: styles.dropdownListContainer,
         contentContainerStyle: styles.dropdownListContentContainer,
       }}
-      {...getToggleStyle(type, size, open, value !== null, style)}
+      {...getToggleStyle(variant, size, open, value !== null, style)}
     />
   );
 };

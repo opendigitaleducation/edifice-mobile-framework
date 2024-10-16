@@ -85,6 +85,7 @@ export function AlertCard(props: AlertCardProps) {
     shadow,
     containerProps,
     style,
+    testID,
   } = props;
   const { colorShades, cardBorderStyle, cardContentStyle, cardShadowContainerStyle, pictureWithColor } = useToastStyles(type, icon);
 
@@ -105,12 +106,12 @@ export function AlertCard(props: AlertCardProps) {
   /* must decompose card and shadow because of overflow:hidden */
   const cardContainer = React.useMemo(
     () => (
-      <View style={[styles.card, style]} {...containerProps}>
+      <View style={[styles.card, style]} {...containerProps} testID={testID}>
         <View style={cardBorderStyle} />
         <View style={cardContentStyle}>{cardContent}</View>
       </View>
     ),
-    [cardBorderStyle, cardContent, cardContentStyle, containerProps, style],
+    [cardBorderStyle, cardContent, cardContentStyle, containerProps, style, testID],
   );
 
   return React.useMemo(

@@ -15,12 +15,11 @@
 
 // As this iss a cli tool, we disable some rules
 /* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable @typescript-eslint/no-shadow */
+
 /* eslint-disable @typescript-eslint/no-throw-literal */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable @typescript-eslint/no-use-before-define */
+
 /* eslint-disable no-extend-native */
-/* eslint-disable no-throw-literal */
 
 const spawn = require('child_process').spawn;
 const deepmerge = require('deepmerge');
@@ -331,9 +330,7 @@ async function _git_lsLocalInfo() {
 
 async function _git_isLocalRepoUpToDateForBranch(uri, branch, username, password) {
   const remoteInfo = await _git_lsRemoteInfo(uri, username, password);
-  // console.log("remoteInfo", remoteInfo);
   const localInfo = await _git_lsLocalInfo();
-  // console.log("localInfo", localInfo);
   return localInfo && localInfo[branch] && remoteInfo[branch] === localInfo[branch];
 }
 
@@ -342,7 +339,7 @@ async function _git_getAvailableBranchName(uri, branch, username, password) {
   if (!remoteInfo[branch]) {
     const ode = await _ode_getPackageJsonOde();
     const defaultBranch = ode.override.defaultBranch || 'master';
-    console.log(`  Branch "${branch}" does not exist. Using "${defaultBranch}" instead.`);
+    console.info(`  Branch "${branch}" does not exist. Using "${defaultBranch}" instead.`);
     return defaultBranch;
   }
   return branch;
@@ -372,18 +369,18 @@ async function _git_pullRepository(uri, branch, username, password) {
   if (!opts.local) {
     // Case 1 : no local overrides
     if (!fs.existsSync(_overrides_localRepoPath)) {
-      !opts.quiet && console.log('  No local overrides. Cloning repository.');
+      !opts.quiet && console.info('  No local overrides. Cloning repository.');
       return _git_CloneRepository(uri, branch, username, password);
     }
 
     // Case 2 : local overrides are present AND they are up to date
     if (await _git_isLocalRepoUpToDateForBranch(uri, branch, username, password)) {
-      !opts.quiet && console.log(`  Overrides are up to date for branch ${branch}.`);
+      !opts.quiet && console.info(`  Overrides are up to date for branch ${branch}.`);
       return _overrides_localRepoPath;
     }
 
     // Case 3 : local overrides are present and are NOT up to date.
-    !opts.quiet && console.log(`  Overrides needs to be updated for branch ${branch}.`);
+    !opts.quiet && console.info(`  Overrides needs to be updated for branch ${branch}.`);
     const remote = await _git_getRemoteName();
     await new Promise((resolve, reject) => {
       const gitProcess = spawn('git', ['fetch', '--progress', remote, branch], { cwd: _overrides_localRepoPath });
@@ -447,27 +444,19 @@ async function _override_computeCopyMergeList(overridesPathAbsolute, overrideNam
       if (fs.existsSync(fromAbs)) {
         const fromAbsStat = fs.statSync(fromAbs);
         if (fromAbsStat.isDirectory()) {
-          // console.log(`${fromAbs} is a directory\r`);
           const fromFilesAbs = _walkSync(fromAbs);
           return fromFilesAbs.map(fromFileAbs => {
             const fromFileRelativeToProject = path.relative(_projectPathAbsolute, fromFileAbs);
-            // console.log("    fromFileAbs", fromFileAbs, '\r');
-            // console.log("             - ", overridePathAbsolute, '\r');
-            // console.log("      (relative to project) - ", fromFileRelativeToProject, '\r');
             const fromFileRelativeToFromAbs = path.relative(fromAbs, fromFileAbs);
             const toFileAbs = path.join(toAbs, fromFileRelativeToFromAbs);
             const toFileRelativeToProject = path.relative(_projectPathAbsolute, toFileAbs);
-            // console.log("      toFileAbs", fromFileAbs, '\r');
-            // console.log("      (relative to project) - ", toFileRelativeToProject, '\r');
-
             return [fromFileRelativeToProject, toFileRelativeToProject];
           });
         } else if (fromAbsStat.isFile) {
-          const toAbs = path.join(_projectPathAbsolute, to);
-          // console.log(`${fromAbs} is a file`);
-          return [[path.relative(_projectPathAbsolute, fromAbs), path.relative(_projectPathAbsolute, toAbs)]];
+          const toPath = path.join(_projectPathAbsolute, to);
+          return [[path.relative(_projectPathAbsolute, fromAbs), path.relative(_projectPathAbsolute, toPath)]];
         } else {
-          // console.warn(`${fromAbs} is nor a file or a directory`);
+          //console.warn(`${fromAbs} is nor a file or a directory`);
         }
       } else {
         // console.log(`${fromAbs} does not exist`);
@@ -565,18 +554,18 @@ async function _override_performCopyMerge(overridesPathAbsolute, overrideName) {
     fs.mkdirSync(path.dirname(cp[1]), { recursive: true });
     if (!_override_forceCopy.includes(cp[1]) && /.json$/.test(cp[0]) && fs.existsSync(cp[1])) {
       // JSON files are deeply merged to each other in the override stack.
-      opts.verbose && console.log(`Merging JSON :\r`);
-      opts.verbose && console.log(`  from: "${cp[0]}"\r`);
-      opts.verbose && console.log(`  into: "${cp[1]}"\r`);
+      opts.verbose && console.info(`Merging JSON :\r`);
+      opts.verbose && console.info(`  from: "${cp[0]}"\r`);
+      opts.verbose && console.info(`  into: "${cp[1]}"\r`);
       const previousData = JSON.parse(fs.readFileSync(cp[1]));
       const newData = JSON.parse(fs.readFileSync(cp[0]));
       const mergedData = previousData ? deepmerge(previousData, newData) : newData;
       fs.writeFileSync(cp[1], JSON.stringify(mergedData, undefined, 4));
     } else {
       // Other files are simple copied over.
-      opts.verbose && console.log(`Copying :\r`);
-      opts.verbose && console.log(`  from: "${cp[0]}"\r`);
-      opts.verbose && console.log(`    to: "${cp[1]}"\r`);
+      opts.verbose && console.info(`Copying :\r`);
+      opts.verbose && console.info(`  from: "${cp[0]}"\r`);
+      opts.verbose && console.info(`    to: "${cp[1]}"\r`);
       fs.copyFileSync(cp[0], cp[1]);
     }
   });
@@ -612,7 +601,7 @@ async function _override_performSpecialUpdates() {
     .replace(/(<key>CFBundleIdentifier<\/key>\s*<string>)(.*)(<\/string>)/, '$1' + appidIos + '$3')
     .replace(/(<key>CFBundleDisplayName<\/key>\s*<string>)(.*)(<\/string>)/, '$1' + appnameIos + '$3')
     .replace(/(<key>BundleVersionOverride<\/key>\s*<string>)(.*)(<\/string>)/, '$1' + override + '$3');
-  opts.verbose && console.log(`Update ${_override_specialUpdates['ios.plist']}`);
+  opts.verbose && console.info(`Update ${_override_specialUpdates['ios.plist']}`);
   await writeFile(infoPlistPath, infoPlist);
   ret.push(_override_specialUpdates['ios.plist']);
 
@@ -620,7 +609,7 @@ async function _override_performSpecialUpdates() {
   const pbxprojPath = path.resolve(_projectPathAbsolute, _override_specialUpdates['ios.pbxproj']);
   let pbxproj = await readFile(pbxprojPath, { encoding: 'utf-8' });
   pbxproj = pbxproj.replace(/(PRODUCT_BUNDLE_IDENTIFIER = )(.*)(;)/g, '$1' + appidIos + '$3');
-  opts.verbose && console.log(`Update ${_override_specialUpdates['ios.pbxproj']}`);
+  opts.verbose && console.info(`Update ${_override_specialUpdates['ios.pbxproj']}`);
   await writeFile(pbxprojPath, pbxproj);
   ret.push(_override_specialUpdates['ios.pbxproj']);
 
@@ -631,7 +620,7 @@ async function _override_performSpecialUpdates() {
     .replace(/(APPID=)(.*)/, '$1' + appidAndroid)
     .replace(/(APPNAME=)(.*)/, '$1' + appnameAndroid.toUnicode())
     .replace(/(APPOVERRIDE=)(.*)/, '$1' + override);
-  opts.verbose && console.log(`Update ${_override_specialUpdates.android}`);
+  opts.verbose && console.info(`Update ${_override_specialUpdates.android}`);
   await writeFile(gradlePropertiesPath, gradleProperties);
   ret.push(_override_specialUpdates.android);
 
@@ -655,10 +644,10 @@ async function _override_performRestoreCurrent() {
 
   for (const [status, file] of uncommittedFiles) {
     if (status === '??') {
-      opts.verbose && console.log('Removing', file);
+      opts.verbose && console.info('Removing', file);
       fs.rmSync(path.join(_projectPathAbsolute, file));
     } else {
-      opts.verbose && console.log('Restoring', file);
+      opts.verbose && console.info('Restoring', file);
       await exec('git restore -W -S ' + file);
     }
   }
@@ -736,7 +725,7 @@ async function _override_performUnlock() {
   // 1. Get file list
   const filesToUnlock = await _override_computeLockedFiles();
 
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   for (const [status, filepath] of filesToUnlock) {
     await exec(`git update-index --no-skip-worktree "${filepath}"`);
   }
@@ -752,7 +741,7 @@ async function _override_performUnlock() {
  */
 function _override_performClean() {
   fs.existsSync(_overrides_localRepoPath) && fs.rmSync(_overrides_localRepoPath, { force: true, recursive: true });
-  opts.verbose && console.log('Overrides cache has been removed.');
+  opts.verbose && console.info('Overrides cache has been removed.');
 }
 
 /**
@@ -781,11 +770,11 @@ async function _override_performApply(overrideNames, given_uri, given_branch, gi
 
   // 1. Applies overrides stack
 
-  opts.verbose && console.log('Override stack :', overrideStack);
+  opts.verbose && console.info('Override stack :', overrideStack);
   // eslint-disable-next-line no-undef
   for (override of overrideStack) {
     // eslint-disable-next-line no-undef
-    opts.verbose && console.log('Applying override', override);
+    opts.verbose && console.info('Applying override', override);
     // eslint-disable-next-line no-undef
     const filesCopied = await _override_performCopyMerge(overridesPath, override);
 
@@ -820,7 +809,6 @@ async function _override_performApply(overrideNames, given_uri, given_branch, gi
  * Parse command args & execute
  */
 const main = () => {
-  // eslint-disable-next-line no-unused-expressions
   yargs
     .showHelpOnFail(false, 'Specify --help for available options')
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

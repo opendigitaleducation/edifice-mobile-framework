@@ -54,6 +54,15 @@ export interface PageTexts {
   title: string;
 }
 
+export interface MFATestIds {
+  title: string;
+  subtitle: string;
+  code: string;
+  codeError: string;
+  codeIssues: string;
+  resend: string;
+}
+
 export enum ResendResponse {
   FAIL = 'fail',
   SUCCESS = 'success',

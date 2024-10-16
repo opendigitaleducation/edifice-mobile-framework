@@ -1,6 +1,6 @@
-import type { NativeStackScreenProps } from '@react-navigation/native-stack'
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import type { UserNavigationParams } from '~/framework/modules/user/navigation'
+import type { UserNavigationParams } from '~/framework/modules/user/navigation';
 
 export interface UserNotifPrefsScreenProps {
   // @scaffolder add props here

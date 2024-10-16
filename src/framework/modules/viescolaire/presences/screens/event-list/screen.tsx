@@ -58,8 +58,8 @@ const PresencesEventListScreen = (props: PresencesEventListScreenPrivateProps) =
           {isLatenessOrDeparture
             ? ` (${I18n.get('presences-history-eventcard-lateness-duration', { duration })})`
             : time
-            ? ` (${time})`
-            : null}
+              ? ` (${time})`
+              : null}
         </SmallText>
       </View>
     );

@@ -1,156 +1,125 @@
 /**
  * Mediacentre actions
  */
+import { ThunkAction } from 'redux-thunk';
+
 import { assertSession } from '~/framework/modules/auth/reducer';
-import { IField, ISources } from '~/framework/modules/mediacentre/components/AdvancedSearchModal';
-import { IResource, Source, actionTypes } from '~/framework/modules/mediacentre/reducer';
-import { compareResources, mediacentreService } from '~/framework/modules/mediacentre/service';
+import { MediacentreResources, Resource, Source } from '~/framework/modules/mediacentre/model';
+import { actionTypes } from '~/framework/modules/mediacentre/reducer';
+import { actions as favoritesActions } from '~/framework/modules/mediacentre/reducer/favorites';
+import { actions as selectedStructureActions } from '~/framework/modules/mediacentre/reducer/selectedStructure';
+import { mediacentreService } from '~/framework/modules/mediacentre/service';
 import { createAsyncActionCreators } from '~/framework/util/redux/async';
 
-/**
- * Fetch the external resources.
- */
-export const externalsActionsCreators = createAsyncActionCreators(actionTypes.externals);
-export const fetchExternalsAction = (sources: string[]) => async (dispatch, getState) => {
-  if (!sources.includes(Source.GAR)) {
-    return;
-  }
-  try {
-    const session = assertSession();
-    dispatch(externalsActionsCreators.request());
-    const externals = await mediacentreService.search.getSimple(session, [Source.GAR], '.*');
-    dispatch(externalsActionsCreators.receipt(externals));
-    return externals;
-  } catch (e) {
-    dispatch(externalsActionsCreators.error(e as Error));
-    throw e;
-  }
-};
+export const resourcesActionsCreators = createAsyncActionCreators(actionTypes.fetchResources);
+export const fetchResourcesAction =
+  (structureId: string): ThunkAction<Promise<MediacentreResources>, any, any, any> =>
+  async (dispatch, getState) => {
+    try {
+      const session = assertSession();
+      dispatch(resourcesActionsCreators.request());
+      let [externals, pins, signets, textbooks] = await Promise.all([
+        mediacentreService.search.getSimple(session, [Source.GAR], '.*'),
+        mediacentreService.pins.get(session, structureId),
+        mediacentreService.signets.get(session),
+        mediacentreService.textbooks.get(session, structureId),
+      ]);
+      if (!externals.length) externals = await mediacentreService.globalResources.get(session);
+      externals = externals.filter(r => !r.isTextbook);
+      const resources = { externals, pins, signets, textbooks };
+      dispatch(resourcesActionsCreators.receipt(resources));
+      return resources;
+    } catch (e) {
+      dispatch(resourcesActionsCreators.error(e as Error));
+      throw e;
+    }
+  };
 
-/**
- * Fetch the favorites.
- */
-export const fetchFavoritesActionsCreators = createAsyncActionCreators(actionTypes.fetchFavorites);
-export const fetchFavoritesAction = () => async (dispatch, getState) => {
-  try {
-    const session = assertSession();
-    dispatch(fetchFavoritesActionsCreators.request());
-    const favorites = await mediacentreService.favorites.get(session);
-    dispatch(fetchFavoritesActionsCreators.receipt(favorites));
-  } catch (e) {
-    dispatch(fetchFavoritesActionsCreators.error(e as Error));
-    throw e;
-  }
-};
-
-/**
- * Add the resource with specified id as favorite.
- */
-export const addFavoriteActionsCreators = createAsyncActionCreators(actionTypes.addFavorite);
-export const addFavoriteAction = (resourceId: string, resource: IResource) => async (dispatch, getState) => {
-  try {
-    const session = assertSession();
-    dispatch(addFavoriteActionsCreators.request());
-    await mediacentreService.favorites.add(session, resourceId, resource);
-    dispatch(fetchFavoritesActionsCreators.receipt(resourceId));
-  } catch (e) {
-    dispatch(addFavoriteActionsCreators.error(e as Error));
-  }
-};
-
-/**
- * Remove the resource with specified id from favorites.
- */
-export const removeFavoriteActionsCreators = createAsyncActionCreators(actionTypes.removeFavorite);
-export const removeFavoriteAction = (resourceId: string, source: Source) => async (dispatch, getState) => {
-  try {
-    const session = assertSession();
-    dispatch(removeFavoriteActionsCreators.request());
-    await mediacentreService.favorites.remove(session, resourceId, source);
-    dispatch(removeFavoriteActionsCreators.receipt(resourceId));
-  } catch (e) {
-    dispatch(removeFavoriteActionsCreators.error(e as Error));
-  }
-};
-
-/**
- * Search resources by title.
- */
 export const searchActionsCreators = createAsyncActionCreators(actionTypes.search);
-export const searchResourcesAction = (sources: string[], query: string) => async (dispatch, getState) => {
-  try {
-    const session = assertSession();
-    dispatch(searchActionsCreators.request());
-    const resources = await mediacentreService.search.getSimple(session, sources, query);
-    if (sources.includes(Source.SIGNET)) {
-      const signets = await mediacentreService.signets.searchSimple(session, query);
-      signets.forEach(signet => {
-        if (!resources.find(resource => String(resource.id) === String(signet.id))) {
-          resources.push(signet);
-        }
-      });
-      resources.sort(compareResources);
+export const searchResourcesAction =
+  (query: string): ThunkAction<Promise<Resource[]>, any, any, any> =>
+  async (dispatch, getState) => {
+    try {
+      const session = assertSession();
+      dispatch(searchActionsCreators.request());
+      const resources = await mediacentreService.search.getSimple(session, [Source.GAR, Source.MOODLE, Source.SIGNET], query);
+      dispatch(searchActionsCreators.receipt(resources));
+      return resources;
+    } catch (e) {
+      dispatch(searchActionsCreators.error(e as Error));
+      throw e;
     }
-    dispatch(searchActionsCreators.receipt(resources));
+  };
+
+// Favorites
+
+export const fetchFavoritesAction = (): ThunkAction<Promise<Resource[]>, any, any, any> => async (dispatch, getState) => {
+  try {
+    const session = assertSession();
+    dispatch(favoritesActions.request());
+    const favorites = await mediacentreService.favorites.get(session);
+    dispatch(favoritesActions.receipt(favorites));
+    return favorites;
   } catch (e) {
-    dispatch(searchActionsCreators.error(e as Error));
+    dispatch(favoritesActions.error(e as Error));
     throw e;
   }
 };
 
-/**
- * Search resources using the specified fields and sources.
- */
-export const searchResourcesAdvancedAction = (fields: IField[], sources: ISources) => async (dispatch, getState) => {
-  try {
-    const session = assertSession();
-    dispatch(searchActionsCreators.request());
-    const resources = await mediacentreService.search.getAdvanced(session, fields, sources);
-    if (sources.Signet === true) {
-      const signets = await mediacentreService.signets.searchAdvanced(session, fields);
-      signets.forEach(signet => {
-        if (!resources.find(resource => String(resource.id) === String(signet.id))) {
-          resources.push(signet);
-        }
-      });
-      resources.sort(compareResources);
+export const addFavoriteAction =
+  (resource: Resource): ThunkAction<Promise<void>, any, any, any> =>
+  async (dispatch, getState) => {
+    try {
+      const session = assertSession();
+      dispatch(favoritesActions.addRequest());
+      await mediacentreService.favorites.add(session, resource);
+      dispatch(favoritesActions.addReceipt(resource));
+    } catch (e) {
+      dispatch(favoritesActions.addError(e as Error));
+      throw e;
     }
-    dispatch(searchActionsCreators.receipt(resources));
-  } catch (e) {
-    dispatch(searchActionsCreators.error(e as Error));
-    throw e;
-  }
-};
+  };
 
-/**
- * Fetch the signets.
- */
-export const signetsActionsCreators = createAsyncActionCreators(actionTypes.signets);
-export const fetchSignetsAction = () => async (dispatch, getState) => {
-  try {
-    const session = assertSession();
-    dispatch(signetsActionsCreators.request());
-    const shared = await mediacentreService.signets.get(session);
-    const orientation = await mediacentreService.signets.getOrientation(session);
-    dispatch(signetsActionsCreators.receipt({ orientation, shared }));
-  } catch (e) {
-    dispatch(signetsActionsCreators.error(e as Error));
-    throw e;
-  }
-};
+export const removeFavoriteAction =
+  (resource: Resource): ThunkAction<Promise<void>, any, any, any> =>
+  async (dispatch, getState) => {
+    try {
+      const session = assertSession();
+      dispatch(favoritesActions.removeRequest());
+      await mediacentreService.favorites.remove(session, resource.id, resource.source);
+      dispatch(favoritesActions.removeReceipt(resource));
+    } catch (e) {
+      dispatch(favoritesActions.removeError(e as Error));
+      throw e;
+    }
+  };
 
-/**
- * Fetch the textbooks.
- */
-export const textbooksActionsCreators = createAsyncActionCreators(actionTypes.textbooks);
-export const fetchTextbooksAction = () => async (dispatch, getState) => {
-  try {
-    const session = assertSession();
-    dispatch(textbooksActionsCreators.request());
-    const textbooks = await mediacentreService.textbooks.get(session);
-    dispatch(textbooksActionsCreators.receipt(textbooks));
-  } catch (e) {
-    dispatch(textbooksActionsCreators.error(e as Error));
-    throw e;
-  }
-};
+// Selected structure
+
+export const fetchSelectedStructureAction =
+  (): ThunkAction<Promise<string | null>, any, any, any> => async (dispatch, getState) => {
+    try {
+      const session = assertSession();
+      dispatch(selectedStructureActions.request());
+      const id = await mediacentreService.selectedStructure.get(session);
+      dispatch(selectedStructureActions.receipt(id));
+      return id;
+    } catch (e) {
+      dispatch(selectedStructureActions.error(e as Error));
+      throw e;
+    }
+  };
+
+export const editSelectedStructureAction =
+  (id: string): ThunkAction<Promise<void>, any, any, any> =>
+  async (dispatch, getState) => {
+    try {
+      const session = assertSession();
+      dispatch(selectedStructureActions.editRequest());
+      await mediacentreService.selectedStructure.update(session, id);
+      dispatch(selectedStructureActions.editReceipt(id));
+    } catch (e) {
+      dispatch(selectedStructureActions.editError(e as Error));
+      throw e;
+    }
+  };

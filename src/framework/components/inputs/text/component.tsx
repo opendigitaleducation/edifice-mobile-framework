@@ -151,7 +151,8 @@ const TextInput = forwardRef<RNTextInput, TextInputProps>((props: TextInputProps
             styles.annotation,
             props.annotationStyle,
             { ...(showError ? styles.annotationError : showSuccess ? styles.annotationSuccess : null) },
-          ]}>
+          ]}
+          testID={props.testIDCaption}>
           {annotation}
         </CaptionItalicText>
       );

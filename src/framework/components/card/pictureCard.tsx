@@ -57,8 +57,8 @@ export function TouchablePictureCard(props: PictureCardProps & TouchableOpacityP
 
 function SelectorPictureCard_Base(props: PictureCardProps & { cardComponent?: React.ComponentType<ViewProps> }) {
   const { style, picture, pictureStyle, ...rest } = props;
-  picture['style'] = { maxWidth: '100%', ...pictureStyle };
-  picture['resizeMode'] = 'contain';
+  picture.style = { maxWidth: '100%', ...pictureStyle };
+  picture.resizeMode = 'contain';
   return (
     <PictureCard
       style={[{ paddingVertical: UI_SIZES.spacing.medium, paddingHorizontal: UI_SIZES.spacing.medium }, style]}

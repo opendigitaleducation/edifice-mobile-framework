@@ -42,7 +42,7 @@ function UserLangScreen(props: UserLangScreenPrivateProps) {
     const lang = await OldStorageFunctions.getItemJson(I18N_APP_LANG);
     const showI18nKeys = await OldStorageFunctions.getItemJson(I18N_SHOW_KEYS_KEY);
 
-    const initialLang = showI18nKeys ? 'wordingKeys' : lang ?? 'auto';
+    const initialLang = showI18nKeys ? 'wordingKeys' : (lang ?? 'auto');
     setSelected(initialLang as string);
   };
 

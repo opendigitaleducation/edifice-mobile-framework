@@ -46,7 +46,7 @@ try {
   versionContent = JSON.parse(fs.readFileSync(versionFile, 'utf-8'));
 } catch (error) {
   console.error('!!! Unable to read prepare-build.json !!!');
-  console.log(error);
+  console.error(error);
   process.exit(2);
 }
 
@@ -97,7 +97,7 @@ try {
   console.info(`==> Version will be ${fullVersion})`);
 } catch (error) {
   console.error('!!! Unable to compute build number !!!');
-  console.log(error);
+  console.error(error);
   process.exit(3);
 }
 
@@ -110,7 +110,7 @@ try {
   console.info('==> prepare-build.json file updated');
 } catch (error) {
   console.error('!!! Unable to write prepare-build.json !!!');
-  console.log(error);
+  console.error(error);
   process.exit(4);
 }
 
@@ -124,7 +124,7 @@ try {
   lastContent = JSON.parse(fs.readFileSync(lastFile, 'utf-8'));
 } catch (error) {
   console.error('!!! Unable to read last-build.json !!!');
-  console.log(error);
+  console.error(error);
   process.exit(5);
 }
 
@@ -146,7 +146,7 @@ try {
   }
 } catch (error) {
   console.error('!!! Unable to compute last-build !!!');
-  console.log(error);
+  console.error(error);
   process.exit(6);
 }
 
@@ -159,7 +159,7 @@ try {
   console.info('==> last-build.json file updated');
 } catch (error) {
   console.error('!!! Unable to write last-build.json !!!');
-  console.log(error);
+  console.error(error);
   process.exit(7);
 }
 
@@ -173,7 +173,7 @@ try {
   plistContent = fs.readFileSync(plistFile, 'utf-8');
 } catch (error) {
   console.error('!!! Unable to read Info.plist !!!');
-  console.log(error);
+  console.error(error);
   process.exit(8);
 }
 
@@ -188,7 +188,7 @@ try {
     .replace(/(<key>BundleVersionType<\/key>\s*<string>)(.*)(<\/string>)/, '$1' + fullBuildType + '$3');
 } catch (error) {
   console.error('!!! Unable to update Info.plist !!!');
-  console.log(error);
+  console.error(error);
   process.exit(9);
 }
 
@@ -201,7 +201,7 @@ try {
   console.info('==> Info.plist file updated');
 } catch (error) {
   console.error('!!! Unable to write Info.plist !!!');
-  console.log(error);
+  console.error(error);
   process.exit(10);
 }
 
@@ -215,7 +215,7 @@ try {
   gradleContent = fs.readFileSync(gradleFile, 'utf-8');
 } catch (error) {
   console.error('!!! Unable to read build.gradle !!!');
-  console.log(error);
+  console.error(error);
   process.exit(11);
 }
 
@@ -230,7 +230,7 @@ try {
     .replace(/(buildConfigField "String", "BundleVersionType", "\\")(.*)(\\"")/, '$1' + fullBuildType + '$3');
 } catch (error) {
   console.error('!!! Unable to update build.gradle !!!');
-  console.log(error);
+  console.error(error);
   process.exit(12);
 }
 
@@ -243,7 +243,7 @@ try {
   console.info('==> build.gradle file updated');
 } catch (error) {
   console.error('!!! Unable to write build.gradle !!!');
-  console.log(error);
+  console.error(error);
   process.exit(13);
 }
 
@@ -257,7 +257,7 @@ try {
   packageContent = JSON.parse(fs.readFileSync(packageFile, 'utf-8'));
 } catch (error) {
   console.error('!!! Unable to read package.json !!!');
-  console.log(error);
+  console.error(error);
   process.exit(14);
 }
 
@@ -269,7 +269,7 @@ try {
   packageContent.version = versionNumber;
 } catch (error) {
   console.error('!!! Unable to update package.json !!!');
-  console.log(error);
+  console.error(error);
   process.exit(15);
 }
 
@@ -282,7 +282,7 @@ try {
   console.info('==> package.json file updated');
 } catch (error) {
   console.error('!!! Unable to write package.json !!!');
-  console.log(error);
+  console.error(error);
   process.exit(16);
 }
 
@@ -296,6 +296,6 @@ try {
   execSync('git push');
 } catch (error) {
   console.error('!!! Unable to commit && push changes !!!');
-  console.log(error);
+  console.error(error);
   process.exit(17);
 }

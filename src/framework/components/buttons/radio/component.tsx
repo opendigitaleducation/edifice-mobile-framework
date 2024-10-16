@@ -38,10 +38,10 @@ export const RadioButton = ({ isChecked, isDisabled, label, size = 'default', st
                 ? theme.palette.primary.light
                 : theme.palette.primary.regular
               : isDisabled
-              ? theme.palette.grey.grey
-              : isPressed
-              ? theme.palette.primary.regular
-              : theme.palette.grey.graphite
+                ? theme.palette.grey.grey
+                : isPressed
+                  ? theme.palette.primary.regular
+                  : theme.palette.grey.graphite
           }
         />
       </View>

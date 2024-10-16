@@ -2,12 +2,12 @@ import React, { useCallback } from 'react';
 import { View } from 'react-native';
 
 import theme from '~/app/theme';
+import { UI_SIZES } from '~/framework/components/constants';
 import { NamedSVG } from '~/framework/components/picture';
 import { SmallBoldText, SmallItalicText } from '~/framework/components/text';
 
 import styles from './styles';
 import { LabelIndicator, LabelProps } from './types';
-import { UI_SIZES } from '~/framework/components/constants';
 
 export default function Label(props: LabelProps) {
   const { text, icon, indicator } = props;

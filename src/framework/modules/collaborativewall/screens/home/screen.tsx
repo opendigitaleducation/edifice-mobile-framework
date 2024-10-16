@@ -13,7 +13,10 @@ import type { CollaborativewallHomeScreenPrivateProps } from './types';
 export const computeNavBar = ({
   navigation,
   route,
-}: NativeStackScreenProps<CollaborativewallNavigationParams, typeof collaborativewallRouteNames.home>): NativeStackNavigationOptions => ({
+}: NativeStackScreenProps<
+  CollaborativewallNavigationParams,
+  typeof collaborativewallRouteNames.home
+>): NativeStackNavigationOptions => ({
   ...navBarOptions({
     navigation,
     route,

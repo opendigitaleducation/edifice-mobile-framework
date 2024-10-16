@@ -42,6 +42,7 @@ import {
   AuthMFAScreenPrivateProps,
   AuthMFAScreenStoreProps,
   CodeState,
+  MFATestIds,
   PageTexts,
   ResendResponse,
 } from './types';
@@ -158,6 +159,33 @@ const AuthMFAScreen = (props: AuthMFAScreenPrivateProps) => {
           title: I18n.get('auth-mfa-title'),
         };
 
+  const testIds: MFATestIds = isEmailMFA
+    ? {
+        title: 'email-code-title',
+        subtitle: 'email-code-subtitle',
+        code: 'email-code',
+        codeError: 'email-code-error',
+        codeIssues: 'email-code-issues',
+        resend: 'email-code-send-again',
+      }
+    : isMobileMFA
+      ? {
+          title: 'phone-code-title',
+          subtitle: 'phone-code-subtitle',
+          code: 'phone-code',
+          codeError: 'phone-code-error',
+          codeIssues: 'phone-code-issues',
+          resend: 'phone-code-send-again',
+        }
+      : {
+          title: '',
+          subtitle: '',
+          code: '',
+          codeError: '',
+          codeIssues: '',
+          resend: '',
+        };
+
   const setResendTimer = () => {
     setIsResendDisabled(true);
     setTimeout(() => {
@@ -256,7 +284,9 @@ const AuthMFAScreen = (props: AuthMFAScreenPrivateProps) => {
       try {
         await tryUpdateProfile(isModifyingEmail ? { email } : { mobile });
         navigation.navigate(userRouteNames.home);
-        Toast.showSuccess(I18n.get(isModifyingEmail ? 'auth-change-email-edit-toast' : 'auth-change-mobile-edit-toast'));
+        Toast.showSuccess(I18n.get(isModifyingEmail ? 'auth-change-email-edit-toast' : 'auth-change-mobile-edit-toast'), {
+          testID: 'account-notification-message',
+        });
       } catch {
         Toast.showError(I18n.get('auth-mfa-error-text'));
       }
@@ -308,10 +338,14 @@ const AuthMFAScreen = (props: AuthMFAScreenPrivateProps) => {
               />
             )}
           </View>
-          <HeadingSText style={styles.title}>{texts.title}</HeadingSText>
-          <SmallText style={styles.contentSent}>{texts.messageSent}</SmallText>
-          <SmallText style={styles.content}>{texts.message}</SmallText>
-          <View pointerEvents="box-none" style={styles.codeFieldContainer}>
+          <HeadingSText style={styles.title} testID={testIds.title}>
+            {texts.title}
+          </HeadingSText>
+          <View testID={testIds.subtitle}>
+            <SmallText style={styles.contentSent}>{texts.messageSent}</SmallText>
+            <SmallText style={styles.content}>{texts.message}</SmallText>
+          </View>
+          <View pointerEvents="box-none" style={styles.codeFieldContainer} testID={testIds.code}>
             <CodeField
               {...codeFieldProps}
               ref={codeFieldRef}
@@ -359,17 +393,22 @@ const AuthMFAScreen = (props: AuthMFAScreenPrivateProps) => {
                   width={33}
                   height={33}
                 />
-                <BodyText style={[styles.codeStateText, { color: codeStateColor }]}>{texts.feedback}</BodyText>
+                <BodyText style={[styles.codeStateText, { color: codeStateColor }]} testID={testIds.codeError}>
+                  {texts.feedback}
+                </BodyText>
               </>
             ) : null}
           </View>
         </View>
         <View style={styles.resendContainer}>
-          <SmallText style={styles.issueText}>{I18n.get('auth-mfa-issue')}</SmallText>
+          <SmallText style={styles.issueText} testID={testIds.codeIssues}>
+            {I18n.get('auth-mfa-issue')}
+          </SmallText>
           <TouchableOpacity
             style={[styles.resendButton, { opacity: resendOpacity }]}
             disabled={isResendInactive}
-            onPress={onResendCode}>
+            onPress={onResendCode}
+            testID={testIds.resend}>
             <Picture
               type="NamedSvg"
               name="pictos-redo"

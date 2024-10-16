@@ -83,7 +83,7 @@ export class AttachmentGroupImages extends React.PureComponent<{
 
   public onOpenImage = () => {
     const { images, moduleName } = this.props;
-    const carouselImages = images.map(image => ({ src: { uri: image.uri }, type: 'image' as 'image', alt: 'image' }));
+    const carouselImages = images.map(image => ({ src: { uri: image.uri }, type: 'image' as const, alt: 'image' }));
     Trackers.trackEvent(moduleName, 'OPEN ATTACHMENT', 'Edit mode');
     openCarousel({ data: carouselImages });
   };

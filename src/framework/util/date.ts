@@ -120,13 +120,13 @@ export const displayWeekRange = (date: Moment) => {
   return isCurrentWeek
     ? I18n.get('date-week-current')
     : isLastWeek
-    ? I18n.get('date-week-last', { startDate: startDateLong, endDate: endDateLong })
-    : isNextWeek
-    ? I18n.get('date-week-next', { startDate: startDateLong, endDate: endDateLong })
-    : I18n.get('date-week-of', {
-        startDate: startDateShort,
-        endDate: endDateShort,
-        month: endDateMonth,
-        year: isEndOfDateWeekCurrentYear ? '' : endDateYear,
-      });
+      ? I18n.get('date-week-last', { startDate: startDateLong, endDate: endDateLong })
+      : isNextWeek
+        ? I18n.get('date-week-next', { startDate: startDateLong, endDate: endDateLong })
+        : I18n.get('date-week-of', {
+            startDate: startDateShort,
+            endDate: endDateShort,
+            month: endDateMonth,
+            year: isEndOfDateWeekCurrentYear ? '' : endDateYear,
+          });
 };

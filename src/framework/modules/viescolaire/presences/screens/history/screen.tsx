@@ -59,7 +59,7 @@ const PresencesHistoryScreen = (props: PresencesHistoryScreenPrivateProps) => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'statistics', title: I18n.get('presences-history-tab-statistics'), icon: 'ui-trending-up' },
-    { key: 'history', title: I18n.get('presences-history-tab-history'), icon: 'ui-upcoming' },
+    { key: 'history', title: I18n.get('presences-history-tab-history'), icon: 'ui-forgoing' },
   ]);
   const [loadingState, setLoadingState] = React.useState(props.initialLoadingState ?? AsyncPagedLoadingState.PRISTINE);
   const loadingRef = React.useRef<AsyncPagedLoadingState>();
@@ -270,7 +270,7 @@ export default connect(
     return {
       children:
         userType === AccountType.Relative
-          ? getFlattenedChildren(session?.user.children)?.filter(child => child.classesNames.length) ?? []
+          ? (getFlattenedChildren(session?.user.children)?.filter(child => child.classesNames.length) ?? [])
           : undefined,
       classes: session?.user.classes,
       events: getRecentEvents(presencesState.statistics.data, presencesState.absenceStatements.data),

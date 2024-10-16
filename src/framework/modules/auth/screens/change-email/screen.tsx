@@ -40,6 +40,8 @@ export const computeNavBar = ({
       navigation,
       route,
       title: getNavBarTitle(route),
+      titleTestID: 'email-title',
+      backButtonTestID: 'email-back',
     }),
   };
 };
@@ -141,9 +143,13 @@ const AuthChangeEmailScreen = (props: AuthChangeEmailScreenPrivateProps) => {
         <View style={styles.imageContainer}>
           <NamedSVG name="user-email" width={UI_SIZES.elements.thumbnail} height={UI_SIZES.elements.thumbnail} />
         </View>
-        <HeadingSText style={styles.title}>{texts.title}</HeadingSText>
-        <SmallText style={styles.content}>{texts.message}</SmallText>
-        <View style={styles.inputTitleContainer}>
+        <HeadingSText style={styles.title} testID="email-change-title">
+          {texts.title}
+        </HeadingSText>
+        <SmallText style={styles.content} testID="email-change-subtitle">
+          {texts.message}
+        </SmallText>
+        <View style={styles.inputTitleContainer} testID="email-field-label">
           <Picture
             type="NamedSvg"
             name="pictos-mail"
@@ -169,9 +175,10 @@ const AuthChangeEmailScreen = (props: AuthChangeEmailScreenPrivateProps) => {
             onChangeText={onChangeEmail}
             returnKeyType="send"
             {...(!isEmailEmpty ? { onSubmitEditing: onSendEmail } : {})}
+            testID="email-field"
           />
         </View>
-        <CaptionItalicText style={styles.errorText}>
+        <CaptionItalicText style={styles.errorText} testID="email-field-error">
           {isEmailStatePristine
             ? I18n.get('common-space')
             : emailState === EmailState.EMAIL_ALREADY_VERIFIED
@@ -184,6 +191,7 @@ const AuthChangeEmailScreen = (props: AuthChangeEmailScreenPrivateProps) => {
           disabled={isEmailEmpty}
           loading={isSendingCode}
           action={onSendEmail}
+          testID="email-check"
         />
         {isModifyingEmail ? null : (
           <TouchableOpacity style={styles.logoutButton} onPress={onRefuseEmailVerification}>

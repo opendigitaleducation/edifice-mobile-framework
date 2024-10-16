@@ -74,8 +74,8 @@ export class HtmlConverter {
       onopentag: (tag: sax.Tag) => {
         if (!htmlVoidElements.includes(tag.name)) ++this.absoluteDeepnessLevel;
 
-        if (this.opts.ignoreClasses && tag.attributes['class']) {
-          const classes = tag.attributes['class'].split(' ');
+        if (this.opts.ignoreClasses && tag.attributes.class) {
+          const classes = tag.attributes.class.split(' ');
           let willBeIgnored = false;
 
           classes.forEach(className => {

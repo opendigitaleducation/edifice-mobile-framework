@@ -10,7 +10,6 @@ import { tryAction } from '~/framework/util/redux/actions';
 import { Storage } from '~/framework/util/storage';
 
 import { I18n } from './i18n';
-
 import { Log } from './log';
 
 const initFeatures = async () => {

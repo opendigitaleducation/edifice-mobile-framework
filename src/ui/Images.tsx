@@ -8,13 +8,14 @@ import { openCarousel } from '~/framework/components/carousel/openCarousel';
 import { UI_SIZES, getScaleImageSize } from '~/framework/components/constants';
 import { NamedSVG } from '~/framework/components/picture';
 import { SmallInverseText } from '~/framework/components/text';
-import { AudienceParameter } from '~/framework/modules/core/audience/types';
 import { FastImage } from '~/framework/util/media';
 import { urlSigner } from '~/infra/oauth';
 
 import TouchableOpacity from './CustomTouchableOpacity';
 import { Row } from './Grid';
 import ImageOptional from './ImageOptional';
+
+import { AudienceParameter } from '~/framework/modules/core/audience/types';
 
 const ContainerImage = styled.View({});
 
@@ -117,7 +118,7 @@ class Images extends React.Component<
   public openImage(startIndex: any) {
     const { images } = this.props;
     const data = images.map(img => ({
-      type: 'image' as 'image',
+      type: 'image' as const,
       src: img.src,
       ...(img.alt ? { alt: img.alt } : undefined),
       ...(img.linkTo ? { link: img.linkTo } : undefined),

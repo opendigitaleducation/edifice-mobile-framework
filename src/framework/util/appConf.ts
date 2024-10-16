@@ -214,7 +214,7 @@ export class AppConf {
   }
 
   constructor(opts: IAppConfDeclaration) {
-    this.debugEnabled = opts?.debugEnabled || true;
+    this.debugEnabled = opts?.debugEnabled ?? true;
     this.i18nOTA = opts?.i18nOTA || false;
     if (opts.level) this.level = opts.level;
     this.matomo = opts.matomo;

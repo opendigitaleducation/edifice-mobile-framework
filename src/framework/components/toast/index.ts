@@ -6,7 +6,7 @@ import Feedback from '~/framework/util/feedback/feedback';
 import { DEFAULTS } from './component';
 import { ToastOptions } from './types';
 
-export { ToastHandler, RootToastHandler } from './component';
+export { RootToastHandler, ToastHandler } from './component';
 
 function showToastGeneric(type: string, text: string, options: ToastOptions & ToastShowParams = {}) {
   ToastMessage.show({
@@ -21,6 +21,7 @@ function showToastGeneric(type: string, text: string, options: ToastOptions & To
       picture: options.icon,
       duration: options.autoHide ? options.visibilityTime : 0,
       onLabelPress: options.onLabelPress,
+      testID: options.testID,
     },
   });
 }

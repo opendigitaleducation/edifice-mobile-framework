@@ -5,12 +5,12 @@ class ConnectionManager {
 
   private static GONE_LISTENERS_KEY = 'gone';
 
-  private _nextListeners: { [key: string]: Array<() => void> } = {
+  private _nextListeners: { [key: string]: (() => void)[] } = {
     [ConnectionManager.BACK_LISTENERS_KEY]: [],
     [ConnectionManager.GONE_LISTENERS_KEY]: [],
   };
 
-  private _eachListeners: { [key: string]: Array<() => void> } = {
+  private _eachListeners: { [key: string]: (() => void)[] } = {
     [ConnectionManager.BACK_LISTENERS_KEY]: [],
     [ConnectionManager.GONE_LISTENERS_KEY]: [],
   };

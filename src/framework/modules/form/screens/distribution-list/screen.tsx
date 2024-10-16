@@ -10,7 +10,7 @@ import { ModalBoxHandle } from '~/framework/components/ModalBox';
 import { EmptyContentScreen, EmptyScreen } from '~/framework/components/empty-screens';
 import { LoadingIndicator } from '~/framework/components/loading';
 import { PageView } from '~/framework/components/page';
-import { SearchBar } from '~/framework/components/searchBar';
+import SearchBar from '~/framework/components/search-bar';
 import { getSession } from '~/framework/modules/auth/reducer';
 import { fetchFormDistributionsAction, fetchFormsReceivedAction } from '~/framework/modules/form/actions';
 import { FormDistributionCard } from '~/framework/modules/form/components/FormDistributionCard';

@@ -131,8 +131,8 @@ export class HtmlParserAbstract<RenderType> {
     // 1 - Compute if the tag needs to be ignored
 
     let willBeIgnored = false;
-    if (this.opts.ignoreClass && tagAttrs['class']) {
-      const classes = tagAttrs['class'].split(' ');
+    if (this.opts.ignoreClass && tagAttrs.class) {
+      const classes = tagAttrs.class.split(' ');
 
       classes.forEach(className => {
         if (this.opts.ignoreClass?.includes(className)) willBeIgnored = true;

@@ -7,4 +7,5 @@ export interface LabelProps {
   text: string;
   icon?: string;
   indicator?: LabelIndicator;
+  testID?: string;
 }

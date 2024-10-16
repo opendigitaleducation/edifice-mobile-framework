@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
-
 import { UI_SIZES } from '~/framework/components/constants';
 import { CaptionText } from '~/framework/components/text';
 

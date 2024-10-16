@@ -1,52 +1,11 @@
-import { Alert, Platform } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
-
 import { I18n } from '~/app/i18n';
-import Toast from '~/framework/components/toast';
 import { LocalFile } from '~/framework/util/fileHandler';
-import { assertPermissions } from '~/framework/util/permissions';
 
-import { ImagePicked, MenuPickerActionProps } from './types';
+import { MenuPickerActionProps } from './types';
 
 export default function galleryAction(props: MenuPickerActionProps & { multiple?: boolean; synchrone?: boolean }) {
-  const imageCallback = async (images: LocalFile[], callbackOnce: boolean = false) => {
-    try {
-      const formattedImages = images.map(img => ({ ...img.nativeInfo, ...img })) as ImagePicked[];
-      if (callbackOnce) {
-        if (props.synchrone) await props.callback!(formattedImages);
-        else props.callback!(formattedImages);
-      } else {
-        formattedImages.forEach(async image => {
-          if (props.synchrone) await props.callback!(image);
-          else props.callback!(image);
-        });
-      }
-    } catch {
-      /* empty */
-    }
-  };
-
-  const action = async ({ callbackOnce }: { callbackOnce: boolean } = { callbackOnce: false }) => {
-    try {
-      await assertPermissions('galery.read');
-      const localFiles = await LocalFile.pick({ source: 'galery', multiple: props.multiple });
-      if (Platform.OS === 'android') {
-        localFiles.forEach(item => {
-          if (item.filetype.startsWith('video/')) {
-            Toast.showError(I18n.get('pickfile-error-filetype'));
-          }
-        });
-      }
-      const images = localFiles.filter(item => !item.filetype.startsWith('video/'));
-      return await imageCallback(images, callbackOnce);
-    } catch {
-      Alert.alert(
-        I18n.get('gallery-readpermissionblocked-title'),
-        I18n.get('gallery-readpermissionblocked-text', { appName: DeviceInfo.getApplicationName() }),
-      );
-      return undefined;
-    }
-  };
+  const action = async ({ callbackOnce }: { callbackOnce: boolean } = { callbackOnce: false }) =>
+    LocalFile.pickFromGallery(props.callback, props.multiple ?? false, props.synchrone, callbackOnce);
 
   return {
     title: I18n.get('galleryaction-pick'),

@@ -26,7 +26,7 @@ export const asyncPagedActionTypeSuffixes: AsyncPagedActionTypes = {
   ...asyncActionTypeSuffixes,
 };
 
-export type AsyncPagedActionCreators<DataType extends Array<any>> = {
+export type AsyncPagedActionCreators<DataType extends any[]> = {
   request: () => AnyAction;
   receipt: (data: DataType, page: number) => ReceiptPagedAction<DataType>;
   error: (err: Error) => ErrorAction;
@@ -36,9 +36,9 @@ export type AsyncPagedActionCreators<DataType extends Array<any>> = {
 export const createAsyncPagedActionTypes: (prefixUpperCase: string) => AsyncPagedActionTypes = (prefixUpperCase: string) =>
   ({
     ...createAsyncActionTypes(prefixUpperCase),
-  } as AsyncPagedActionTypes);
+  }) as AsyncPagedActionTypes;
 
-export const createAsyncPagedActionCreators: <DataType extends Array<any>>(
+export const createAsyncPagedActionCreators: <DataType extends any[]>(
   actionTypes: AsyncPagedActionTypes,
 ) => AsyncPagedActionCreators<DataType> = <DataType>(actionTypes: AsyncPagedActionTypes) => ({
   request: () => ({ type: actionTypes.request }),
@@ -49,12 +49,12 @@ export const createAsyncPagedActionCreators: <DataType extends Array<any>>(
 
 // State
 
-export interface AsyncPagedState<DataType extends Array<any>> extends AsyncState<DataType> {
+export interface AsyncPagedState<DataType extends any[]> extends AsyncState<DataType> {
   nextPage: number;
   endReached: boolean;
 }
 
-export function createInitialAsyncPagedState<DataType extends Array<any>>(initialState: DataType) {
+export function createInitialAsyncPagedState<DataType extends any[]>(initialState: DataType) {
   return {
     ...createInitialAsyncState(initialState),
     nextPage: 0,
@@ -64,11 +64,11 @@ export function createInitialAsyncPagedState<DataType extends Array<any>>(initia
 
 // Reducer
 
-export interface ReceiptPagedAction<DataType extends Array<any>> extends ReceiptAction<DataType> {
+export interface ReceiptPagedAction<DataType extends any[]> extends ReceiptAction<DataType> {
   page: number;
 }
 
-function _createAsyncPagedReducer<DataType extends Array<any>>(
+function _createAsyncPagedReducer<DataType extends any[]>(
   initialState: DataType,
   actionTypes: AsyncPagedActionTypes,
   pageSize: number,

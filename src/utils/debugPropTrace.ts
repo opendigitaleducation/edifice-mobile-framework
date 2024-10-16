@@ -1,8 +1,10 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useRef } from 'react';
 
 // usage : in componentDidUpdate(prevProps, prevState) :
 //      traceProps.bind(this)(prevProps, prevState);
-export function traceProps(prevProps: {}, prevState: {}, print: boolean = false) {
+export function traceProps(this: any, prevProps: object, prevState: object, print: boolean = false) {
   if (!__DEV__) {
     return;
   }
@@ -19,18 +21,18 @@ export function traceProps(prevProps: {}, prevState: {}, print: boolean = false)
 }
 
 // usage : in function components : useTraceUpdate(props);
-export function useTraceUpdate(props: {}) {
+export function useTraceUpdate(props: object) {
   if (!__DEV__) {
     return;
   }
   const prev = useRef(props);
   useEffect(() => {
-    const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
+    /*const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
       if (prev.current[k] !== v) {
         ps[k] = [prev.current[k], v];
       }
       return ps;
-    }, {});
+    }, {});*/
     /*if (Object.keys(changedProps).length > 0) {
       console.debug('Changed props:', changedProps);
     }*/

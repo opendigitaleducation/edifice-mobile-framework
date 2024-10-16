@@ -43,6 +43,7 @@ export const LineButton = ({
   loading = false,
   showArrow = true,
   textStyle,
+  testID,
 }: {
   title: string;
   icon?: string;
@@ -54,6 +55,7 @@ export const LineButton = ({
   loading?: boolean;
   showArrow?: boolean;
   textStyle?: TextStyle;
+  testID?: string;
 }) => {
   const Container = onPress ? TouchableOpacity : View;
 
@@ -93,7 +95,8 @@ export const LineButton = ({
         style={[
           styles.container,
           first ? styles.containerFirst : last ? styles.containerLast : alone ? styles.containerAlone : null,
-        ]}>
+        ]}
+        testID={testID}>
         <View style={styles.iconText}>
           {renderIcon()}
           <SmallText numberOfLines={1} style={[styles.text, { ...(textStyle ? textStyle : null) }]}>

@@ -20,7 +20,7 @@ import { deleteAction } from '~/framework/components/menus/actions';
 import PopupMenu from '~/framework/components/menus/popup';
 import NavBarAction from '~/framework/components/navigation/navbar-action';
 import { PageView, pageGutterSize } from '~/framework/components/page';
-import { SearchBar } from '~/framework/components/searchBar';
+import SearchBar from '~/framework/components/search-bar';
 import SwipeableList from '~/framework/components/swipeableList';
 import { BodyBoldText, TextFontStyle } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';

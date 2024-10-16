@@ -108,7 +108,7 @@ export const KeyboardPageView = (
   }) as KeyboardAvoidingViewProps['behavior'];
   const { children, gutters, ...pageProps } = props;
   const InnerViewComponent = props.scrollable ? ScrollView : View;
-  const AreaComponent = props.safeArea ?? true ? SafeAreaView : View;
+  const AreaComponent = (props.safeArea ?? true) ? SafeAreaView : View;
   const headerHeight = useHeaderHeight();
   return (
     <PageView gutters={gutters} {...pageProps}>

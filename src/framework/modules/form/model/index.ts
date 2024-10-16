@@ -227,11 +227,11 @@ const findLongestPathInQuestionChoices = (
   formElements: IFormElement[],
 ): number => {
   if (!choices.length) {
-    let nextElementId = formElements.find(node => node.position === currentFormElement.position! + 1)?.id;
+    const nextElementId = formElements.find(node => node.position === currentFormElement.position! + 1)?.id;
     if (!nextElementId) return 1;
     return findLongestPathInFormElement(nextElementId, formElements) + 1;
   } else {
-    let tab: number[] = choices.map(choice => {
+    const tab: number[] = choices.map(choice => {
       if (!choice.nextFormElementId) return 1;
       return findLongestPathInFormElement(choice.nextFormElementId, formElements);
     });

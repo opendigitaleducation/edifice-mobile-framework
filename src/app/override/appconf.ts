@@ -8,11 +8,8 @@ export default {
     showDiscoveryClass: true,
     showAppName: true,
   },
-  webviewIdentifier: "dev",
+  webviewIdentifier: 'dev',
   zendesk: undefined,
 
-  platforms: [
-    require("~/platforms/localhost")["default"],
-    require("~/platforms/localhost")["avd"],
-  ],
+  platforms: [require('~/platforms/localhost')['default'], require('~/platforms/localhost')['avd']],
 };

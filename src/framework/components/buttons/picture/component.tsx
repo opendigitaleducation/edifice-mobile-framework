@@ -1,11 +1,12 @@
 import * as React from 'react';
 
 import theme from '~/app/theme';
-import ActionButton from '~/framework/components/buttons/action';
 import { UI_SIZES } from '~/framework/components/constants';
 
 import styles from './styles';
 import { PictureButtonProps } from './types';
+
+import ActionButton from '~/framework/components/buttons/action';
 
 const PictureButton = ({ iconName, action, disabled, loading, pictureFill }: PictureButtonProps) => {
   return (

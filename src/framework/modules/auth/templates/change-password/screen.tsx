@@ -60,13 +60,15 @@ const ChangePasswordScreen = (props: ChangePasswordScreenPrivateProps & { contex
       context.passwordRegexI18n?.[I18n.getLanguage()] ? (
         <View style={styles.infos}>
           <NamedSVG name="ui-lock-alternate" />
-          <SmallText style={styles.infosText}>{context.passwordRegexI18n?.[I18n.getLanguage()]}</SmallText>
+          <SmallText style={styles.infosText} testID="change-password-rules">
+            {context.passwordRegexI18n?.[I18n.getLanguage()]}
+          </SmallText>
         </View>
       ) : null,
     [context.passwordRegexI18n],
   );
 
-  const [oldPassword, setOldPassword] = React.useState(route.params.useResetCode ? route.params.credentials?.username ?? '' : '');
+  const [oldPassword, setOldPassword] = React.useState(route.params.useResetCode ? (route.params.credentials?.username ?? '') : '');
   const [newPassword, setNewPassword] = React.useState('');
   const [confirm, setConfirm] = React.useState('');
   const [typing, setTyping] = React.useState(false);
@@ -115,7 +117,8 @@ const ChangePasswordScreen = (props: ChangePasswordScreenPrivateProps & { contex
     } catch (e) {
       const changePwdError = e as IChangePasswordError;
       // We don't show toaster if it's login error since that case is handled by redirecting the user to the login page, with error displayed.
-      if (!(e instanceof Error.LoginError)) Toast.showError(I18n.get('toast-error-text'));
+      if (!(e instanceof Error.LoginError))
+        Toast.showError(I18n.get('toast-error-text'), { testID: 'change-password-confirmed-error' });
       setError(changePwdError.error);
       setSumitState('IDLE');
       setTyping(false);
@@ -194,6 +197,7 @@ const ChangePasswordScreen = (props: ChangePasswordScreenPrivateProps & { contex
           label={{
             text: isResetMode ? I18n.get('auth-changepassword-login') : I18n.get('auth-changepassword-password-old'),
             icon: isResetMode ? 'ui-user' : 'ui-lock',
+            testID: 'change-password-actual-label',
           }}
           input={
             isResetMode ? (
@@ -222,6 +226,8 @@ const ChangePasswordScreen = (props: ChangePasswordScreenPrivateProps & { contex
                 ref={inputOldPassword}
                 onSubmitEditing={() => inputNewPassword.current?.focus()}
                 returnKeyType="next"
+                testID="change-password-actual-field"
+                testIDToggle="change-password-actual-see"
               />
             )
           }
@@ -231,6 +237,7 @@ const ChangePasswordScreen = (props: ChangePasswordScreenPrivateProps & { contex
           label={{
             text: I18n.get('auth-changepassword-password-new'),
             icon: 'ui-lock',
+            testID: 'change-password-new-label',
           }}
           input={
             <PasswordInput
@@ -243,6 +250,9 @@ const ChangePasswordScreen = (props: ChangePasswordScreenPrivateProps & { contex
               ref={inputNewPassword}
               onSubmitEditing={() => inputConfirmPassword.current?.focus()}
               returnKeyType="next"
+              testID="change-password-new-field"
+              testIDToggle="change-password-new-see"
+              testIDCaption="change-password-new-error"
             />
           }
         />
@@ -250,6 +260,7 @@ const ChangePasswordScreen = (props: ChangePasswordScreenPrivateProps & { contex
           label={{
             text: I18n.get('auth-changepassword-password-new-confirm'),
             icon: 'ui-lock',
+            testID: 'change-password-confirmed-label',
           }}
           input={
             <PasswordInput
@@ -262,11 +273,19 @@ const ChangePasswordScreen = (props: ChangePasswordScreenPrivateProps & { contex
               ref={inputConfirmPassword}
               returnKeyType="send"
               onSubmitEditing={isNotValid ? () => {} : () => doSubmit()}
+              testID="change-password-confirmed-field"
+              testIDToggle="change-password-confirmed-see"
             />
           }
         />
         <View style={styles.buttons}>
-          <PrimaryButton action={doSubmit} disabled={isNotValid} text={I18n.get('common-save')} loading={isSubmitLoading} />
+          <PrimaryButton
+            action={doSubmit}
+            disabled={isNotValid}
+            text={I18n.get('common-save')}
+            loading={isSubmitLoading}
+            testID="change-password"
+          />
           {props.route.params.forceChange ? (
             <DefaultButton
               text={I18n.get('user-revalidateterms-refuseanddisconnect')}

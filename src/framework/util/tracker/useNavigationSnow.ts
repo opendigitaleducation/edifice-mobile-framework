@@ -1,8 +1,8 @@
 import type { Route } from '@react-navigation/native';
 import * as React from 'react';
 import { ThunkDispatch } from 'redux-thunk';
-import { stopItSnowAction } from '~/framework/modules/user/actions';
 
+import { stopItSnowAction } from '~/framework/modules/user/actions';
 import { navigationRef } from '~/framework/navigation/helper';
 
 const customRouteNameLogicMap: { [key: string]: (route: Route<string, any>) => string } = {};

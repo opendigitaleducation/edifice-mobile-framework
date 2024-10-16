@@ -115,8 +115,9 @@ const FormDistributionListModal = React.forwardRef<ModalBoxHandle, IFormDistribu
       ref={ref}
       content={
         <View>
-          <BodyText style={styles.titleMargin}>{`${I18n.get('form-distributionlist-listmodal-myanswers')} - ${props.form
-            ?.title}`}</BodyText>
+          <BodyText style={styles.titleMargin}>{`${I18n.get('form-distributionlist-listmodal-myanswers')} - ${
+            props.form?.title
+          }`}</BodyText>
           <FlatList
             data={data}
             initialNumToRender={data.length}

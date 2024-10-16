@@ -6,6 +6,7 @@ import theme from '~/app/theme';
 import { Icon } from '~/framework/components/picture/Icon';
 import TouchableOpacity from '~/ui/CustomTouchableOpacity';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const TapCircle = styled(TouchableOpacity)<{ checked: boolean }>(
   {
     alignItems: 'center',
@@ -21,6 +22,7 @@ const TapCircle = styled(TouchableOpacity)<{ checked: boolean }>(
   }),
 );
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const Checkbox = ({ checked, onUncheck, onCheck }: { checked: boolean; onUncheck?: () => void; onCheck?: () => void }) => (
   <TapCircle onPress={() => (checked ? onUncheck && onUncheck() : onCheck && onCheck())} checked={checked}>
     <Icon size={17} name="checked" color={theme.ui.text.inverse} />
@@ -38,6 +40,7 @@ const squareCheckboxStyle = StyleSheet.create({
   },
 });
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export const SquareCheckbox = ({
   value,
   onChange,

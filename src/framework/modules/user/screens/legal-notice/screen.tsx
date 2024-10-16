@@ -21,7 +21,7 @@ import { navBarOptions } from '~/framework/navigation/navBar';
 import { Loading } from '~/ui/Loading';
 
 import styles from './styles';
-import type { UserLegalNoticeScreenPrivateProps, UserLegalNoticeScreenProps } from './types';
+import type { LegalItem, UserLegalNoticeScreenPrivateProps, UserLegalNoticeScreenProps } from './types';
 
 export const computeNavBar = ({
   navigation,
@@ -31,10 +31,17 @@ export const computeNavBar = ({
     navigation,
     route,
     title: I18n.get('user-legalnotice-title'),
+    titleTestID: 'legal-title',
+    backButtonTestID: 'legal-back',
   }),
 });
 
-const LEGAL_ITEMS = ['userCharter', 'cgu', 'personalDataProtection', 'cookies'];
+const LEGAL_ITEMS: LegalItem[] = [
+  { item: 'userCharter', testID: 'legal-user-charter' },
+  { item: 'cgu', testID: 'legal-user-cgu' },
+  { item: 'personalDataProtection', testID: 'legal-user-data-protection' },
+  { item: 'cookies', testID: 'legal-cookies' },
+];
 
 function UserLegalNoticeScreen(
   props: UserLegalNoticeScreenPrivateProps & Pick<Required<UserLegalNoticeScreenPrivateProps>, 'legalUrls'>,
@@ -49,11 +56,12 @@ function UserLegalNoticeScreen(
   );
 
   const renderLegalItem = React.useCallback(
-    (legalItem: string) => (
-      <TouchableOpacity onPress={() => openLegalItem(legalItem)} key={legalItem}>
+    (legalItem: LegalItem) => (
+      <TouchableOpacity onPress={() => openLegalItem(legalItem.item)} key={legalItem.item}>
         <ListItem
-          leftElement={<SmallText>{I18n.get(`user-legalnotice-${legalItem.toLowerCase()}`)}</SmallText>}
+          leftElement={<SmallText>{I18n.get(`user-legalnotice-${legalItem.item.toLowerCase()}`)}</SmallText>}
           rightElement={<Icon name="arrow_down" color={theme.palette.primary.regular} style={styles.itemIcon} />}
+          testID={legalItem.testID}
         />
       </TouchableOpacity>
     ),

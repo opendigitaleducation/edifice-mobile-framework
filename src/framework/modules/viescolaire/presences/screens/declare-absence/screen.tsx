@@ -2,7 +2,6 @@ import type { NativeStackNavigationOptions, NativeStackScreenProps } from '@reac
 import moment, { Moment } from 'moment';
 import * as React from 'react';
 import { Platform, ScrollView, View } from 'react-native';
-import { Asset } from 'react-native-image-picker';
 import { connect } from 'react-redux';
 
 import { I18n } from '~/app/i18n';
@@ -32,6 +31,7 @@ import { LocalFile } from '~/framework/util/fileHandler';
 import { Trackers } from '~/framework/util/tracker';
 import { SingleAvatar } from '~/ui/avatars/SingleAvatar';
 
+import { Asset } from '~/framework/util/fileHandler/types';
 import styles from './styles';
 import type { PresencesDeclareAbsenceScreenPrivateProps } from './types';
 

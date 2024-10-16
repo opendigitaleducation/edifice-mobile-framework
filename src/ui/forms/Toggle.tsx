@@ -1,10 +1,18 @@
 import styled from '@emotion/native';
 import * as React from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, StyleSheet, View } from 'react-native';
 
 import theme from '~/app/theme';
 import TouchableOpacity from '~/ui/CustomTouchableOpacity';
 
+const styles = StyleSheet.create({
+  container: {
+    width: 40,
+    height: 22,
+  },
+});
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const TapCircle = styled(TouchableOpacity)<{ checked: boolean }>(
   {
     borderRadius: 14,
@@ -24,6 +32,7 @@ const TapCircle = styled(TouchableOpacity)<{ checked: boolean }>(
   }),
 );
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const Container = styled(TouchableOpacity)<{ checked: boolean }>(
   {
     borderRadius: 14,
@@ -66,12 +75,13 @@ export class Toggle extends React.Component<
   }
 
   switchCheck() {
-    this.props.checked ? this.props.onUncheck && this.props.onUncheck() : this.props.onCheck && this.props.onCheck();
+    if (this.props.checked) this.props?.onUncheck?.();
+    else this.props?.onCheck?.();
   }
 
   render() {
     return (
-      <View style={{ width: 40, height: 22 }} {...(this.props.testID ? { testID: this.props.testID } : {})}>
+      <View style={styles.container} {...(this.props.testID ? { testID: this.props.testID } : {})}>
         <Container onPress={() => this.switchCheck()} checked={this.props.checked} />
         <Animated.View style={{ left: this.state.positionAnim }}>
           <TapCircle onPress={() => this.switchCheck()} checked={this.props.checked} />

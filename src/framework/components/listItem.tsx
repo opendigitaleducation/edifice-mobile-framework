@@ -21,13 +21,15 @@ export const ListItem = ({
   leftElement,
   rightElement,
   style,
+  testID,
 }: {
   leftElement?: React.JSX.Element | null;
   rightElement?: React.JSX.Element | null;
   style?: ViewStyle;
+  testID?: string;
 }) => {
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} testID={testID}>
       {leftElement || null}
       {rightElement || null}
     </View>

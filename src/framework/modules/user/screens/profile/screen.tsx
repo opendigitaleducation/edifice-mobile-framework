@@ -37,7 +37,6 @@ import appConf from '~/framework/util/appConf';
 import { LocalFile } from '~/framework/util/fileHandler';
 import { Image, formatSource } from '~/framework/util/media';
 import { isEmpty } from '~/framework/util/object';
-import { pickFileError } from '~/infra/actions/pickFile';
 
 import { hobbiesItems, renderEmoji } from '.';
 import styles from './styles';
@@ -112,7 +111,7 @@ const callPhoneNumber = tel => {
 };
 
 const UserProfileScreen = (props: ProfilePageProps) => {
-  const { route, session, navigation, onUploadAvatar, onUpdateAvatar, onPickFileError, onUploadAvatarError } = props;
+  const { route, session, navigation, onUploadAvatar, onUpdateAvatar, onUploadAvatarError } = props;
 
   const [updatingAvatar, setUpdatingAvatar] = React.useState<boolean>(false);
   const [userInfo, setUserInfo] = React.useState<undefined | InfoPerson>(undefined);
@@ -140,7 +139,7 @@ const UserProfileScreen = (props: ProfilePageProps) => {
       await onUpdateAvatar(sc.url);
     } catch (err: any) {
       if (err.message === 'Error picking image') {
-        onPickFileError('profileOne');
+        Toast.showError('pickfile-error-storageaccess');
       } else if (!(err instanceof Error)) {
         onUploadAvatarError();
       }
@@ -218,7 +217,7 @@ const UserProfileScreen = (props: ProfilePageProps) => {
     const userAvatar = userInfo?.id;
     return (
       <UserCard
-        id={selfAvatar ? formatSource(`${session?.platform.url}${selfAvatar}`) : userAvatar ?? ''}
+        id={selfAvatar ? formatSource(`${session?.platform.url}${selfAvatar}`) : (userAvatar ?? '')}
         displayName={userInfo?.displayName}
         type={userInfo?.type}
         hasAvatar={!!session?.user.avatar}
@@ -481,7 +480,6 @@ const UserProfileScreen = (props: ProfilePageProps) => {
       const index = hobbies?.findIndex(hobbieItem => hobbieItem.category === hobbie);
       if (index === -1 || (index! >= 0 && hobbies![index!].values === '')) emptyHobbie += `${renderEmoji[hobbie]} `;
     });
-    console.log('emptyHobbie', emptyHobbie, emptyHobbie.length);
     return (
       <View style={styles.bloc}>
         <View style={styles.blocTitle}>
@@ -572,7 +570,6 @@ const UserProfileScreenConnected = connect(
     return ret;
   },
   (dispatch: ThunkDispatch<any, void, AnyAction>) => ({
-    onPickFileError: (notifierId: string) => dispatch(pickFileError(notifierId)),
     onUploadAvatarError: () => dispatch(uploadAvatarError()),
     onUploadAvatar: (avatar: LocalFile) => dispatch(uploadAvatarAction(avatar)),
     onUpdateAvatar: (imageWorkspaceUrl: string) =>

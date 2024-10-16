@@ -130,7 +130,7 @@ const LoginCredentialsScreen = (props: LoginCredentialsScreenPrivateProps) => {
     if (!errmsg) {
       return (
         <View style={styles.boxError}>
-          <BodyText style={styles.userTextError}> </BodyText>
+          <BodyText style={styles.userTextError} testID="login-error" />
         </View>
       );
     }

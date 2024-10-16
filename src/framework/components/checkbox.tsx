@@ -49,7 +49,6 @@ export const Checkbox = ({ checked, partialyChecked, onPress, customContainerSty
           fill={theme.ui.text.inverse}
         />
       );
-    return;
   };
 
   return (

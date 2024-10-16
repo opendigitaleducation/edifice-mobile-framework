@@ -6,6 +6,7 @@ import { UI_STYLES } from '~/framework/components/constants';
 import { ListItem } from '~/framework/components/listItem';
 import { SmallText } from '~/framework/components/text';
 import TouchableOpacity from '~/ui/CustomTouchableOpacity';
+
 import { CheckboxButtonProps } from './types';
 
 export const CheckboxButton = ({

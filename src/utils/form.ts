@@ -21,7 +21,7 @@ function matchRegex(text: string, regex: RegExp | string) {
   if (!text || !regex) {
     return true; //skip validation
   }
-  const regexObject = typeof regex == 'string' ? new RegExp(regex) : regex;
+  const regexObject = typeof regex === 'string' ? new RegExp(regex) : regex;
   return regexObject.test(text);
 }
 function compareString(text1: string, text2: string, match: boolean) {
@@ -32,10 +32,11 @@ function compareString(text1: string, text2: string, match: boolean) {
 /// validator builder: lets compose multiple validator as one big validator
 ///
 export class ValidatorBuilder {
-  static MAIL_REGEX =
+  static mailRegex =
+    // eslint-disable-next-line no-useless-escape
     /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
 
-  static PHONE_REGEX = /^(00|\+)?(?:[0-9] ?-?\.?){6,15}$/;
+  static phoneRegex = /^(00|\+)?(?:[0-9] ?-?\.?){6,15}$/;
 
   validators: IValidator[] = [];
 
@@ -53,11 +54,11 @@ export class ValidatorBuilder {
   }
 
   withPhone() {
-    return this.withRegex(ValidatorBuilder.PHONE_REGEX);
+    return this.withRegex(ValidatorBuilder.phoneRegex);
   }
 
   withEmail() {
-    return this.withRegex(ValidatorBuilder.MAIL_REGEX);
+    return this.withRegex(ValidatorBuilder.mailRegex);
   }
 
   withCompareString(other: ValueGetter<string>, match: boolean) {
