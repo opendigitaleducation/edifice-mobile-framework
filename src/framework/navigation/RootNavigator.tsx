@@ -5,7 +5,7 @@
 import inAppMessaging from '@react-native-firebase/in-app-messaging';
 import { NavigationContainer, NavigationState } from '@react-navigation/native';
 import * as React from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { Linking, Platform, StatusBar } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -115,7 +115,64 @@ function RootNavigator(props: RootNavigatorProps) {
   );
 
   const screenOptions = React.useMemo(() => ({ headerShown: true }), []);
-  console.log('test léa 1234', appConf.deeplink);
+  const config = {
+    screens: {
+      $tabs: {
+        screens: {
+          ['$tab.myapps']: 'myapps',
+          ['$tab.conversation']: 'conversation',
+        },
+      },
+    },
+  };
+
+  const linking = {
+    prefixes: ['devpocketapp://', `https://${appConf.deeplinks?.url}`],
+
+    // Custom function to get the URL which was used to open the app
+    async getInitialURL() {
+      // First, you would need to get the initial URL from your third-party integration
+      // The exact usage depend on the third-party SDK you use
+      // For example, to get the initial URL for Firebase Dynamic Links:
+      //const { isAvailable } = utils().playServicesAvailability;
+
+      // if (isAvailable) {
+      //   const initialLink = await dynamicLinks().getInitialLink();
+
+      //   if (initialLink) {
+      //     return initialLink.url;
+      //   }
+      // }
+
+      // As a fallback, you may want to do the default deep link handling
+      const url = await Linking.getInitialURL();
+      console.debug(url, 'test léa 1');
+
+      return url;
+    },
+
+    // Custom function to subscribe to incoming links
+    subscribe(listener) {
+      // Listen to incoming links from Firebase Dynamic Links
+      // const unsubscribeFirebase = dynamicLinks().onLink(({ url }) => {
+      //   listener(url);
+      // });
+
+      // Listen to incoming links from deep linking
+      const linkingSubscription = Linking.addEventListener('url', ({ url }) => {
+        console.error(url, 'test léaaa');
+        listener(url);
+      });
+
+      return () => {
+        // Clean up the event listeners
+        //unsubscribeFirebase();
+        linkingSubscription.remove();
+      };
+    },
+
+    config,
+  };
 
   const ret = React.useMemo(() => {
     return (
@@ -126,7 +183,8 @@ function RootNavigator(props: RootNavigatorProps) {
             // key={lastAddAccount}
             ref={navigationRef}
             initialState={navigationState}
-            onStateChange={onStateChange}>
+            onStateChange={onStateChange}
+            linking={linking}>
             <AppPushNotificationHandlerComponent>
               <RootStack.Navigator screenOptions={screenOptions}>
                 {routes}

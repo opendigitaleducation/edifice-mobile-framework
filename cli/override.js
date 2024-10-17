@@ -593,9 +593,8 @@ async function _override_performSpecialUpdates() {
     throw new Error(`Missing appname information in ${_override_entryPoint}.`);
   const appnameIos = overrideJson['appname.ios'] || overrideJson.appname;
   const appnameAndroid = overrideJson['appname.android'] || overrideJson.appname;
-  console.debug(overrideJson.deeplink.url, overrideJson.deeplink.prefix, 'test lea');
-  const appDeeplinkUrl = overrideJson.deeplink.url;
-  const appDeeplinkPrefix = overrideJson.deeplink.prefix;
+  const appDeeplinksUrl = overrideJson.deeplinks.url;
+  const appDeeplinksPrefix = overrideJson.deeplinks.prefix;
   if (!overrideJson.override) throw new Error(`Missing override information in ${_override_entryPoint}.`);
   const override = overrideJson.override;
 
@@ -628,7 +627,7 @@ async function _override_performSpecialUpdates() {
   let entitlementsContent = await readFile(entitlementsPath, { encoding: 'utf-8' });
   entitlementsContent = entitlementsContent.replace(
     /<string>applinks:appe.edifice.io<\/string>/,
-    `<string>applinks:${appDeeplinkUrl}<\/string>`,
+    `<string>applinks:${appDeeplinksUrl}<\/string>`,
   );
   await writeFile(entitlementsPath, entitlementsContent);
   opts.verbose && console.info(`Updated ${_override_specialUpdates['ios.entitlements']}`);
@@ -649,8 +648,8 @@ async function _override_performSpecialUpdates() {
   const androidManifestPath = path.resolve(_projectPathAbsolute, _override_specialUpdates['android.manifest']);
   let androidManifestContent = await readFile(androidManifestPath, { encoding: 'utf-8' });
   androidManifestContent = androidManifestContent
-    .replace(/android:host="appe\.edifice\.io"/, `android:host="${appDeeplinkUrl}"`)
-    .replace(/android:pathPrefix="\/some-path"/, `android:pathPrefix="${appDeeplinkPrefix}"`);
+    .replace(/android:host="appe\.edifice\.io"/, `android:host="${appDeeplinksUrl}"`)
+    .replace(/android:pathPrefix="\/some-path"/, `android:pathPrefix="${appDeeplinksPrefix}"`);
   await writeFile(androidManifestPath, androidManifestContent);
   opts.verbose && console.info(`Updated ${_override_specialUpdates['android.manifest']}`);
   ret.push(_override_specialUpdates['android.manifest']);

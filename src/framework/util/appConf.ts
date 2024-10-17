@@ -103,7 +103,7 @@ export class Platform {
 
 export interface IAppConfDeclaration {
   debugEnabled?: boolean;
-  deeplink?: {
+  deeplinks?: {
     url: string;
     prefix: string;
   };
@@ -137,7 +137,7 @@ export interface IAppConfDeclaration {
 }
 
 export class AppConf {
-  deeplink?: {
+  deeplinks?: {
     url: string;
     prefix: string;
   };
@@ -238,11 +238,11 @@ export class AppConf {
   }
 
   constructor(opts: IAppConfDeclaration) {
-    const deeplinks: Partial<AppConf['deeplink']> = {
-      prefix: opts.deeplink?.prefix ?? '',
-      url: opts.deeplink?.url ?? '',
+    const deeplinks: Partial<AppConf['deeplinks']> = {
+      prefix: opts.deeplinks?.prefix ?? '',
+      url: opts.deeplinks?.url ?? '',
     };
-    this.deeplink = deeplinks as AppConf['deeplink'];
+    this.deeplinks = deeplinks as AppConf['deeplinks'];
     this.debugEnabled = opts?.debugEnabled ?? true;
     this.i18nOTA = opts?.i18nOTA || false;
     if (opts.level) this.level = opts.level;
