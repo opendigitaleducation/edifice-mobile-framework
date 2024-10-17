@@ -23,6 +23,7 @@ import { AppPushNotificationHandlerComponent } from '~/framework/util/notificati
 import { useNavigationSnowHandler } from '~/framework/util/tracker/useNavigationSnow';
 import { useNavigationTracker } from '~/framework/util/tracker/useNavigationTracker';
 
+import appConf from '~/framework/util/appConf';
 import { navigationRef } from './helper';
 import { useMainNavigation } from './mainNavigation';
 import modals from './modals/navigator';
@@ -114,6 +115,7 @@ function RootNavigator(props: RootNavigatorProps) {
   );
 
   const screenOptions = React.useMemo(() => ({ headerShown: true }), []);
+  console.log('test léa 1234', appConf.deeplink);
 
   const ret = React.useMemo(() => {
     return (

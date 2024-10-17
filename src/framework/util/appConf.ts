@@ -103,6 +103,10 @@ export class Platform {
 
 export interface IAppConfDeclaration {
   debugEnabled?: boolean;
+  deeplink?: {
+    url: string;
+    prefix: string;
+  };
   i18nOTA?: boolean;
   level?: '1d' | '2d';
   matomo: {
@@ -133,6 +137,11 @@ export interface IAppConfDeclaration {
 }
 
 export class AppConf {
+  deeplink?: {
+    url: string;
+    prefix: string;
+  };
+
   debugEnabled = false;
 
   i18nOTA = false;
@@ -229,6 +238,11 @@ export class AppConf {
   }
 
   constructor(opts: IAppConfDeclaration) {
+    const deeplinks: Partial<AppConf['deeplink']> = {
+      prefix: opts.deeplink?.prefix ?? '',
+      url: opts.deeplink?.url ?? '',
+    };
+    this.deeplink = deeplinks as AppConf['deeplink'];
     this.debugEnabled = opts?.debugEnabled ?? true;
     this.i18nOTA = opts?.i18nOTA || false;
     if (opts.level) this.level = opts.level;
