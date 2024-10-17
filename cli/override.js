@@ -628,7 +628,7 @@ async function _override_performSpecialUpdates() {
   let entitlementsContent = await readFile(entitlementsPath, { encoding: 'utf-8' });
   entitlementsContent = entitlementsContent.replace(
     /<string>applinks:appe.edifice.io<\/string>/,
-    `<string>applinks:${appUrlDeeplink}<\/string>`,
+    `<string>applinks:${appDeeplinkUrl}<\/string>`,
   );
   await writeFile(entitlementsPath, entitlementsContent);
   opts.verbose && console.info(`Updated ${_override_specialUpdates['ios.entitlements']}`);
