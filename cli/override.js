@@ -626,7 +626,10 @@ async function _override_performSpecialUpdates() {
   // 4. iOS appe.entitlements
   const entitlementsPath = path.resolve(_projectPathAbsolute, _override_specialUpdates['ios.entitlements']);
   let entitlementsContent = await readFile(entitlementsPath, { encoding: 'utf-8' });
-  entitlementsContent = entitlementsContent.replace(/<string>applinks:<\/string>/, `<string>applinks:${appDeeplinkUrl}<\/string>`);
+  entitlementsContent = entitlementsContent.replace(
+    /<string>applinks:appe.edifice.io<\/string>/,
+    `<string>applinks:${appUrlDeeplink}<\/string>`,
+  );
   await writeFile(entitlementsPath, entitlementsContent);
   opts.verbose && console.info(`Updated ${_override_specialUpdates['ios.entitlements']}`);
   ret.push(_override_specialUpdates['ios.entitlements']);
