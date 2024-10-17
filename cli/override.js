@@ -649,8 +649,8 @@ async function _override_performSpecialUpdates() {
     .replace(/android:host="appe\.edifice\.io"/, `android:host="${appDeeplinkUrl}"`)
     .replace(/android:pathPrefix="\/some-path"/, `android:pathPrefix="${appDeeplinkPrefix}"`);
   await writeFile(androidManifestPath, androidManifestContent);
-  opts.verbose && console.info(`Updated ${_override_specialUpdates['android.gradle']}`);
-  ret.push(_override_specialUpdates['android.gradle']);
+  opts.verbose && console.info(`Updated ${_override_specialUpdates['android.manifest']}`);
+  ret.push(_override_specialUpdates['android.manifest']);
 
   return ret;
 }
