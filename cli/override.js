@@ -609,7 +609,7 @@ async function _override_performSpecialUpdates() {
     .replace(/(<key>CFBundleURLName<\/key>\s*<string>)(.*)(<\/string>)/, '$1' + appidIos + '$3')
     .replace(
       /(<key>CFBundleURLSchemes<\/key>\s*<array>\s*<string>)(.*)(<\/string>)/,
-      '$1' + `${appnameIos.toLowerCase()}app` + '$3',
+      '$1' + `${appnameIos.toLowerCase().replace(/\s+/g, '')}app` + '$3',
     );
   opts.verbose && console.info(`Update ${_override_specialUpdates['ios.plist']}`);
   await writeFile(infoPlistPath, infoPlist);
