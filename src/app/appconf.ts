@@ -8,12 +8,6 @@ const emptyAppConf = {
   platforms: [],
 };
 
-console.log({
-  ...emptyAppConf,
-  ...appConfOverride,
-  ...overrideJson?.deeplinks,
-});
-
 export default {
   ...emptyAppConf,
   ...appConfOverride,

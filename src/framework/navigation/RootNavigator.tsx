@@ -146,7 +146,10 @@ function RootNavigator(props: RootNavigatorProps) {
 
       // As a fallback, you may want to do the default deep link handling
       const url = await Linking.getInitialURL();
-      console.debug(url, 'test léa 1');
+
+      if (url) {
+        await Linking.openURL(url);
+      }
 
       return url;
     },
