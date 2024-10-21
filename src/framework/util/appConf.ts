@@ -106,6 +106,7 @@ export interface IAppConfDeclaration {
   deeplinks?: {
     url: string;
     prefix: string;
+    urlscheme: string;
   };
   i18nOTA?: boolean;
   level?: '1d' | '2d';
@@ -140,6 +141,7 @@ export class AppConf {
   deeplinks?: {
     url: string;
     prefix: string;
+    urlscheme: string;
   };
 
   debugEnabled = false;
@@ -241,6 +243,7 @@ export class AppConf {
     const deeplinks: Partial<AppConf['deeplinks']> = {
       prefix: opts.deeplinks?.prefix ?? '',
       url: opts.deeplinks?.url ?? '',
+      urlscheme: opts.deeplinks?.urlscheme ?? '',
     };
     this.deeplinks = deeplinks as AppConf['deeplinks'];
     this.debugEnabled = opts?.debugEnabled ?? true;

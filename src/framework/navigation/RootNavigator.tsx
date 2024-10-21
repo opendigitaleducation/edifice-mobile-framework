@@ -119,34 +119,24 @@ function RootNavigator(props: RootNavigatorProps) {
     screens: {
       $tabs: {
         screens: {
-          ['$tab.myapps']: 'myapps',
-          ['$tab.conversation']: 'conversation',
+          ['$tab.myapps']: {
+            screens: {
+              ['blog']: 'deeplinks/blog',
+            },
+          },
+          ['$tab.conversation']: 'deeplinks/conv',
+          ['$tab.timeline']: 'deeplinks/timeline',
+          ['$tab.user']: 'deeplinks/user',
         },
       },
     },
   };
 
   const linking = {
-    prefixes: ['devpocketapp://', `https://${appConf.deeplinks?.url}`],
+    prefixes: [appConf.deeplinks?.urlscheme, `https://${appConf.deeplinks?.url}`],
 
-    // Custom function to get the URL which was used to open the app
     async getInitialURL() {
-      // First, you would need to get the initial URL from your third-party integration
-      // The exact usage depend on the third-party SDK you use
-      // For example, to get the initial URL for Firebase Dynamic Links:
-      //const { isAvailable } = utils().playServicesAvailability;
-
-      // if (isAvailable) {
-      //   const initialLink = await dynamicLinks().getInitialLink();
-
-      //   if (initialLink) {
-      //     return initialLink.url;
-      //   }
-      // }
-
-      // As a fallback, you may want to do the default deep link handling
       const url = await Linking.getInitialURL();
-
       if (url) {
         await Linking.openURL(url);
       }
@@ -154,22 +144,13 @@ function RootNavigator(props: RootNavigatorProps) {
       return url;
     },
 
-    // Custom function to subscribe to incoming links
     subscribe(listener) {
-      // Listen to incoming links from Firebase Dynamic Links
-      // const unsubscribeFirebase = dynamicLinks().onLink(({ url }) => {
-      //   listener(url);
-      // });
-
-      // Listen to incoming links from deep linking
       const linkingSubscription = Linking.addEventListener('url', ({ url }) => {
-        console.error(url, 'test léaaa');
+        console.error(url, 'test léa');
         listener(url);
       });
 
       return () => {
-        // Clean up the event listeners
-        //unsubscribeFirebase();
         linkingSubscription.remove();
       };
     },

@@ -13,5 +13,6 @@ export default {
   ...appConfOverride,
   deeplinks: {
     ...overrideJson?.deeplinks,
+    urlscheme: `${overrideJson?.appname.toLowerCase().replace(/\s+/g, '')}app`,
   },
 };
