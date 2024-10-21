@@ -58,6 +58,12 @@
                     android:host="appe.edifice.io"
                     android:pathPrefix="/some-path" />
             </intent-filter>
+             <intent-filter android:label="filter_react_native">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="appeapp" />
+            </intent-filter>
         </activity>
         <activity android:name="zendesk.support.guide.HelpCenterActivity"
             android:theme="@style/HelpCenterTheme" />

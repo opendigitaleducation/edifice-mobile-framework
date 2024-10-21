@@ -649,7 +649,8 @@ async function _override_performSpecialUpdates() {
   let androidManifestContent = await readFile(androidManifestPath, { encoding: 'utf-8' });
   androidManifestContent = androidManifestContent
     .replace(/android:host="appe\.edifice\.io"/, `android:host="${appDeeplinksUrl}"`)
-    .replace(/android:pathPrefix="\/some-path"/, `android:pathPrefix="${appDeeplinksPrefix}"`);
+    .replace(/android:pathPrefix="\/some-path"/, `android:pathPrefix="${appDeeplinksPrefix}"`)
+    .replace(/android:host="appeapp"/, `android:host="${appnameIos.toLowerCase().replace(/\s+/g, '')}app"`);
   await writeFile(androidManifestPath, androidManifestContent);
   opts.verbose && console.info(`Updated ${_override_specialUpdates['android.manifest']}`);
   ret.push(_override_specialUpdates['android.manifest']);
