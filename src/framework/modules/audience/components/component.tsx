@@ -7,7 +7,7 @@ import { Fade, Placeholder, PlaceholderLine } from 'rn-placeholder';
 
 import AudienceReactButton from './button';
 import styles from './styles';
-import { AudienceAllProps } from './types';
+import { AudienceAllProps, UpdatedReactionsInfos } from './types';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
@@ -36,24 +36,17 @@ const Audience = (props: AudienceAllProps) => {
     setUserReaction(props.infosReactions?.userReaction ?? null);
   }, [props]);
 
-  const refreshData = async () => {
-    try {
-      const dt = await audienceService.reaction.getSummary(props.referer.module, props.referer.resourceType, [
-        props.referer.resourceId,
-      ]);
-      const newReactionInfos = dt.reactionsByResource[props.referer.resourceId];
-      setUserReaction(newReactionInfos?.userReaction);
-      setTotalReactions(newReactionInfos?.totalReactionsCounter);
-      setTypesReactions(newReactionInfos?.reactionTypes);
-    } catch (e) {
-      console.error('[Audience] refreshData error :', e);
-    }
+  const refreshData = async (newReactionInfos: UpdatedReactionsInfos) => {
+    setUserReaction(newReactionInfos?.userReaction);
+    setTotalReactions(newReactionInfos?.totalReactionsCounter);
+    setTypesReactions(newReactionInfos?.reactionTypes);
   };
 
   const deleteReaction = async () => {
     try {
-      await audienceService.reaction.delete(props.session, props.referer);
-      refreshData();
+      const apiReturn = await audienceService.reaction.delete(props.session, props.referer);
+      const newReactionInfos = apiReturn?.reactionsByResource[props.referer.resourceId];
+      refreshData(newReactionInfos);
     } catch (e) {
       console.error('[Audience] deleteReaction error :', e);
     }
@@ -61,8 +54,9 @@ const Audience = (props: AudienceAllProps) => {
 
   const postReaction = async (reaction: string) => {
     try {
-      await audienceService.reaction.post(props.session, props.referer, reaction);
-      refreshData();
+      const apiReturn = await audienceService.reaction.post(props.session, props.referer, reaction);
+      const newReactionInfos = apiReturn?.reactionsByResource[props.referer.resourceId];
+      refreshData(newReactionInfos);
     } catch (e) {
       console.error('[Audience] postReaction error :', e);
     }
@@ -70,8 +64,9 @@ const Audience = (props: AudienceAllProps) => {
 
   const updateReaction = async (reaction: string) => {
     try {
-      await audienceService.reaction.update(props.session, props.referer, reaction);
-      refreshData();
+      const apiReturn = await audienceService.reaction.update(props.session, props.referer, reaction);
+      const newReactionInfos = apiReturn?.reactionsByResource[props.referer.resourceId];
+      refreshData(newReactionInfos);
     } catch (e) {
       console.error('[Audience] updateReaction error :', e);
     }

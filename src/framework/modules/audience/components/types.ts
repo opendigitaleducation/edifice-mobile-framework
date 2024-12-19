@@ -21,4 +21,10 @@ export interface AudienceProps {
   isManager?: boolean;
 }
 
+export interface UpdatedReactionsInfos {
+  userReaction: string;
+  totalReactionsCounter: number;
+  reactionTypes: string[];
+}
+
 export interface AudienceAllProps extends AudienceProps, AudienceReduxProps {}
