@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 
-import styles from './styles';
-import { HomeworkCardProps } from './types';
+import { Moment } from 'moment';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
@@ -10,58 +9,59 @@ import { Icon } from '~/framework/components/icon';
 import { NamedSVG } from '~/framework/components/picture';
 import { BodyBoldText, SmallText, TextSizeStyle } from '~/framework/components/text';
 import { getDayOfTheWeek, today } from '~/framework/util/date';
-import { extractMediaFromHtml } from '~/framework/util/htmlParser/content';
-import { IMedia } from '~/framework/util/notifications';
 import HtmlToText from '~/infra/htmlConverter/text';
 
-const HomeworkCard = ({ content, date, finished, onPress, style, title }: HomeworkCardProps) => {
+export interface IHomeworkCardProps {
+  title: string;
+  content: string;
+  date: Moment;
+  finished: boolean;
+  onPress: () => void;
+  style?: ViewStyle;
+}
+
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: theme.ui.background.card,
+    borderRadius: UI_SIZES.radius.card,
+    elevation: 7,
+    flexDirection: 'row',
+    marginLeft: UI_SIZES.spacing.big,
+    marginTop: UI_SIZES.spacing.small,
+    padding: UI_SIZES.spacing.medium,
+    shadowColor: theme.ui.shadowColor,
+    shadowOffset: { height: 4, width: 0 },
+    shadowOpacity: 0.15,
+    shadowRadius: 5,
+  },
+  status: {
+    marginLeft: UI_SIZES.spacing.minor,
+  },
+  viewArrow: {
+    justifyContent: 'center',
+    marginLeft: UI_SIZES.spacing.small,
+  },
+  viewTexts: {
+    flex: 1,
+  },
+  viewTitle: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+});
+
+const HomeworkCard = ({ content, date, finished, onPress, style, title }: IHomeworkCardProps) => {
   const isPastDate = date.isBefore(today(), 'day');
   const dayOfTheWeek = getDayOfTheWeek(date);
   const dayColor = theme.color.homework.days[dayOfTheWeek]?.accent ?? theme.palette.grey.stone;
   const arrowColor = isPastDate ? theme.palette.grey.stone : dayColor;
   const formattedContent = content && HtmlToText(content, false).render;
 
-  const renderTitle = React.useCallback(() => {
-    /**
-     * We want to render title along with icons representing media types featured in the task
-     */
-    const mediaTypes: IMedia[] = content ? extractMediaFromHtml(content) || [] : [];
-    const mediaTypesPerTask = [...new Set(mediaTypes.map(media => media.type))];
-
-    const mediaIcons: { [key: string]: string } = {
-      audio: 'ui-mic-preview',
-      image: 'ui-image-preview',
-      video: 'ui-recordVideo-preview',
-    };
-
-    if (mediaTypesPerTask.length === 0) {
-      return <View style={styles.viewTitle}>{title ? <BodyBoldText numberOfLines={1}>{title}</BodyBoldText> : null}</View>;
-    } else {
-      return (
-        <View style={styles.viewTitle}>
-          {title ? <BodyBoldText numberOfLines={1}>{title}</BodyBoldText> : null}
-          {mediaTypesPerTask.map((type, index) => (
-            <NamedSVG
-              key={index}
-              name={mediaIcons[type]}
-              style={{
-                marginLeft: index === 0 ? UI_SIZES.spacing.tiny : -(UI_SIZES.spacing.tiny + UI_SIZES.spacing._LEGACY_tiny),
-                zIndex: mediaTypesPerTask.length + index,
-              }}
-              width={UI_SIZES.elements.icon.medium}
-              height={UI_SIZES.elements.icon.medium}
-            />
-          ))}
-        </View>
-      );
-    }
-  }, [content, title]);
-
   return (
     <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
       <View style={styles.viewTexts}>
         <View style={styles.viewTitle}>
-          {renderTitle()}
+          {title ? <BodyBoldText numberOfLines={1}>{title}</BodyBoldText> : null}
           {finished === undefined ? null : (
             <NamedSVG
               fill={finished ? theme.palette.status.success.regular : theme.palette.grey.stone}
