@@ -65,6 +65,7 @@
   },
   "dependencies": {
     "@bam.tech/react-native-image-resizer": "3.0.11",
+    "@edifice.io/client": "2.0.1-develop-hotfix.1736779480274",
     "@emotion/native": "11.11.0",
     "@emotion/react": "11.13.5",
     "@flyerhq/react-native-android-uri-path": "2.3.0",
