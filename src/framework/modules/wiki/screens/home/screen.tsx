@@ -13,6 +13,9 @@ import { WikiNavigationParams, wikiRouteNames } from '~/framework/modules/wiki/n
 import { navBarOptions } from '~/framework/navigation/navBar';
 
 import { FOLDER, odeServices, SORT_ORDER } from '@edifice.io/client';
+import { getSession } from '~/framework/modules/auth/reducer';
+import appConf from '~/framework/util/appConf';
+import { RequestBuilder } from '~/framework/util/http/request-builder';
 import '../../service/resource';
 
 export const computeNavBar = ({
@@ -46,15 +49,24 @@ export const ExplorerContext = () => {
   };
 
   const searchContext = async () => {
-    const result = await odeServices.resource('wiki').searchContext({
-      ...searchParams,
-      application: 'wiki',
-      types: ['wiki'],
-      pagination: {
-        ...searchParams.pagination,
-        startIdx: 1 as number,
-      },
-    });
+    const rb = new RequestBuilder('', '').withAccount(getSession()!);
+    const url = appConf.getExpandedPlatform(getSession()!.platform)?.url;
+    const headers = rb._init?.headers;
+    odeServices.http().useBaseUrl(url).useHeaders(headers);
+    const result = await odeServices
+      .resource('wiki')
+      .searchContext({
+        ...searchParams,
+        application: 'wiki',
+        types: ['wiki'],
+        pagination: {
+          ...searchParams.pagination,
+          startIdx: 1 as number,
+        },
+      })
+      .catch(e => {
+        console.error('Error while searching context', e);
+      });
 
     console.log({ result });
 
