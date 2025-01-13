@@ -1,6 +1,6 @@
 {
   "WARNING": "¡¡¡ USED AND UPDATED BY prepare-build.js - DO NOT EDIT MANUALLY !!!",
-  "last": "2024-12-20 11:13:14",
-  "notes": "update(yarn): yarn cache update\nchore(eslint): fix declaration order\nfeat(wayf): MB-3005, improve saml/oidc token detection using direct communication between wayf anf mobile via messages\nrelease: 1.13.8(1130800)\nupdate(yarn): update yarn cache.\nrelease: 1.13.7-rc.5(1130706)",
-  "version": "1.13.8-rc.1(1130801)"
+  "last": "2025-01-06 19:18:20",
+  "notes": "release: 1.14.0(1140000)\nfix(schoolbook): MB-2250 fixing title margin\nfeat(homework): WB2-2228 adding media preview in title\nchore(stack): yarn cache update\nMerge commit '4acd55a89a762a41c32eec7dcae69f654c8da3cf' into dev/pedago\nchore(stack): yarn cache update\nchore(stack): yarn cache update\nrelease: 1.13.8-rc.1(1130801)",
+  "version": "1.14.0-alpha.1(1140001)"
 }
