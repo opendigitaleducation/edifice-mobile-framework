@@ -167,7 +167,7 @@ const EdtHomeScreen = (props: EdtHomeScreenPrivateProps) => {
     return props.teachers.find(teacher => teacher.id === teacherIds[0])?.displayName ?? '';
   };
 
-  const renderCourse = (course: IEdtCourse) => {
+  const renderCourse = (course: IEdtCourse): React.ReactElement => {
     const isTeacher = props.userType === AccountType.Teacher;
     const className = course.classes.length ? course.classes[0] : course.groups[0];
     const firstText = isTeacher ? className : course.subject.name;
@@ -177,13 +177,13 @@ const EdtHomeScreen = (props: EdtHomeScreenPrivateProps) => {
 
     return (
       <View style={[styles.courseView, hasTag && styles.taggedCourseBackground, isActive && styles.activeCourseBorder]}>
-        <View style={styles.subjectView}>
+        <View style={[styles.subjectView, styles.halfSplitLineView, styles.firstTextLine]}>
           <SmallText numberOfLines={1}>{firstText}</SmallText>
-          <CaptionText style={{ color: theme.palette.grey.graphite }} numberOfLines={1}>
+          <CaptionText style={[styles.halfTextStyle, { color: theme.palette.grey.graphite }]} numberOfLines={1}>
             {secondText}
           </CaptionText>
         </View>
-        <View>
+        <View style={[styles.halfSplitLineView, styles.firstTextLine]}>
           {course.roomLabels[0]?.length ? (
             <View style={styles.roomView}>
               <CaptionBoldText numberOfLines={1}>
@@ -207,7 +207,7 @@ const EdtHomeScreen = (props: EdtHomeScreenPrivateProps) => {
 
     return (
       <View style={[styles.halfCourseView, hasTag && styles.taggedCourseBackground, isActive && styles.activeCourseBorder]}>
-        <View style={styles.halfSplitLineView}>
+        <View style={[styles.halfSplitLineView, styles.firstTextLine]}>
           <SmallText style={styles.halfTextStyle} numberOfLines={1}>
             {firstText}
           </SmallText>

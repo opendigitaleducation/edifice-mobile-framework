@@ -10,7 +10,7 @@ import {
   ITimetableCourse,
   LINE_HEIGHT,
   minutes,
-  SLOT_HEIGHT,
+  SLOT_HOUR_HEIGHT,
   TIME_COLUMN_WIDTH,
   TimeSlotLine,
 } from './Timetable';
@@ -217,13 +217,13 @@ export default class TimetableDiary extends React.PureComponent<ITimetableDiaryP
 
     // computing absolute coordinates
     const top =
-      iSlotStart * SLOT_HEIGHT +
-      ((minutes(displayedStart) - minutes(slots[iSlotStart].startHour)) * SLOT_HEIGHT) /
+      iSlotStart * SLOT_HOUR_HEIGHT +
+      ((minutes(displayedStart) - minutes(slots[iSlotStart].startHour)) * SLOT_HOUR_HEIGHT) /
         (minutes(slots[iSlotStart].endHour) - minutes(slots[iSlotStart].startHour)) +
       LINE_HEIGHT / 2;
     const bottom =
-      iSlotEnd * SLOT_HEIGHT +
-      ((minutes(displayedEnd) - minutes(slots[iSlotEnd].startHour)) * SLOT_HEIGHT) /
+      iSlotEnd * SLOT_HOUR_HEIGHT +
+      ((minutes(displayedEnd) - minutes(slots[iSlotEnd].startHour)) * SLOT_HOUR_HEIGHT) /
         (minutes(slots[iSlotEnd].endHour) - minutes(slots[iSlotEnd].startHour)) +
       LINE_HEIGHT / 2;
 
@@ -247,11 +247,11 @@ export default class TimetableDiary extends React.PureComponent<ITimetableDiaryP
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ height: SLOT_HEIGHT * slots.length + SLOT_HEIGHT / 2 }}>
+        contentContainerStyle={{ height: SLOT_HOUR_HEIGHT * slots.length + SLOT_HOUR_HEIGHT / 2 }}>
         {slots.map((slot, index) => (
-          <TimeSlotLine key={index} text={slot.startHour.format('HH:mm')} style={{ top: SLOT_HEIGHT * index }} />
+          <TimeSlotLine key={index} text={slot.startHour.format('HH:mm')} style={{ top: SLOT_HOUR_HEIGHT * index }} />
         ))}
-        <TimeSlotLine text={latestSlot.endHour.format('HH:mm')} style={{ top: SLOT_HEIGHT * slots.length }} />
+        <TimeSlotLine text={latestSlot.endHour.format('HH:mm')} style={{ top: SLOT_HOUR_HEIGHT * slots.length }} />
         {organizedCourses[0].map(d => this.renderElement(d, renderCourse))}
         {organizedCourses[1].map(d => this.renderElement(d, renderCourseHalf, 'l'))}
         {organizedCourses[2].map(d => this.renderElement(d, renderCourseHalf, 'r'))}
