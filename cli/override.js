@@ -64,11 +64,9 @@ const _override_copyMergePaths = {
   'theme.ts': 'src/app/override/theme.ts', // Theme override
   assets: 'assets', // All specific assets
   'android/google-services.json': 'android/app/google-services.json', // Firebase Android config
-  'android/appcenter-config.json': 'android/app/src/main/assets/appcenter-config.json', // AppCenter Android config
   'android/res': 'android/app/src/main/res', // Android specific native assets
   'android/fonts': 'android/app/src/main/assets/fonts', // Android specific fonts
   'android/images': 'android/app/src/main/assets/images', // Android specific images
-  'ios/AppCenter-Config.plist': 'ios/appe/AppCenter-Config.plist', // AppCenter iOS config
   'ios/GoogleService-Info.plist': 'ios/appe/GoogleService-Info.plist', // Firebase iOS config
   'ios/Assets.xcassets': 'ios/appe/Assets.xcassets', // iOS specific native assets
   'ios/Fonts': 'ios/Fonts', // iOS specific fonts
@@ -82,11 +80,7 @@ const _override_specialUpdates = {
   android: 'android/gradle.properties',
 };
 
-const _override_forceCopy = [
-  'assets/animations/audio/disque.json',
-  'android/app/google-services.json',
-  'android/app/src/main/assets/appcenter-config.json',
-];
+const _override_forceCopy = ['assets/animations/audio/disque.json', 'android/app/google-services.json'];
 
 // Project constants
 const _projectPathAbsolute = process.cwd();

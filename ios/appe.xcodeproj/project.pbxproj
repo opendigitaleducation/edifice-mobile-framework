@@ -31,7 +31,6 @@
 		1D4670A22B7509C2001EFD9F /* audio.svg in Resources */ = {isa = PBXBuildFile; fileRef = 1D4670A12B7509C2001EFD9F /* audio.svg */; };
 		1DCD7ADC2B7E01460010EB27 /* play.svg in Resources */ = {isa = PBXBuildFile; fileRef = 1DCD7ADB2B7E01460010EB27 /* play.svg */; };
 		7404C07422E8B012008546A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7404C07322E8B012008546A8 /* Assets.xcassets */; };
-		741ACC0D23B632380075BCE4 /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 741ACC0C23B632380075BCE4 /* AppCenter-Config.plist */; };
 		745D891522DE014D0038F1FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 745D891422DE014D0038F1FA /* GoogleService-Info.plist */; };
 		74660EAE247BE64C00F74D20 /* DummySwiftFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74660EAD247BE64C00F74D20 /* DummySwiftFile.swift */; };
 		74EC2C4926E63F04008EB301 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 74EC2C4026E63F04008EB301 /* icomoon.ttf */; };
@@ -92,7 +91,6 @@
 		4C65C5FF632CAF7C5C8428CC /* Pods-appe-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-appe-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-appe-tvOS/Pods-appe-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		611EEA89A9B54F0CB20EFC25 /* libPods-appe.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-appe.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7404C07322E8B012008546A8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = appe/Assets.xcassets; sourceTree = "<group>"; };
-		741ACC0C23B632380075BCE4 /* AppCenter-Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "appe/AppCenter-Config.plist"; sourceTree = "<group>"; };
 		745D891422DE014D0038F1FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "appe/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		745D891922DE0F770038F1FA /* appe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = appe.entitlements; path = appe/appe.entitlements; sourceTree = "<group>"; };
 		74660EAB247BE64B00F74D20 /* appe-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "appe-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -148,7 +146,6 @@
 				F0CB475C2BC6BF83006A73F3 /* PrivacyInfo.xcprivacy */,
 				F0CB475E2BC6BF83006A73F3 /* ZendeskUnified.mm */,
 				F0CB475D2BC6BF83006A73F3 /* ZendeskUnified.swift */,
-				741ACC0C23B632380075BCE4 /* AppCenter-Config.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				74660EAB247BE64B00F74D20 /* appe-Bridging-Header.h */,
@@ -380,7 +377,6 @@
 				7404C07422E8B012008546A8 /* Assets.xcassets in Resources */,
 				F06C18692B61837F00FBA3A2 /* splash-screen@3x.png in Resources */,
 				F0625946264574A4001AE555 /* InfoPlist.strings in Resources */,
-				741ACC0D23B632380075BCE4 /* AppCenter-Config.plist in Resources */,
 				F06C186A2B61837F00FBA3A2 /* splash-screen@2x.png in Resources */,
 				F0CB475F2BC6BF83006A73F3 /* PrivacyInfo.xcprivacy in Resources */,
 				745D891522DE014D0038F1FA /* GoogleService-Info.plist in Resources */,

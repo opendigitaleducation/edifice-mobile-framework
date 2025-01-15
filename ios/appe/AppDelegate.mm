@@ -1,6 +1,3 @@
-#import <AppCenterReactNative.h>
-#import <AppCenterReactNativeAnalytics.h>
-#import <AppCenterReactNativeCrashes.h>
 #import <Firebase.h>
 #import <RNCPushNotificationIOS.h>
 #import <React/RCTBundleURLProvider.h>
@@ -34,13 +31,6 @@ static NSString* RECEIVED_PUSHES_KEY = @"RECEIVED_PUSHES";
   // Force portrait mode
   //
   [Orientation setOrientation:UIInterfaceOrientationMaskPortrait];
-
-  //
-  // AppCenter Initialization
-  //
-  [AppCenterReactNative register];
-  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
-  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
 
   //
   // React Native Firebase Initialization

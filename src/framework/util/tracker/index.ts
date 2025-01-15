@@ -1,10 +1,8 @@
 /**
  * Tracking manager, aka "Tracker"
- * Collect data throught Matomo and AppCenter.
+ * Collect data throught Matomo and Crashlytics.
  */
 import CookieManager from '@react-native-cookies/cookies';
-import AppCenter from 'appcenter';
-import Analytics from 'appcenter-analytics';
 import Matomo from 'react-native-matomo';
 
 import { getSession } from '~/framework/modules/auth/reducer';
@@ -166,7 +164,7 @@ export class ConcreteMatomoTracker extends AbstractTracker<IMatomoTrackerOptions
   }
 }
 
-export class ConcreteAppCenterTracker extends AbstractTracker<undefined> {
+/*export class ConcreteAppCenterTracker extends AbstractTracker<undefined> {
   protected _properties = {};
 
   async _init() {
@@ -203,7 +201,7 @@ export class ConcreteAppCenterTracker extends AbstractTracker<undefined> {
     await Analytics.trackEvent(`View ${viewPath}`);
     return true;
   }
-}
+}*/
 
 export class ConcreteEntcoreTracker extends AbstractTracker<undefined> {
   errorCount: number = 0;
@@ -347,9 +345,9 @@ export class ConcreteTrackerSet {
 }
 
 export const Trackers = new ConcreteTrackerSet(
-  new ConcreteMatomoTracker('Matomo', appConf.matomo),
-  new ConcreteAppCenterTracker('AppCenter', undefined),
   new ConcreteEntcoreTracker('Entcore', undefined),
+  new ConcreteMatomoTracker('Matomo', appConf.matomo),
+  //new ConcreteAppCenterTracker('AppCenter', undefined),
 );
 
 export const TRACKING_ACTION_SUFFIX_SUCCESS = 'Succès';
