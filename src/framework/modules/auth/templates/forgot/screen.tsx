@@ -1,40 +1,53 @@
 import * as React from 'react';
 import { View } from 'react-native';
+
 import DropDownPicker from 'react-native-dropdown-picker';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
+import styles from './styles';
+import { ForgotScreenEventProps, ForgotScreenLoadingState, ForgotScreenPrivateProps, ForgotScreenStructure } from './types';
+
 import { I18n } from '~/app/i18n';
+import theme from '~/app/theme';
+import AlertCard from '~/framework/components/alert';
 import PrimaryButton from '~/framework/components/buttons/primary';
 import { UI_SIZES } from '~/framework/components/constants';
 import InputContainer from '~/framework/components/inputs/container';
-import { LabelIndicator } from '~/framework/components/inputs/container/label';
 import TextInput from '~/framework/components/inputs/text';
 import { KeyboardPageView } from '~/framework/components/page';
+import { PFLogo } from '~/framework/components/pfLogo';
 import { NamedSVG } from '~/framework/components/picture';
-import { SmallText } from '~/framework/components/text';
+import { HeadingXSText, SmallText } from '~/framework/components/text';
 import { forgotAction } from '~/framework/modules/auth/actions';
 import { API } from '~/framework/modules/auth/service.ts';
 import { containsKey } from '~/framework/util/object';
 import { tryAction } from '~/framework/util/redux/actions';
 import { ValidatorBuilder } from '~/utils/form';
-import styles from './styles';
-import { ForgotScreenPrivateProps, IForgotPageEventProps, IForgotScreenState } from './types';
 
 const keyboardPageViewScrollViewProps = { bounces: false, showsVerticalScrollIndicator: false };
 
-export const ForgotPage: React.FC<ForgotScreenPrivateProps> = (props: ForgotScreenPrivateProps) => {
+const iconRafterDownComponent = () => (
+  <NamedSVG name="ui-rafterDown" fill={theme.palette.grey.black} style={styles.dropDownArrow} />
+);
+const iconRafterUpComponent = () => <NamedSVG name="ui-rafterUp" fill={theme.palette.grey.black} style={styles.dropDownArrow} />;
+
+export const ForgotPage: React.FC<ForgotScreenPrivateProps> = props => {
   const { navigation, route } = props;
+  const { mode: forgotMode, platform } = route.params;
+
   const [dropDownOpened, setDropDownOpened] = React.useState<boolean>(false);
   const [editing, setEditing] = React.useState<boolean>(false);
   const [firstName, setFirstName] = React.useState<string>('');
-  const [forgotState, setForgotState] = React.useState<IForgotScreenState['forgotState']>('IDLE');
+  const [forgotState, setForgotState] = React.useState<ForgotScreenLoadingState>('IDLE');
   const [login, setLogin] = React.useState<string>(route.params.login ?? '');
   const [result, setResult] = React.useState<API.AuthForgotResponse | undefined>(undefined);
-  const [structures, setStructures] = React.useState<IForgotScreenState['structures']>([]);
-  const [selectedSructureId, setSelectedSructureId] = React.useState<string>('');
+  const [structures, setStructures] = React.useState<ForgotScreenStructure[]>([]);
+  const [selectedStructureId, setSelectedStructureId] = React.useState<string>('');
+
   const selectedStructureName = React.useMemo(() => {
-    return structures.find(structure => structure.structureId === selectedSructureId)?.structureName;
-  }, [structures, selectedSructureId]);
+    return structures.find(structure => structure.structureId === selectedStructureId)?.structureName;
+  }, [structures, selectedStructureId]);
   const dropdownItems = React.useMemo(() => {
     if (structures && structures.length > 0) {
       return structures.map(structure => ({
@@ -45,30 +58,45 @@ export const ForgotPage: React.FC<ForgotScreenPrivateProps> = (props: ForgotScre
     }
     return [];
   }, [structures]);
-  const forgotMode = route.params.mode;
+
   const emailValidator = new ValidatorBuilder().withRequired(true).withEmail().build<string>();
   const isValidEmail = emailValidator.isValid(login);
   const hasStructures = structures.length > 0;
-  const isError = result && containsKey(result, 'error');
-  const errorMsg = isError ? (result as { error: string }).error : null;
+  const isError = React.useMemo(() => result && Object.hasOwn(result, 'error'), [result]);
+  const errorMsg = React.useMemo(() => {
+    if (isError && result) {
+      return (result as { error: string }).error;
+    }
+    return undefined;
+  }, [isError, result]);
+
   const canSubmit = React.useMemo(
     () =>
       forgotMode === 'password'
         ? !login || (isError && !editing)
-        : !isValidEmail || (hasStructures && (!firstName || !selectedSructureId)),
-    [forgotMode, login, isValidEmail, hasStructures, firstName, selectedSructureId],
+        : !isValidEmail || (hasStructures && (!firstName || !selectedStructureId)),
+    [forgotMode, login, isValidEmail, hasStructures, firstName, selectedStructureId, editing, isError],
   );
-  const errorText = hasStructures
-    ? I18n.get('auth-forgot-severalemails')
-    : errorMsg
-      ? I18n.get(`auth-forgot-${errorMsg.replace(/\./g, '')}${forgotMode === 'id' ? '-id' : ''}`)
-      : I18n.get('auth-forgot-error-unknown');
-  const isSuccess =
-    result &&
-    !containsKey(result, 'error') &&
-    !containsKey(result, 'structures') &&
-    containsKey(result, 'ok') &&
-    (result as { ok: boolean }).ok === true;
+
+  const errorText = React.useMemo(() => {
+    if (hasStructures) {
+      return I18n.get('auth-forgot-severalemails');
+    }
+    if (errorMsg) {
+      return I18n.get(`auth-forgot-${errorMsg.replace(/\./g, '')}${forgotMode === 'id' ? '-id' : ''}`);
+    }
+    return I18n.get('auth-forgot-error-unknown');
+  }, [hasStructures, errorMsg, forgotMode]);
+
+  const isSuccess = React.useMemo(() => {
+    return (
+      result &&
+      !containsKey(result, 'error') &&
+      !containsKey(result, 'structures') &&
+      containsKey(result, 'ok') &&
+      (result as { ok: boolean }).ok === true
+    );
+  }, [result]);
   const hasError = isError && !editing && !(hasStructures && errorMsg);
 
   const doSubmit = React.useCallback(async () => {
@@ -78,7 +106,7 @@ export const ForgotPage: React.FC<ForgotScreenPrivateProps> = (props: ForgotScre
       const submittedFirstName = firstName ?? '';
       const submitResult = await props.trySubmit(
         route.params.platform,
-        { firstName, login, structureId: selectedSructureId },
+        { firstName, login, structureId: selectedStructureId },
         forgotMode,
       );
       const fetchedStructures = submitResult.structures ?? [];
@@ -87,7 +115,7 @@ export const ForgotPage: React.FC<ForgotScreenPrivateProps> = (props: ForgotScre
       setForgotState('DONE');
       setResult(submitResult);
       setStructures(fetchedStructures);
-      setSelectedSructureId(selectedSructureId);
+      setSelectedStructureId(selectedStructureId);
       setFirstName(submittedFirstName);
     } catch (e) {
       console.error(e);
@@ -95,145 +123,219 @@ export const ForgotPage: React.FC<ForgotScreenPrivateProps> = (props: ForgotScre
       setForgotState('IDLE');
       setResult(undefined);
     }
-  }, [firstName, props.trySubmit, route.params.platform, login, selectedSructureId, forgotMode]);
+  }, [firstName, props, route.params.platform, login, selectedStructureId, forgotMode]);
 
   const handleInputChange = React.useCallback((field: string, value: string) => {
     setEditing(true);
     field === 'login' ? setLogin(value) : setFirstName(value);
   }, []);
 
-  const toggleDropDown = React.useCallback((open): void => {
+  const toggleDropDown = React.useCallback((open: (prevState: boolean) => boolean): void => {
     setDropDownOpened(open);
   }, []);
 
-  const setCurrentStructure: typeof setSelectedSructureId = React.useCallback(structureId => {
+  const setCurrentStructure: typeof setSelectedStructureId = React.useCallback(structureId => {
     setEditing(true);
-    setSelectedSructureId(structureId);
+    setSelectedStructureId(structureId);
   }, []);
 
-  return (
-    <KeyboardPageView scrollable scrollViewProps={keyboardPageViewScrollViewProps} safeArea style={styles.page}>
-      <View style={styles.infos}>
-        <NamedSVG name="user-email" style={styles.img} />
-        {!isSuccess ? (
-          <SmallText style={styles.infosText}>
-            {I18n.get(forgotMode === 'id' ? 'auth-forgot-id-instructions' : 'auth-forgot-password-instructions')}
-          </SmallText>
-        ) : null}
-      </View>
-      {!isSuccess ? (
-        <InputContainer
-          style={styles.inputContainer}
-          label={{
-            icon: forgotMode === 'id' ? 'ui-mail' : 'ui-user',
-            indicator: LabelIndicator.REQUIRED,
-            text: forgotMode === 'id' ? I18n.get('auth-forgot-email') : I18n.get('auth-forgot-login'),
-          }}
-          input={
-            <TextInput
-              annotation={hasError ? errorText : I18n.get('common-space')}
-              onChange={({ nativeEvent: { text } }) => handleInputChange('login', text)}
-              placeholder={I18n.get(forgotMode === 'id' ? 'auth-forgot-email' : 'auth-forgot-login')}
-              showError={hasError}
-              showIconCallback
-              value={login}
-              keyboardType={forgotMode === 'id' ? 'email-address' : undefined}
-              editable={!hasStructures}
-              returnKeyLabel={I18n.get('auth-forgot-submit')}
-              returnKeyType="done"
-              onSubmitEditing={() => !canSubmit && doSubmit()}
-              autoCapitalize="none"
-              autoCorrect={false}
-              spellCheck={false}
-            />
-          }
+  const renderButtons = React.useCallback(() => {
+    if (!isSuccess || editing) {
+      return (
+        <PrimaryButton
+          action={() => doSubmit()}
+          disabled={canSubmit}
+          text={I18n.get('auth-forgot-submit')}
+          loading={forgotState === 'RUNNING'}
         />
-      ) : null}
-      {(hasStructures && !isSuccess) || (isError && !editing) ? <SmallText style={styles.errorMsg}>{errorText}</SmallText> : null}
-      {isSuccess ? (
-        <SmallText style={styles.successMsg}>{editing ? '' : isSuccess && I18n.get(`auth-forgot-success-${forgotMode}`)}</SmallText>
-      ) : null}
-      {forgotMode === 'id' && hasStructures ? (
+      );
+    }
+    if (isSuccess && !editing) {
+      return <PrimaryButton action={() => navigation.goBack()} text={I18n.get('auth-forgot-connect')} />;
+    }
+    return null;
+  }, [isSuccess, editing, doSubmit, canSubmit, forgotState, navigation]);
+
+  const onChangeLogin = React.useCallback(({ nativeEvent: { text } }) => handleInputChange('login', text), [handleInputChange]);
+  const onChangeFirstName = React.useCallback(
+    ({ nativeEvent: { text } }) => handleInputChange('firstName', text),
+    [handleInputChange],
+  );
+
+  const renderInputLogin = React.useCallback(() => {
+    return (
+      <InputContainer
+        style={styles.inputContainer}
+        label={{
+          icon: forgotMode === 'id' ? 'ui-mail' : 'ui-user',
+          text: forgotMode === 'id' ? I18n.get('auth-forgot-email') : I18n.get('auth-forgot-login'),
+        }}
+        input={
+          <TextInput
+            annotation={hasError ? errorText : I18n.get('common-space')}
+            autoCapitalize="none"
+            autoCorrect={false}
+            editable={!hasStructures}
+            keyboardType={forgotMode === 'id' ? 'email-address' : undefined}
+            onChange={onChangeLogin}
+            onSubmitEditing={doSubmit}
+            placeholder={I18n.get(forgotMode === 'id' ? 'auth-forgot-email-placeholder' : 'auth-forgot-login-placeholder')}
+            returnKeyLabel={I18n.get('auth-forgot-submit')}
+            returnKeyType="done"
+            showError={hasError}
+            showIconCallback
+            spellCheck={false}
+            value={login}
+          />
+        }
+      />
+    );
+  }, [forgotMode, hasError, errorText, hasStructures, onChangeLogin, doSubmit, login]);
+
+  const renderInputFirstnameWithStructurePicker = React.useCallback(() => {
+    if (forgotMode === 'id' && hasStructures)
+      return (
         <>
           <InputContainer
-            style={{
-              marginTop: (isError || isSuccess) && !editing ? UI_SIZES.spacing.small : UI_SIZES.spacing.big,
-            }}
             label={{
               icon: 'ui-user',
-              indicator: LabelIndicator.REQUIRED,
-              text: I18n.get('user-profile-firstname'),
+              text: I18n.get('auth-forgot-firstname'),
             }}
             input={
               <TextInput
                 annotation={hasError ? errorText : I18n.get('common-space')}
-                onChange={({ nativeEvent: { text } }) => {
-                  handleInputChange('firstName', text);
-                }}
-                placeholder={I18n.get('user-profile-firstname')}
-                showError={hasError}
-                value={firstName}
-                returnKeyLabel={I18n.get('auth-forgot-submit')}
-                returnKeyType="done"
-                onSubmitEditing={() => doSubmit()}
                 autoCapitalize="none"
                 autoCorrect={false}
+                onChange={onChangeFirstName}
+                onSubmitEditing={() => !canSubmit && doSubmit()}
+                returnKeyLabel={I18n.get('auth-forgot-submit')}
+                returnKeyType="done"
+                placeholder={I18n.get('auth-forgot-firstname-placeholder')}
+                showError={hasError}
                 spellCheck={false}
+                value={firstName}
               />
             }
           />
           <InputContainer
             label={{
-              icon: 'ui-home',
-              indicator: LabelIndicator.REQUIRED,
+              icon: 'ui-school',
               text: I18n.get('auth-forgot-school'),
             }}
+            style={styles.dropDownLabel}
             input={
-              <View style={styles.container}>
+              <View style={styles.dropDownContainer}>
                 <DropDownPicker
+                  dropDownContainerStyle={styles.dropDownItems}
                   items={dropdownItems}
                   open={dropDownOpened}
                   placeholder={selectedStructureName ? selectedStructureName : I18n.get('auth-forgot-structure')}
-                  placeholderStyle={styles.selectPlaceholder}
+                  placeholderStyle={styles.dropDownPlaceholder}
                   setOpen={toggleDropDown}
                   setValue={setCurrentStructure}
                   showTickIcon={false}
-                  dropDownContainerStyle={styles.dropdownItems}
-                  style={[styles.select, styles.dropdownInput]}
-                  textStyle={styles.selectText}
-                  value={selectedSructureId}
+                  style={styles.dropDownInput}
+                  textStyle={styles.dropDownText}
+                  value={selectedStructureId}
+                  ArrowDownIconComponent={iconRafterDownComponent}
+                  ArrowUpIconComponent={iconRafterUpComponent}
+                  arrowIconContainerStyle={styles.dropDownArrowContainer}
                 />
               </View>
             }
           />
         </>
-      ) : null}
-      <View
-        style={[
-          styles.buttonWrapper,
-          {
-            marginTop: (isError || isSuccess) && !editing ? UI_SIZES.spacing.small : UI_SIZES.spacing.big,
-            zIndex: -1,
-          },
-        ]}>
-        {(!isSuccess || editing) && (
-          <PrimaryButton
-            action={() => doSubmit()}
-            disabled={canSubmit}
-            text={I18n.get('auth-forgot-submit')}
-            loading={forgotState === 'RUNNING'}
-          />
-        )}
-        {isSuccess && !editing && <PrimaryButton action={() => navigation.goBack()} text={I18n.get('auth-navigation-goback')} />}
+      );
+  }, [
+    forgotMode,
+    hasStructures,
+    hasError,
+    errorText,
+    onChangeFirstName,
+    firstName,
+    dropdownItems,
+    dropDownOpened,
+    selectedStructureName,
+    toggleDropDown,
+    setCurrentStructure,
+    selectedStructureId,
+    canSubmit,
+    doSubmit,
+  ]);
 
-        {hasStructures && errorMsg ? (
-          <SmallText style={styles.errorMsg}>{I18n.get('auth-forgot-severalemails-nomatch')}</SmallText>
-        ) : null}
+  const renderInstructions = React.useCallback(() => {
+    if (!isSuccess)
+      return (
+        <SmallText style={styles.instructions}>
+          {I18n.get(forgotMode === 'id' ? 'auth-forgot-id-instructions' : 'auth-forgot-password-instructions')}
+        </SmallText>
+      );
+  }, [isSuccess, forgotMode]);
+
+  const renderMultiAccountInfo = React.useCallback(() => {
+    if ((hasStructures && !isSuccess) || (isError && !editing))
+      return <AlertCard type="info" text={errorText} style={styles.alertCard} />;
+  }, [hasStructures, isSuccess, isError, editing, errorText]);
+
+  const renderPlatform = React.useCallback(() => {
+    const logoStyle = {
+      ...styles.platformLogo,
+    };
+    if (platform.logoStyle) Object.assign(logoStyle, platform.logoStyle);
+    return (
+      <View style={styles.platform}>
+        <PFLogo pf={platform} />
+        <HeadingXSText style={styles.platformName}>{platform.displayName}</HeadingXSText>
+      </View>
+    );
+  }, [platform]);
+
+  const renderSuccessMessage = React.useCallback(() => {
+    if (isSuccess)
+      return editing
+        ? ''
+        : isSuccess && (
+            <AlertCard
+              type="info"
+              text={I18n.get(forgotMode === 'id' ? 'auth-forgot-success-id' : 'auth-forgot-success-password')}
+              style={styles.alertCardSuccess}
+            />
+          );
+  }, [isSuccess, editing, forgotMode]);
+
+  const renderNoMatchError = React.useCallback(() => {
+    if (hasStructures && errorMsg)
+      return <SmallText style={styles.errorMsg}>{I18n.get('auth-forgot-severalemails-nomatch')}</SmallText>;
+  }, [hasStructures, errorMsg]);
+
+  const innerViewStyle = React.useMemo(
+    () => [
+      styles.buttonWrapper,
+      {
+        marginTop: (isError || isSuccess) && !editing ? UI_SIZES.spacing.small : UI_SIZES.spacing.big,
+      },
+    ],
+    [isError, isSuccess, editing],
+  );
+
+  return (
+    <KeyboardPageView scrollable scrollViewProps={keyboardPageViewScrollViewProps} safeArea style={styles.page}>
+      <View style={styles.infos}>
+        {renderPlatform()}
+        {renderInstructions()}
+      </View>
+      {renderInputLogin()}
+      {renderMultiAccountInfo()}
+      {renderSuccessMessage()}
+      {renderInputFirstnameWithStructurePicker()}
+      <View style={innerViewStyle}>
+        {renderButtons()}
+        {renderNoMatchError()}
       </View>
     </KeyboardPageView>
   );
 };
 
 export default connect(undefined, dispatch =>
-  bindActionCreators<IForgotPageEventProps>({ trySubmit: tryAction(forgotAction) }, dispatch),
+  bindActionCreators<ForgotScreenEventProps>({ trySubmit: tryAction(forgotAction) }, dispatch),
 )(ForgotPage);

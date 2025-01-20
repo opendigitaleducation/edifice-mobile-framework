@@ -7,29 +7,19 @@ import { Platform } from '~/framework/util/appConf';
 
 export interface ForgotScreenProps {}
 
-type ForgotScreenStructure = {
+export type ForgotScreenStructure = {
   structureId: string;
   structureName: string;
 };
 
-export type IForgotScreenState = {
-  dropdownOpened: boolean;
-  editing: boolean;
-  firstName?: string;
-  forgotState: 'IDLE' | 'RUNNING' | 'DONE';
-  login: string;
-  result?: { ok: boolean; structures?: any[]; error?: string };
-  structures: ForgotScreenStructure[];
-  structureName?: string;
-  structureId?: string;
-};
+export type ForgotScreenLoadingState = 'IDLE' | 'RUNNING' | 'DONE';
 
-export interface IForgotPageEventProps {
+export interface ForgotScreenEventProps {
   trySubmit: (...args: Parameters<typeof forgotAction>) => ReturnType<ReturnType<typeof forgotAction>>;
 }
 
 export type ForgotScreenPrivateProps = ForgotScreenProps &
-  IForgotPageEventProps &
+  ForgotScreenEventProps &
   NativeStackScreenProps<AuthNavigationParams, typeof authRouteNames.forgot | typeof authRouteNames.addAccountForgot>;
 
 export interface ForgotScreenNavParams {

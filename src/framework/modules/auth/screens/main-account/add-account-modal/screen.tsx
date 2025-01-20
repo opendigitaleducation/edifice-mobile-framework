@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { AuthAddAccountModalScreenPrivateProps } from './types';
 
 import { I18n } from '~/app/i18n';
+import { PageView } from '~/framework/components/page';
 import { useConstructor } from '~/framework/hooks/constructor';
 import { AuthNavigationParams, authRouteNames } from '~/framework/modules/auth/navigation';
 import useAuthNavigation from '~/framework/modules/auth/navigation/add-account/navigator';
@@ -60,9 +61,11 @@ export default function AuthAddAccountModalScreen(props: AuthAddAccountModalScre
   );
   const navigator = React.useMemo(
     () => (
-      <NavigationContainer independent ref={navigationRef} initialState={navigationState} onStateChange={onStateChange}>
-        <RootStack.Navigator screenOptions={{ headerShown: false }}>{routes}</RootStack.Navigator>
-      </NavigationContainer>
+      <PageView>
+        <NavigationContainer independent ref={navigationRef} initialState={navigationState} onStateChange={onStateChange}>
+          <RootStack.Navigator screenOptions={{ headerShown: false }}>{routes}</RootStack.Navigator>
+        </NavigationContainer>
+      </PageView>
     ),
     [navigationState, onStateChange, RootStack, routes],
   );

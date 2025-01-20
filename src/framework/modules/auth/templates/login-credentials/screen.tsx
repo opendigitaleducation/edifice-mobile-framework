@@ -225,7 +225,9 @@ const LoginCredentialsScreen = (props: LoginCredentialsScreenPrivateProps) => {
       (errtype === Error.LoginErrorType.ACCOUNT_INELIGIBLE_NOT_PREMIUM ||
         errtype === Error.LoginErrorType.ACCOUNT_INELIGIBLE_PRE_DELETED)
     ) {
-      return <PrimaryButton action={goToWeb} text={I18n.get('LoginWeb')} iconRight="ui-externalLink" testID="login-opentoweb" />;
+      return (
+        <PrimaryButton action={goToWeb} text={I18n.get('auth-login-web')} iconRight="ui-externalLink" testID="login-opentoweb" />
+      );
     } else {
       return (
         <PrimaryButton
