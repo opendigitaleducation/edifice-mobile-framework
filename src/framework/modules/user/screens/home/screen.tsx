@@ -583,6 +583,15 @@ function useVersionDetailsFeature(session: UserHomeScreenPrivateProps['session']
           <SmallBoldText style={styles.version}>
             {`${useVersionDetailsFeature.versionType} (${useVersionDetailsFeature.buildNumber}) – ${useVersionDetailsFeature.versionOverride} – ${currentPlatform} - ${useVersionDetailsFeature.os} ${useVersionDetailsFeature.osVersion} - ${useVersionDetailsFeature.deviceModel}`}
           </SmallBoldText>
+          <ButtonLineGroup>
+            <LineButton
+              title="Crash me!"
+              icon="ui-warning"
+              onPress={() => {
+                const toto = (session.toto.titi.tutu.tata.tete.tyty = 0);
+              }}
+            />
+          </ButtonLineGroup>
           {appConf.isDebugEnabled ? (
             <>
               <View style={styles.section}>
