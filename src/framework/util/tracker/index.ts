@@ -3,7 +3,6 @@
  * Collect data throught Matomo and Crashlytics.
  */
 import CookieManager from '@react-native-cookies/cookies';
-import Matomo from 'react-native-matomo';
 
 import { getSession } from '~/framework/modules/auth/reducer';
 import appConf from '~/framework/util/appConf';
