@@ -15,7 +15,7 @@ import org.devio.rn.splashscreen.SplashScreen
 class MainActivity : ReactActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        this.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         SplashScreen.show(this, R.style.SplashScreenTheme, true)
         super.onCreate(null)
     }

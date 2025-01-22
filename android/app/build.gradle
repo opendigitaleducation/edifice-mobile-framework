@@ -4,6 +4,7 @@ apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 apply plugin: 'com.google.firebase.appdistribution'
+apply plugin: 'com.google.firebase.crashlytics'
 
 react {
     /* Folders */
