@@ -35,7 +35,12 @@ static NSString* RECEIVED_PUSHES_KEY = @"RECEIVED_PUSHES";
   //
   // React Native Firebase Initialization
   //
-  if (![FIRApp defaultApp]) [FIRApp configure];
+  if (![FIRApp defaultApp]) {
+    [FIRApp configure];
+    #if DEBUG
+    [FIRConfiguration sharedInstance].loggerLevel = FIRLoggerLevelDebug;
+    #endif
+  }
 
   // Define UNUserNotificationCenter
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
