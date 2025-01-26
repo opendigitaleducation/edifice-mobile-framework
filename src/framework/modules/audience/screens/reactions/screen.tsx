@@ -17,7 +17,7 @@ import { EmptyConnectionScreen, EmptyScreen } from '~/framework/components/empty
 import FlatList from '~/framework/components/list/flat-list';
 import { LoadingIndicator } from '~/framework/components/loading';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyText, CaptionBoldText, SmallBoldText, SmallText } from '~/framework/components/text';
 import { ContentLoader } from '~/framework/hooks/loader';
 import { audienceService } from '~/framework/modules/audience/service';
@@ -46,7 +46,7 @@ const renderTabReaction = (key, nb, focused) => {
     return <TextComponent style={focused ? styles.headerItemTextFocused : {}}>{I18n.get('audience-reactions-all')} </TextComponent>;
   return (
     <View style={styles.headerItem}>
-      <NamedSVG name={key.toLowerCase()} />
+      <Svg name={key.toLowerCase()} />
       <TextComponent style={focused ? styles.headerItemTextFocused : {}}>{nb}</TextComponent>
     </View>
   );
@@ -115,7 +115,7 @@ const AudienceReactionsScreen = (props: AudienceReactionsScreenProps) => {
           <View style={styles.item}>
             <BadgeAvatar
               userId={item.userId}
-              badgeContent={{ name: `${item.reactionType.toLowerCase()}-round`, type: 'NamedSvg' }}
+              badgeContent={{ name: `${item.reactionType.toLowerCase()}-round`, type: 'Svg' }}
               badgePosition={BadgePosition.bottom}
             />
             <View>

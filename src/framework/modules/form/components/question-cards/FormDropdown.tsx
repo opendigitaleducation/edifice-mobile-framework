@@ -6,7 +6,7 @@ import { Picker } from '@react-native-picker/picker';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallActionText, SmallText } from '~/framework/components/text';
 import { ModalBox, ModalContent } from '~/ui/Modal';
 
@@ -89,7 +89,7 @@ const DropdownIOS = ({
         <SmallText style={styles.valueText} numberOfLines={1}>
           {renderItem(selectedValue)}
         </SmallText>
-        <NamedSVG name="ui-rafterDown" width={20} height={20} fill={theme.ui.text.regular} />
+        <Svg name="ui-rafterDown" width={20} height={20} fill={theme.ui.text.regular} />
       </TouchableOpacity>
       <ModalBox isVisible={isModalVisible} onDismiss={() => setModalVisible(false)}>
         <ModalContent style={styles.modalContent}>

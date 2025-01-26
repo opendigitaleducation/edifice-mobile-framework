@@ -15,7 +15,7 @@ import { UI_SIZES } from '~/framework/components/constants';
 import { EmptyContentScreen, EmptyScreen } from '~/framework/components/empty-screens';
 import ResourceExplorer from '~/framework/components/explorer/resource-explorer';
 import { PageView } from '~/framework/components/page';
-import { NamedSVGProps } from '~/framework/components/picture';
+import { SvgProps } from '~/framework/components/picture';
 import { ContentLoader } from '~/framework/hooks/loader';
 import { getSession } from '~/framework/modules/auth/reducer';
 import BlogPlaceholderExplorer from '~/framework/modules/blog/components/placeholder/explorer';
@@ -70,7 +70,7 @@ const ScrapbookHomeScreen = (props: ScrapbookHomeScreenProps) => {
       const { thumbnail, ...b } = sb;
       return {
         ...b,
-        color: (moduleConfig.displayPicture as NamedSVGProps).fill ?? theme.palette.complementary.indigo.regular,
+        color: (moduleConfig.displayPicture as SvgProps).fill ?? theme.palette.complementary.indigo.regular,
 
         icon: 'scrapbook',
         ...(thumbnail && { thumbnail: formatSource(thumbnail) }),

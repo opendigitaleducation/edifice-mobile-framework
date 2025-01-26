@@ -98,7 +98,7 @@ export class AttachmentGroupImages extends React.PureComponent<{
       <BottomMenu actions={[cameraAction({ callback: imageCallback }), galleryAction({ callback: imageCallback, multiple: true })]}>
         <View style={[styles.attachPhotosContainer, this.imagesAdded() && styles.attachPhotosContainerAdded]}>
           <Picture
-            type="NamedSvg"
+            type="Svg"
             name={this.imagesAdded() ? 'ui-plus' : 'ui-camera'}
             width={UI_SIZES.dimensions.width[this.imagesAdded() ? 'medium' : 'hug']}
             height={UI_SIZES.dimensions.height[this.imagesAdded() ? 'medium' : 'hug']}

@@ -4,7 +4,7 @@ import { ColorValue, StyleSheet, View } from 'react-native';
 import styled from '@emotion/native';
 
 import theme from '~/app/theme';
-import { Icon } from '~/framework/components/picture/Icon';
+import { Icon } from '~/framework/components/picture';
 import TouchableOpacity from '~/ui/CustomTouchableOpacity';
 
 const TapCircle = styled(TouchableOpacity)<{ checked: boolean }>(

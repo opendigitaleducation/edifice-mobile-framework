@@ -11,7 +11,7 @@ import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
 import { EmptyConnectionScreen } from '~/framework/components/empty-screens';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyText, HeadingMText } from '~/framework/components/text';
 import { ContentLoader } from '~/framework/hooks/loader';
 import { audienceService } from '~/framework/modules/audience/service';
@@ -66,7 +66,7 @@ const AudienceViewsScreen = (props: AudienceViewsScreenProps) => {
     return (
       <View style={[styles.item, last ? styles.lastItem : {}]}>
         <View style={[styles.icon, { backgroundColor: color ?? theme.palette.grey.pearl }]}>
-          <NamedSVG
+          <Svg
             name={icon}
             fill={color ? theme.palette.grey.white : theme.palette.grey.black}
             height={UI_SIZES.elements.icon.small}

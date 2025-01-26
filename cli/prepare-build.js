@@ -4,7 +4,7 @@
 // Automatic build number generation
 //
 // Args:
-//   - alpha|rc|poc to prepare build number for alpha || rc || poc
+//   - alpha|rc|poc to prepare build number for alpha || comm || peda || poc || rc
 //   - major|minor|rev to prepare build number for new major || minor || rev version
 //
 // Update:
@@ -60,7 +60,7 @@ let fullVersion = null;
 let versionNumber = null;
 
 try {
-  if (['alpha', 'rc', 'poc'].includes(buildType)) {
+  if (['alpha', 'comm', 'peda', 'poc', 'rc'].includes(buildType)) {
     versionContent.build += 1;
     versionContent[buildType] += 1;
     fullBuildType = `${buildType}.${versionContent[buildType]}`;
@@ -80,6 +80,8 @@ try {
     }
     versionContent.alpha = 0;
     versionContent.build = 0;
+    versionContent.comm = 0;
+    versionContent.peda = 0;
     versionContent.poc = 0;
     versionContent.rc = 0;
     fullBuildType = '';

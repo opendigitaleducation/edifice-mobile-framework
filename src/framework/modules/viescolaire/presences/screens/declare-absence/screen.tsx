@@ -19,7 +19,7 @@ import TextInput from '~/framework/components/inputs/text';
 import { cameraAction, documentAction, DocumentPicked, galleryAction, ImagePicked } from '~/framework/components/menus/actions';
 import BottomMenu from '~/framework/components/menus/bottom';
 import { KeyboardPageView, PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyText, SmallActionText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import usePreventBack from '~/framework/hooks/prevent-back';
@@ -123,7 +123,7 @@ const PresencesDeclareAbsenceScreen = (props: PresencesDeclareAbsenceScreenPriva
               documentAction({ callback: onPickAttachment }),
             ]}>
             <View style={styles.filePickerContainer}>
-              <NamedSVG
+              <Svg
                 name="ui-attachment"
                 width={20}
                 height={20}

@@ -11,7 +11,7 @@ import ImageOptional from './ImageOptional';
 import theme from '~/app/theme';
 import { openCarousel } from '~/framework/components/carousel/openCarousel';
 import { getScaleImageSize, UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallInverseText } from '~/framework/components/text';
 import { AudienceParameter } from '~/framework/modules/core/audience/types';
 import { IMAGE_MAX_DIMENSION } from '~/framework/util/fileHandler';
@@ -76,7 +76,7 @@ const UnavailableImage = (props: { big?: boolean }) => (
       paddingVertical: UI_SIZES.spacing.minor,
       width: '100%',
     }}>
-    <NamedSVG
+    <Svg
       style={{ alignSelf: 'center', flex: 0, marginVertical: UI_SIZES.spacing.minor }}
       name="image-not-found"
       width={(props.big ? 4 : 2) * errorImageWidth}

@@ -39,7 +39,7 @@ import {
   IUserInfoBackend,
   revalidateTerms,
   UserPersonDataBackend,
-  UserPrivateData,
+  UserPrivateData
 } from './service';
 import {
   readSavedAccounts,
@@ -369,11 +369,11 @@ export function deactivateLoggedAccountActionIfApplicable(action?: AnyAction | T
 
 interface AuthLoginFunctions {
   success:
-    | typeof actions.addAccount
-    | ((...args: Parameters<typeof actions.addAccount>) => ThunkAction<void, IGlobalState, undefined, AnyAction>);
+  | typeof actions.addAccount
+  | ((...args: Parameters<typeof actions.addAccount>) => ThunkAction<void, IGlobalState, undefined, AnyAction>);
   requirement:
-    | typeof actions.addAccountRequirement
-    | ((...args: Parameters<typeof actions.addAccountRequirement>) => ThunkAction<void, IGlobalState, undefined, AnyAction>);
+  | typeof actions.addAccountRequirement
+  | ((...args: Parameters<typeof actions.addAccountRequirement>) => ThunkAction<void, IGlobalState, undefined, AnyAction>);
   activation: typeof actions.redirectActivation;
   passwordRenew: typeof actions.redirectPasswordRenew;
   redirectCancel: typeof actions.redirectCancel | typeof actions.addAccountRedirectCancel;
@@ -390,14 +390,14 @@ const getLoginFunctions = {
       redirectCancel: actions.addAccountRedirectCancel,
       requirement:
         (...args: Parameters<typeof actions.addAccountRequirement>) =>
-        async (dispatch: AuthDispatch, getState: () => IGlobalState) => {
-          await dispatch(deactivateLoggedAccountActionIfApplicable(actions.addAccountRequirement(...args)));
-        },
+          async (dispatch: AuthDispatch, getState: () => IGlobalState) => {
+            await dispatch(deactivateLoggedAccountActionIfApplicable(actions.addAccountRequirement(...args)));
+          },
       success:
         (...args: Parameters<typeof actions.addAccount>) =>
-        async (dispatch: AuthDispatch, getState: () => IGlobalState) => {
-          await dispatch(deactivateLoggedAccountActionIfApplicable(actions.addAccount(...args)));
-        },
+          async (dispatch: AuthDispatch, getState: () => IGlobalState) => {
+            await dispatch(deactivateLoggedAccountActionIfApplicable(actions.addAccount(...args)));
+          },
       writeStorage: writeCreateAccount,
     }) as AuthLoginFunctions,
   addFirstAccount: () =>
@@ -440,14 +440,14 @@ const getLoginFunctions = {
       redirectCancel: actions.redirectCancel,
       requirement:
         (...args: Parameters<typeof actions.addAccountRequirement>) =>
-        async (dispatch: AuthDispatch, getState: () => IGlobalState) => {
-          await dispatch(deactivateLoggedAccountActionIfApplicable(actions.replaceAccountRequirement(id, ...args)));
-        },
+          async (dispatch: AuthDispatch, getState: () => IGlobalState) => {
+            await dispatch(deactivateLoggedAccountActionIfApplicable(actions.replaceAccountRequirement(id, ...args)));
+          },
       success:
         (...args: Parameters<typeof actions.addAccount>) =>
-        async (dispatch: AuthDispatch, getState: () => IGlobalState) => {
-          await dispatch(deactivateLoggedAccountActionIfApplicable(actions.replaceAccount(id, ...args)));
-        },
+          async (dispatch: AuthDispatch, getState: () => IGlobalState) => {
+            await dispatch(deactivateLoggedAccountActionIfApplicable(actions.replaceAccount(id, ...args)));
+          },
       writeStorage: (...args: Parameters<typeof writeCreateAccount>) => writeReplaceAccount(id, ...args),
     }) as AuthLoginFunctions,
 };
@@ -732,27 +732,27 @@ export const revalidateTermsAction = () => async (dispatch: AuthDispatch) => {
 
 const activateAccountAction =
   (reduxActions: AuthLoginFunctions, platform: Platform, model: ActivationPayload) =>
-  async (dispatch: ThunkDispatch<any, any, any>, getState) => {
-    let activationWasDone = false;
-    try {
-      await authService.activateAccount(platform, model);
-      activationWasDone = true;
-      await dispatch(
-        loginCredentialsAction(reduxActions, platform, {
-          password: model.password,
-          username: model.login,
-        }),
-      );
-    } catch (e) {
-      if (activationWasDone) {
-        dispatch(reduxActions.redirectCancel(platform.name, model.login));
-      }
+    async (dispatch: ThunkDispatch<any, any, any>, getState) => {
+      let activationWasDone = false;
+      try {
+        await authService.activateAccount(platform, model);
+        activationWasDone = true;
+        await dispatch(
+          loginCredentialsAction(reduxActions, platform, {
+            password: model.password,
+            username: model.login,
+          }),
+        );
+      } catch (e) {
+        if (activationWasDone) {
+          dispatch(reduxActions.redirectCancel(platform.name, model.login));
+        }
 
-      if ((e as IActivationError).name === 'EACTIVATION') throw e;
-      else if (e instanceof global.Error) throw createActivationError('activation', I18n.get('auth-activation-errorsubmit'), '', e);
-      else throw createActivationError('activation', I18n.get('auth-activation-errorsubmit'), '');
-    }
-  };
+        if ((e as IActivationError).name === 'EACTIVATION') throw e;
+        else if (e instanceof global.Error) throw createActivationError('activation', I18n.get('auth-activation-errorsubmit'), '', e);
+        else throw createActivationError('activation', I18n.get('auth-activation-errorsubmit'), '');
+      }
+    };
 
 export const activateAccountActionAddFirstAccount = (platform: Platform, model: ActivationPayload) =>
   activateAccountAction(getLoginFunctions.addFirstAccount(), platform, model);
@@ -965,13 +965,13 @@ export const changePasswordActionReplaceAccount = (
 
 export const buildChangePasswordActionReplaceAccount =
   (accountId: keyof IAuthState['accounts'], timestamp: number) =>
-  (platform: Platform, p: IChangePasswordPayload, forceChange?: boolean, rememberMe?: boolean) =>
-    changePasswordAction(getLoginFunctions.replaceAccount(accountId, timestamp), platform, p, forceChange, rememberMe);
+    (platform: Platform, p: IChangePasswordPayload, forceChange?: boolean, rememberMe?: boolean) =>
+      changePasswordAction(getLoginFunctions.replaceAccount(accountId, timestamp), platform, p, forceChange, rememberMe);
 
 export const buildLoginFederationActionReplaceAccount =
   (accountId: keyof IAuthState['accounts'], timestamp: number) =>
-  (platform: Platform, credentials: AuthFederationCredentials, key?: number) =>
-    loginFederationAction(getLoginFunctions.replaceAccount(accountId, timestamp), platform, credentials, key);
+    (platform: Platform, credentials: AuthFederationCredentials, key?: number) =>
+      loginFederationAction(getLoginFunctions.replaceAccount(accountId, timestamp), platform, credentials, key);
 
 export const changePasswordActionAddAnotherAccount = (
   platform: Platform,

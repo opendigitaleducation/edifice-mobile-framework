@@ -11,7 +11,7 @@ import { I18n } from '~/app/i18n';
 import { IGlobalState } from '~/app/store';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { Icon } from '~/framework/components/picture/Icon';
+import { Icon } from '~/framework/components/picture';
 import { SmallText } from '~/framework/components/text';
 import { ISearchUsers, IUser } from '~/framework/modules/conversation/service/newMail';
 import {

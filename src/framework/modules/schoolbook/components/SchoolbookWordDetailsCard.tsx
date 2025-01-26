@@ -210,7 +210,7 @@ const SchoolbookWordDetailsCard = (
               </SmallBoldText>
               <Picture
                 cached
-                type="NamedSvg"
+                type="Svg"
                 name="pictos-arrow-right"
                 width={UI_SIZES.dimensions.width.large}
                 height={UI_SIZES.dimensions.height.large}
@@ -263,7 +263,7 @@ const SchoolbookWordDetailsCard = (
             <TouchableOpacity style={styles.responsesContainer} onPress={action}>
               <Picture
                 cached
-                type="NamedSvg"
+                type="Svg"
                 name="pictos-answer"
                 width={UI_SIZES.dimensions.width.large}
                 height={UI_SIZES.dimensions.height.large}

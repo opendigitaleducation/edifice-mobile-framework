@@ -75,7 +75,7 @@ interface IModuleConfigBase<Name extends string> {
 interface IModuleConfigRights {
   matchEntcoreApp: (entcoreApp: IEntcoreApp, allEntcoreApps: IEntcoreApp[]) => boolean;
   matchEntcoreWidget: (entcoreWidget: IEntcoreWidget, allEntcoreWidgets: IEntcoreWidget[]) => boolean;
-  hasRight: (params: { matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[], session: AuthActiveAccount }) => boolean;
+  hasRight: (params: { matchingApps: IEntcoreApp[]; matchingWidgets: IEntcoreWidget[]; session: AuthActiveAccount }) => boolean;
   getMatchingEntcoreApps: (allEntcoreApps: IEntcoreApp[]) => IEntcoreApp[];
   getMatchingEntcoreWidgets: (allEntcoreWidgets: IEntcoreWidget[]) => IEntcoreWidget[];
 }
@@ -104,7 +104,7 @@ export type IModuleConfig<Name extends string, State> = IModuleConfigBase<Name> 
   IModuleConfigRedux<State> &
   IModuleConfigTracking &
   IModuleConfigStorage & {
-    init: (params: { session: AuthActiveAccount, matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[] }) => void;
+    init: (params: { session: AuthActiveAccount; matchingApps: IEntcoreApp[]; matchingWidgets: IEntcoreWidget[] }) => void;
     isReady: boolean;
     assignValues: (values: IModuleConfigDeclaration<Name>) => void;
   };
@@ -188,12 +188,12 @@ export class ModuleConfig<Name extends string, State> implements IModuleConfig<N
 
   isReady: boolean = false;
 
-  init(params: { session: AuthActiveAccount, matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[] }) {
+  init(params: { session: AuthActiveAccount; matchingApps: IEntcoreApp[]; matchingWidgets: IEntcoreWidget[] }) {
     this.handleInit(params);
     this.isReady = true;
   }
 
-  handleInit(params: { session: AuthActiveAccount, matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[] }) { }
+  handleInit(params: { session: AuthActiveAccount; matchingApps: IEntcoreApp[]; matchingWidgets: IEntcoreWidget[] }) {}
 
   assignValues(values: Partial<IModuleConfigDeclaration<any>>) {
     Object.assign(this, values);
@@ -229,8 +229,8 @@ export interface IModule<
   ModuleStorageSliceTypeMap extends StorageTypeMap = object,
   ModuleSessionStorageSliceTypeMap extends StorageTypeMap = object,
 > extends IModuleBase<Name, ConfigType, State>,
-  IModuleRedux<State>,
-  IModuleStorage<ModuleStorageSliceTypeMap, ModuleSessionStorageSliceTypeMap> {
+    IModuleRedux<State>,
+    IModuleStorage<ModuleStorageSliceTypeMap, ModuleSessionStorageSliceTypeMap> {
   // ToDo add Module methods here
 }
 
@@ -241,8 +241,8 @@ export interface IModuleDeclaration<
   ModuleStorageSliceTypeMap extends StorageTypeMap = object,
   ModuleSessionStorageSliceTypeMap extends StorageTypeMap = object,
 > extends IModuleBase<Name, ConfigType, State>,
-  IModuleRedux<State>,
-  IModuleStorage<ModuleStorageSliceTypeMap, ModuleSessionStorageSliceTypeMap> { }
+    IModuleRedux<State>,
+    IModuleStorage<ModuleStorageSliceTypeMap, ModuleSessionStorageSliceTypeMap> {}
 
 /**
  * Use this class constructor to init a module from its definition.
@@ -255,7 +255,8 @@ export class Module<
   State,
   ModuleStorageSliceTypeMap extends StorageTypeMap = object,
   ModulePreferencesSliceTypeMap extends StorageTypeMap = object,
-> implements IModule<Name, ConfigType, State, ModuleStorageSliceTypeMap, ModulePreferencesSliceTypeMap> {
+> implements IModule<Name, ConfigType, State, ModuleStorageSliceTypeMap, ModulePreferencesSliceTypeMap>
+{
   // Gathered from declaration
   config: ConfigType;
 
@@ -274,14 +275,14 @@ export class Module<
     this.preferences = moduleDeclaration.preferences;
   }
 
-  init(params: { session: AuthActiveAccount, matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[] }) {
+  init(params: { session: AuthActiveAccount; matchingApps: IEntcoreApp[]; matchingWidgets: IEntcoreWidget[] }) {
     if (!this.config.isReady) throw new Error(`Try to init module with non-initialized config '${this.config.name}'`);
     // Debug : Uncomment the following line to print every module init phase and know which one is generating warnings/errors.
     // console.debug('[Module] init module', this.config.name);
     this.handleInit(params);
   }
 
-  handleInit(params: { session: AuthActiveAccount, matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[] }) { }
+  handleInit(params: { session: AuthActiveAccount; matchingApps: IEntcoreApp[]; matchingWidgets: IEntcoreWidget[] }) {}
 
   get isReady() {
     return true;
@@ -331,23 +332,23 @@ interface INavigableModuleConfigDisplay {
 }
 interface IModuleConfigDeclarationDisplay {
   displayI18n:
-  | INavigableModuleConfigDisplay['displayI18n']
-  | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayI18n']);
+    | INavigableModuleConfigDisplay['displayI18n']
+    | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayI18n']);
   displayAs?:
-  | INavigableModuleConfigDisplay['displayAs']
-  | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayAs']);
+    | INavigableModuleConfigDisplay['displayAs']
+    | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayAs']);
   displayOrder?:
-  | INavigableModuleConfigDisplay['displayOrder']
-  | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayOrder']);
+    | INavigableModuleConfigDisplay['displayOrder']
+    | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayOrder']);
   displayPicture?:
-  | INavigableModuleConfigDisplay['displayPicture']
-  | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayPicture']);
+    | INavigableModuleConfigDisplay['displayPicture']
+    | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayPicture']);
   displayPictureFocus?:
-  | INavigableModuleConfigDisplay['displayPictureFocus']
-  | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayPictureFocus']);
+    | INavigableModuleConfigDisplay['displayPictureFocus']
+    | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayPictureFocus']);
   displayBadges?:
-  | INavigableModuleConfigDisplay['displayBadges']
-  | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayBadges']);
+    | INavigableModuleConfigDisplay['displayBadges']
+    | ((matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[]) => INavigableModuleConfigDisplay['displayBadges']);
   routeName?: INavigableModuleConfigDisplay['routeName'];
   testID?: string;
 }
@@ -365,7 +366,8 @@ export type AnyNavigableModuleConfig = INavigableModuleConfig<string, any>;
 
 export class NavigableModuleConfig<Name extends string, State>
   extends ModuleConfig<Name, State>
-  implements INavigableModuleConfig<Name, State> {
+  implements INavigableModuleConfig<Name, State>
+{
   // gathered from declaration
 
   routeName: INavigableModuleConfig<Name, State>['routeName'];
@@ -490,7 +492,7 @@ export interface INavigableModuleBase<
   ModuleStorageSliceTypeMap extends StorageTypeMap = object,
   ModulePreferencesSliceTypeMap extends StorageTypeMap = object,
 > extends IModule<Name, ConfigType, State, ModuleStorageSliceTypeMap, ModulePreferencesSliceTypeMap> {
-  getRoot(params: { session: AuthActiveAccount, matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[] }): Root;
+  getRoot(params: { session: AuthActiveAccount; matchingApps: IEntcoreApp[]; matchingWidgets: IEntcoreWidget[] }): Root;
 }
 export interface INavigableModule<
   Name extends string,
@@ -511,18 +513,19 @@ export interface INavigableModuleDeclaration<
   ModuleStorageSliceTypeMap extends StorageTypeMap = object,
   ModulePreferencesSliceTypeMap extends StorageTypeMap = object,
 > extends INavigableModuleBase<Name, ConfigType, State, Root, ModuleStorageSliceTypeMap, ModulePreferencesSliceTypeMap>,
-  IModuleRedux<State> { }
+    IModuleRedux<State> {}
 
 export class NavigableModule<
-  Name extends string,
-  ConfigType extends INavigableModuleConfig<Name, State>,
-  State,
-  Root extends React.ReactElement,
-  ModuleStorageSliceTypeMap extends StorageTypeMap = object,
-  ModulePreferencesSliceTypeMap extends StorageTypeMap = object,
->
+    Name extends string,
+    ConfigType extends INavigableModuleConfig<Name, State>,
+    State,
+    Root extends React.ReactElement,
+    ModuleStorageSliceTypeMap extends StorageTypeMap = object,
+    ModulePreferencesSliceTypeMap extends StorageTypeMap = object,
+  >
   extends Module<Name, ConfigType, State, ModuleStorageSliceTypeMap, ModulePreferencesSliceTypeMap>
-  implements IModule<Name, ConfigType, State, ModuleStorageSliceTypeMap, ModulePreferencesSliceTypeMap> {
+  implements IModule<Name, ConfigType, State, ModuleStorageSliceTypeMap, ModulePreferencesSliceTypeMap>
+{
   // Gathered from declaration
 
   getRoot: INavigableModule<Name, ConfigType, State, Root>['getRoot'];
@@ -546,7 +549,7 @@ export class NavigableModule<
     this.getRoot = getRoot;
   }
 
-  handleInit(params: { session: AuthActiveAccount, matchingApps: IEntcoreApp[], matchingWidgets: IEntcoreWidget[] }) {
+  handleInit(params: { session: AuthActiveAccount; matchingApps: IEntcoreApp[]; matchingWidgets: IEntcoreWidget[] }) {
     super.handleInit(params);
     this.#root = this.getRoot(params);
     if (this.config.displayBadges) {
@@ -606,7 +609,7 @@ export class ModuleArray<ModuleType extends UnknownModule = UnknownModule> exten
           matchingApps: m.config.getMatchingEntcoreApps(session.rights.apps),
           matchingWidgets: m.config.getMatchingEntcoreWidgets(session.rights.widgets),
           session,
-        })
+        });
       }),
     );
   }
@@ -633,9 +636,8 @@ export class ModuleArray<ModuleType extends UnknownModule = UnknownModule> exten
     this.forEach(m => {
       m.init({
         session,
-        matchingApps:
-          m.config.getMatchingEntcoreApps(session.rights.apps),
-        matchingWidgets: m.config.getMatchingEntcoreWidgets(session.rights.widgets)
+        matchingApps: m.config.getMatchingEntcoreApps(session.rights.apps),
+        matchingWidgets: m.config.getMatchingEntcoreWidgets(session.rights.widgets),
       });
     });
     return this;
@@ -645,9 +647,8 @@ export class ModuleArray<ModuleType extends UnknownModule = UnknownModule> exten
     this.forEach(m => {
       m.config.init({
         session,
-        matchingApps:
-          m.config.getMatchingEntcoreApps(session.rights.apps),
-        matchingWidgets: m.config.getMatchingEntcoreWidgets(session.rights.widgets)
+        matchingApps: m.config.getMatchingEntcoreApps(session.rights.apps),
+        matchingWidgets: m.config.getMatchingEntcoreWidgets(session.rights.widgets),
       });
     });
     return this;

@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, TextInput, TouchableOpacity, View } from 'react-n
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallText } from '~/framework/components/text';
 import { IFile, IFolder } from '~/framework/modules/workspace/reducer';
 
@@ -123,7 +123,7 @@ export const WorkspaceFolderSelector = ({ data, defaultValue, excludeData, onCha
       return (
         <View>
           <TouchableOpacity onPress={() => onTapFolder({ item })} style={[styles.rowContainer, { backgroundColor }]}>
-            <NamedSVG name={iconName} width={16} height={16} fill={theme.palette.secondary.regular} />
+            <Svg name={iconName} width={16} height={16} fill={theme.palette.secondary.regular} />
             <SmallText style={styles.nameText}>{item.name}</SmallText>
           </TouchableOpacity>
           {isExpanded ? (

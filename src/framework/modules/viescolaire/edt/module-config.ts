@@ -17,7 +17,7 @@ function hasNecessaryRight(entcoreApp: IEntcoreApp): boolean {
 export default new NavigableModuleConfig<'edt', IEdtReduxState>({
   displayAs: 'myAppsModule',
   displayI18n: 'edt-moduleconfig-appname',
-  displayPicture: { fill: theme.palette.complementary.indigo.regular, name: 'edt', type: 'NamedSvg' },
+  displayPicture: { fill: theme.palette.complementary.indigo.regular, name: 'edt', type: 'Svg' },
   entcoreScope: ['edt'],
 
   matchEntcoreApp: entcoreApp => hasNecessaryRight(entcoreApp),

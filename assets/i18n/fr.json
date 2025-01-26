@@ -1,4 +1,6 @@
 {
+  "LoginWeb": "Connectez-vous depuis le web",
+  "News": "Actualités",
   "accountlistitem-removealert-description": "Êtes vous sur de vouloir supprimer cet identifiant ?",
   "accountlistitem-removealert-title": "Confirmer la suppression",
   "attachment-attachment": "Pièce jointe",

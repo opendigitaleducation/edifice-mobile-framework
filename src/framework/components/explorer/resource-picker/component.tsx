@@ -10,7 +10,7 @@ import { UI_SIZES } from '~/framework/components/constants';
 import FlatList from '~/framework/components/list/flat-list';
 import { ListItem } from '~/framework/components/listItem';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyBoldText, SmallText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import { Image } from '~/framework/util/media';
@@ -56,7 +56,7 @@ const ResourcePicker = ({ data, defaultThumbnail, emptyComponent, onPressItem, o
                 />
               ) : (
                 <View style={[styles.itemImage, styles.itemNoImage, defaultBackground]}>
-                  <NamedSVG
+                  <Svg
                     name={defaultThumbnail.name}
                     fill={defaultThumbnail.fill}
                     width={UI_SIZES.dimensions.width.hug}
@@ -71,7 +71,7 @@ const ResourcePicker = ({ data, defaultThumbnail, emptyComponent, onPressItem, o
             </View>
           }
           rightElement={
-            <NamedSVG
+            <Svg
               name="ui-rafterRight"
               fill={theme.palette.primary.regular}
               width={UI_SIZES.elements.icon.small}

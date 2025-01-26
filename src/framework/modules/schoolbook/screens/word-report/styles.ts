@@ -14,7 +14,7 @@ export default StyleSheet.create({
   acknowledgedStudentSubContainer: { flexDirection: 'row' },
   acknowledgedStudentsContentContainer: { backgroundColor: theme.ui.background.card, borderRadius: UI_SIZES.radius.medium },
   acknowledgementsText: { marginTop: UI_SIZES.spacing.minor },
-  acknowledgementsTitle: { marginTop: UI_SIZES.spacing.tiny },
+  acknowledgementsTitle: { marginTop: UI_SIZES.spacing.big - UI_SIZES.spacing._LEGACY_tiny },
   borderBottomWidthOne: { borderBottomWidth: 1 },
   borderBottomWidthZero: { borderBottomWidth: 0 },
   list: {

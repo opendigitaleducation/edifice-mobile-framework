@@ -11,7 +11,7 @@ import theme from '~/app/theme';
 import { ButtonLineGroup, LineButton } from '~/framework/components/buttons/line';
 import { UI_SIZES } from '~/framework/components/constants';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { HeadingXSText } from '~/framework/components/text';
 import { UserNavigationParams, userRouteNames } from '~/framework/modules/user/navigation';
 import { navBarOptions } from '~/framework/navigation/navBar';
@@ -36,7 +36,7 @@ const UserStructuresScreen = (props: UserStructuresScreenPrivateProps) => {
         {route.params.structures.map(structure => (
           <View style={styles.section} key={structure.id}>
             <View style={styles.title}>
-              <NamedSVG
+              <Svg
                 name="ui-school"
                 width={UI_SIZES.elements.icon.default}
                 height={UI_SIZES.elements.icon.default}

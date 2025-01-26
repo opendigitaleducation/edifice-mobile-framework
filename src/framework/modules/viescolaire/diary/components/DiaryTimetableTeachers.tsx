@@ -8,7 +8,7 @@ import theme from '~/app/theme';
 import { UI_SIZES, UI_STYLES } from '~/framework/components/constants';
 import DateTimePicker from '~/framework/components/dateTimePicker';
 import { LoadingIndicator } from '~/framework/components/loading';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyBoldText, HeadingXSText, SmallText } from '~/framework/components/text';
 import TimetableDiary from '~/framework/modules/viescolaire/common/components/TimetableDiary';
 import viescoTheme from '~/framework/modules/viescolaire/common/theme';
@@ -124,7 +124,7 @@ export default class DiaryTeacherTimetable extends React.PureComponent<Timetable
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate(diaryRouteNames.homework, homeworkListDetailsTeacherAdapter(homeworks))}
           disabled={isEmpty}>
-          <NamedSVG
+          <Svg
             name="ui-inbox"
             width={24}
             height={24}
@@ -161,7 +161,7 @@ export default class DiaryTeacherTimetable extends React.PureComponent<Timetable
         style={!isHalfCourse && styles.homeworkMargin}
         onPress={navigateToHomeworks}
         disabled={!isHomeWorkPublished}>
-        <NamedSVG
+        <Svg
           name="ui-inbox"
           width={24}
           height={24}
@@ -180,7 +180,7 @@ export default class DiaryTeacherTimetable extends React.PureComponent<Timetable
         style={isHalfCourse ? styles.halfSessionMargin : styles.sessionMargin}
         onPress={() => navigation.navigate(diaryRouteNames.session, sessionListDetailsTeacherAdapter(course.session || course))}
         disabled={!isSessionPublished}>
-        <NamedSVG
+        <Svg
           name="ui-textPage"
           width={24}
           height={24}

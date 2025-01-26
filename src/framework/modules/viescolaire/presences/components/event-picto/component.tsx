@@ -5,7 +5,7 @@ import styles from './styles';
 import type { EventPictoProps, EventPictoStyle } from './types';
 
 import theme from '~/app/theme';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { EventType } from '~/framework/modules/viescolaire/presences/model';
 
 export default function EventPicto(props: EventPictoProps) {
@@ -72,7 +72,7 @@ export default function EventPicto(props: EventPictoProps) {
 
   return (
     <View style={[styles.container, { backgroundColor }, props.style]}>
-      <NamedSVG name={iconName} width={24} height={24} fill={iconColor} />
+      <Svg name={iconName} width={24} height={24} fill={iconColor} />
     </View>
   );
 }

@@ -17,7 +17,7 @@ import PrimaryButton from '~/framework/components/buttons/primary';
 import { EmptyContentScreen, EmptyScreen } from '~/framework/components/empty-screens';
 import { LoadingIndicator } from '~/framework/components/loading';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallBoldText, SmallText } from '~/framework/components/text';
 import { AccountType, getFlattenedChildren } from '~/framework/modules/auth/model';
 import { getSession } from '~/framework/modules/auth/reducer';
@@ -200,12 +200,7 @@ const PresencesHistoryScreen = (props: PresencesHistoryScreenPrivateProps) => {
           )
         }
         renderIcon={({ focused, route }) => (
-          <NamedSVG
-            name={route.icon}
-            fill={focused ? theme.palette.primary.regular : theme.palette.grey.black}
-            height={20}
-            width={20}
-          />
+          <Svg name={route.icon} fill={focused ? theme.palette.primary.regular : theme.palette.grey.black} height={20} width={20} />
         )}
         tabStyle={styles.tabBarTabContainer}
         indicatorStyle={styles.tabBarIndicatorContainer}

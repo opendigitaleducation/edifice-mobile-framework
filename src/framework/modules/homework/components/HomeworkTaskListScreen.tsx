@@ -7,7 +7,7 @@ import moment, { Moment } from 'moment';
 import ViewOverflow from 'react-native-view-overflow';
 import { ThunkDispatch } from 'redux-thunk';
 
-import HomeworkCard from './HomeworkCard';
+import HomeworkCard from './homework-card';
 import HomeworkDayCheckpoint from './HomeworkDayCheckpoint';
 import HomeworkTimeline from './HomeworkTimeline';
 

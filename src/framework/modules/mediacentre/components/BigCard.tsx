@@ -6,7 +6,7 @@ import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { TouchableResourceCard } from '~/framework/components/card';
 import { UI_SIZES } from '~/framework/components/constants';
-import { Icon } from '~/framework/components/picture/Icon';
+import { Icon } from '~/framework/components/picture';
 import { CaptionText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import { getSession } from '~/framework/modules/auth/reducer';

@@ -10,5 +10,5 @@ export default new NavigableModuleConfig<'mediacentre', IMediacentreReduxState>(
 
   displayI18n: 'mediacentre-moduleconfig-appname',
   displayAs: 'myAppsSecondaryModule',
-  displayPicture: { type: 'NamedSvg', name: 'mediacentre' },
+  displayPicture: { type: 'Svg', name: 'mediacentre' },
 });

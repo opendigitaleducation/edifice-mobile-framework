@@ -21,13 +21,13 @@ const toastDefaultPictureProps = {
 
 /**
  * Populates the given picture props with the right color shade and size
- * Works only for NamedSvg pictures for the moment
+ * Works only for Svg pictures for the moment
  * @param picture
  * @param shades
  * @returns the picture props with new members
  */
 function autoFillPicture(picture: PictureProps, shades: IShades) {
-  if (picture.type !== 'NamedSvg') return picture;
+  if (picture.type !== 'Svg') return picture;
   return {
     ...picture,
     fill: picture.fill ?? shades.regular,
@@ -61,7 +61,7 @@ function useToastStyles(type: AlertCardProps['type'], picture: AlertCardProps['i
             fill: colorShades.regular,
             height: UI_SIZES.elements.icon.default,
             name: toastDefaultPictureProps[type],
-            type: 'NamedSvg',
+            type: 'Svg',
             width: UI_SIZES.elements.icon.default,
           } as PictureProps)),
     }),

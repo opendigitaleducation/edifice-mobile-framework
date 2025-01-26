@@ -5,7 +5,7 @@ import styles from './styles';
 
 import theme from '~/app/theme';
 import { genericHitSlop, UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallInverseText } from '~/framework/components/text';
 
 export default function NavBarAction(props: {
@@ -33,7 +33,7 @@ export default function NavBarAction(props: {
       style={[styles.navBarActionWrapper, { ...(props.icon ? styles.navBarActionWrapperIcon : {}) }]}
       {...(props.testID ? { testID: props.testID } : {})}>
       {props.icon ? (
-        <NamedSVG
+        <Svg
           name={props.icon}
           fill={props.color ?? theme.ui.text.inverse}
           width={UI_SIZES.elements.navbarIconSize}

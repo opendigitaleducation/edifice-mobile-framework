@@ -17,7 +17,7 @@ import type { NotifierState } from './reducer';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { Icon } from '~/framework/components/picture/Icon';
+import { Icon } from '~/framework/components/picture';
 import { SmallInverseText } from '~/framework/components/text';
 import TouchableOpacity from '~/ui/CustomTouchableOpacity';
 

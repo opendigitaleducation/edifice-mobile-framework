@@ -7,7 +7,7 @@ import { DefaultButtonProps } from './types';
 
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallBoldText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import { openUrl } from '~/framework/util/linking';
@@ -60,7 +60,7 @@ export const DefaultButton = (props: DefaultButtonProps) => {
     if ((!iconName && !url) || (!!url && position === 'left')) return;
     const iconStyle = position === 'right' ? styles.iconRight : styles.iconLeft;
     return (
-      <NamedSVG
+      <Svg
         name={iconName ?? 'pictos-external-link'}
         width={BUTTON_ICON_SIZE}
         height={BUTTON_ICON_SIZE}

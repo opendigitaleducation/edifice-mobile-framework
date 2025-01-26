@@ -26,8 +26,7 @@ import { UI_SIZES } from '~/framework/components/constants';
 import { EmptyConnectionScreen } from '~/framework/components/empty-screens';
 import { LoadingIndicator } from '~/framework/components/loading';
 import { KeyboardPageView } from '~/framework/components/page';
-import { Picture } from '~/framework/components/picture';
-import { NamedSVG } from '~/framework/components/picture/NamedSVG';
+import { Picture, Svg } from '~/framework/components/picture';
 import { CaptionItalicText, HeadingSText, SmallBoldText, SmallText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import usePreventBack from '~/framework/hooks/prevent-back';
@@ -251,7 +250,7 @@ const AuthChangeMobileScreen = (props: AuthChangeMobileScreenPrivateProps) => {
       ) : (
         <View style={styles.container}>
           <View style={styles.imageContainer}>
-            <NamedSVG name="user-smartphone" width={UI_SIZES.elements.thumbnail} height={UI_SIZES.elements.thumbnail} />
+            <Svg name="user-smartphone" width={UI_SIZES.elements.thumbnail} height={UI_SIZES.elements.thumbnail} />
           </View>
           <HeadingSText style={styles.title} testID="phone-new-title">
             {texts.title}
@@ -261,7 +260,7 @@ const AuthChangeMobileScreen = (props: AuthChangeMobileScreenPrivateProps) => {
           </SmallText>
           <View style={styles.inputTitleContainer} testID="phone-new-label">
             <Picture
-              type="NamedSvg"
+              type="Svg"
               name="pictos-smartphone"
               fill={theme.palette.grey.black}
               width={UI_SIZES.dimensions.width.mediumPlus}
@@ -292,7 +291,7 @@ const AuthChangeMobileScreen = (props: AuthChangeMobileScreenPrivateProps) => {
             textInputStyle={styles.inputTextInput}
             flagSize={Platform.select({ android: UI_SIZES.dimensions.width.medium, ios: UI_SIZES.dimensions.width.larger })}
             drowDownImage={
-              <NamedSVG style={styles.dropDownArrow} name="ui-rafterDown" fill={theme.ui.text.regular} width={12} height={12} />
+              <Svg style={styles.dropDownArrow} name="ui-rafterDown" fill={theme.ui.text.regular} width={12} height={12} />
             }
             countryPickerProps={{
               filterProps: {

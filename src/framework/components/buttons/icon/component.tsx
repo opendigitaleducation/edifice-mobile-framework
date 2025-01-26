@@ -6,13 +6,13 @@ import { IconButtonProps } from './types';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 
 const IconButton = (props: IconButtonProps) => {
   const Component = props.action ? TouchableOpacity : View;
   return (
     <Component {...props} onPress={props.action} style={[styles.iconButton, props.style]}>
-      <NamedSVG
+      <Svg
         name={props.icon}
         fill={props.color ?? theme.palette.grey.graphite}
         width={props.size ?? UI_SIZES.elements.icon.small}

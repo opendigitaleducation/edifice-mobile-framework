@@ -9,7 +9,7 @@ export const moduleColor = appConf.is1d ? theme.palette.complementary.orange : t
 export default new NavigableModuleConfig<'blog', ReturnType<typeof reducer>>({
   displayAs: 'myAppsModule',
   displayI18n: 'blog-tabname',
-  displayPicture: { fill: moduleColor.regular, name: 'blog', type: 'NamedSvg' },
+  displayPicture: { fill: moduleColor.regular, name: 'blog', type: 'Svg' },
   entcoreScope: ['blog'],
 
   matchEntcoreApp: '/blog',

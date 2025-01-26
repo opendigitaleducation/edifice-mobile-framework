@@ -7,7 +7,7 @@ import { PanGestureHandler, ScrollView, State } from 'react-native-gesture-handl
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyBoldText, SmallBoldText, SmallText } from '~/framework/components/text';
 import viescoTheme from '~/framework/modules/viescolaire/common/theme';
 import { Session } from '~/framework/modules/viescolaire/common/utils/diary';
@@ -123,7 +123,7 @@ export default class DisplaySession extends React.PureComponent<IDisplaySessionP
               <LeftColoredItem shadow style={styles.LeftColoredItemInfoBar} color={viescoTheme.palette.diary}>
                 {sessionList && sessionList[indexSelectedSession]?.date ? (
                   <>
-                    <NamedSVG name="ui-calendarLight" width={20} height={20} fill={viescoTheme.palette.diary} />
+                    <Svg name="ui-calendarLight" width={20} height={20} fill={viescoTheme.palette.diary} />
                     <SmallText>&ensp;{moment(sessionList[indexSelectedSession].date).format('DD/MM/YY')}</SmallText>
                   </>
                 ) : null}

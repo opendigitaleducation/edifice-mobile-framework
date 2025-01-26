@@ -19,7 +19,7 @@ import { EmptyScreen } from '~/framework/components/empty-screens';
 import { cameraAction, documentAction, galleryAction } from '~/framework/components/menus/actions';
 import BottomMenu from '~/framework/components/menus/bottom';
 import { KeyboardPageView, PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyBoldText, NestedBoldText, SmallActionText, SmallBoldText, SmallText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import usePreventBack from '~/framework/hooks/prevent-back';
@@ -151,7 +151,7 @@ const SupportCreateTicketScreen = (props: ISupportCreateTicketScreenProps) => {
                 ]}>
                 <View style={[styles.textIconContainer, filesAdded && styles.textIconContainerSmallerMargin]}>
                   <SmallActionText style={styles.actionText}>{I18n.get('support-createticket-addfiles')}</SmallActionText>
-                  <NamedSVG name="ui-attachment" width={18} height={18} fill={theme.palette.primary.regular} />
+                  <Svg name="ui-attachment" width={18} height={18} fill={theme.palette.primary.regular} />
                 </View>
               </BottomMenu>
               {attachments.map(attachment => (

@@ -5,7 +5,7 @@ import styles from './styles';
 import { CardTopContentProps } from './types';
 
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallBoldText, SmallText } from '~/framework/components/text';
 
 export default function CardTopContent(props: CardTopContentProps) {
@@ -17,7 +17,7 @@ export default function CardTopContent(props: CardTopContentProps) {
     if (statusText) return <SmallBoldText style={{ color: statusColor }}>{statusText}</SmallBoldText>;
     if (statusIcon)
       return (
-        <NamedSVG
+        <Svg
           name={statusIcon}
           width={UI_SIZES.dimensions.width.medium}
           height={UI_SIZES.dimensions.height.medium}

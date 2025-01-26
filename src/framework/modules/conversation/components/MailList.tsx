@@ -13,7 +13,7 @@ import { EmptyScreen } from '~/framework/components/empty-screens';
 import { ListItem } from '~/framework/components/listItem';
 import { LoadingIndicator } from '~/framework/components/loading';
 import { pageGutterSize, PageView } from '~/framework/components/page';
-import { Icon } from '~/framework/components/picture/Icon';
+import { Icon } from '~/framework/components/picture';
 import SwipeableList from '~/framework/components/swipeableList';
 import { CaptionBoldText, CaptionText, SmallText, TextFontStyle, TextSizeStyle } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';

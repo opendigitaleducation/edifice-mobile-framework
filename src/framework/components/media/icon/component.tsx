@@ -10,7 +10,7 @@ import { Picture } from '~/framework/components/picture';
 export default function MediaIcon({ color, icon, iconSize, style }: MediaIconProps) {
   return (
     <View style={[styles.mediaIcon, style]}>
-      <Picture type="NamedSvg" name={icon} width={iconSize} height={iconSize} fill={color || theme.ui.text.inverse} />
+      <Picture type="Svg" name={icon} width={iconSize} height={iconSize} fill={color || theme.ui.text.inverse} />
     </View>
   );
 }

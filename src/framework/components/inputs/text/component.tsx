@@ -6,7 +6,7 @@ import { TextInputProps } from './types';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { CaptionItalicText } from '~/framework/components/text';
 
 const ICON_INPUT_SIZE = UI_SIZES.elements.icon.small;
@@ -94,7 +94,7 @@ const TextInput = forwardRef<RNTextInput, TextInputProps>((props: TextInputProps
   const renderIconInput = useCallback(() => {
     if (isShowIconCallback)
       return (
-        <NamedSVG
+        <Svg
           name={showError ? 'ui-error' : 'ui-success'}
           fill={showError ? theme.palette.status.failure.regular : theme.palette.status.success.regular}
           width={ICON_INPUT_SIZE}
@@ -111,7 +111,7 @@ const TextInput = forwardRef<RNTextInput, TextInputProps>((props: TextInputProps
           style={[styles.toggle, { borderColor: colorStatus() }]}
           onPress={() => handleToggle()}
           testID={testIDToggle ?? ''}>
-          <NamedSVG
+          <Svg
             name={isToggle ? toggleIconOn : toggleIconOff}
             fill={disabled ? theme.palette.grey.graphite : theme.palette.grey.black}
             width={ICON_INPUT_SIZE}

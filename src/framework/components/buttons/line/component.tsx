@@ -7,7 +7,7 @@ import * as ReactIs from 'react-is';
 import theme from '~/app/theme';
 import styles from '~/framework/components/buttons/line/styles';
 import { getScaleWidth, UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallText } from '~/framework/components/text';
 import TouchableOpacity from '~/ui/CustomTouchableOpacity';
 
@@ -63,13 +63,7 @@ export const LineButton = ({
   const renderIcon = () => {
     if (!icon) return;
     return (
-      <NamedSVG
-        style={styles.icon}
-        name={icon}
-        width={getScaleWidth(20)}
-        height={getScaleWidth(20)}
-        fill={theme.palette.grey.black}
-      />
+      <Svg style={styles.icon} name={icon} width={getScaleWidth(20)} height={getScaleWidth(20)} fill={theme.palette.grey.black} />
     );
   };
 
@@ -80,7 +74,7 @@ export const LineButton = ({
         <ActivityIndicator color={theme.palette.primary.regular} size={UI_SIZES.dimensions.width.mediumPlus} style={styles.arrow} />
       );
     return (
-      <NamedSVG
+      <Svg
         name="ui-rafterRight"
         width={UI_SIZES.dimensions.width.mediumPlus}
         height={UI_SIZES.dimensions.width.mediumPlus}

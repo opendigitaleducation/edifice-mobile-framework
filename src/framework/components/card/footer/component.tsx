@@ -15,7 +15,7 @@ export default function CardFooter(props: CardFooterProps) {
     <View style={styles.cardFooter}>
       <Picture
         cached
-        type="NamedSvg"
+        type="Svg"
         name={icon}
         width={UI_SIZES.dimensions.width.medium}
         height={UI_SIZES.dimensions.height.medium}

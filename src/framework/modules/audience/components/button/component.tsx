@@ -9,7 +9,7 @@ import { AudienceReactButtonAllProps } from './types';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import DefaultButton from '~/framework/components/buttons/default';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { CaptionBoldText } from '~/framework/components/text';
 import { getValidReactionTypes } from '~/framework/modules/auth/reducer';
 import Feedback from '~/framework/util/feedback/feedback';
@@ -326,7 +326,7 @@ const AudienceReactButton = (props: AudienceReactButtonAllProps) => {
                       ],
                     }}>
                     <TouchableOpacity style={styles.reactionsIcon} onPress={() => postReaction(reaction)}>
-                      <NamedSVG name={reaction.toLowerCase()} width={REACTION_ICON_SIZE} height={REACTION_ICON_SIZE} />
+                      <Svg name={reaction.toLowerCase()} width={REACTION_ICON_SIZE} height={REACTION_ICON_SIZE} />
                     </TouchableOpacity>
                   </Animated.View>
                 </>

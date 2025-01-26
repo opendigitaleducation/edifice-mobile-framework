@@ -21,7 +21,7 @@ import SecondaryButton from '~/framework/components/buttons/secondary';
 import { UI_SIZES, UI_STYLES } from '~/framework/components/constants';
 import { BottomSheetModalMethods } from '~/framework/components/modals/bottom-sheet';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import ScrollView from '~/framework/components/scrollView';
 import { HeadingSText, HeadingXSText, SmallBoldText } from '~/framework/components/text';
 import { default as Toast, default as toast } from '~/framework/components/toast';
@@ -95,7 +95,7 @@ function useCurvedNavBarFeature() {
   // SVG size management
   return React.useMemo(() => {
     return (
-      <NamedSVG
+      <Svg
         width={svgDisplayWidth}
         height={svgDisplayHeight}
         style={[styles.navBarSvgDecoration, { top: svgDisplayTopOffset }]}

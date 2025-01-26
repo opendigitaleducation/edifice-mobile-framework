@@ -1,6 +1,6 @@
 {
   "name": "appe",
-  "version": "1.13.10",
+  "version": "1.14.0",
   "private": true,
   "engines": {
     "node": ">=18"
@@ -17,6 +17,8 @@
     "fast-alpha": "fastlane deploy alpha>&1 | tee -a ./fastlane/build.log",
     "fast-alpha-all": "fastlane deploy alpha_all>&1 | tee -a ./fastlane/build.log",
     "fast-aquit-alpha": "fastlane deploy aquit_alpha>&1 | tee -a ./fastlane/build.log",
+    "fast-comm": "fastlane deploy comm>&1 | tee -a ./fastlane/build.log",
+    "fast-peda": "fastlane deploy peda>&1 | tee -a ./fastlane/build.log",
     "fast-aquit-rc": "fastlane deploy aquit_rc>&1 | tee -a ./fastlane/build.log",
     "fast-aquit-support": "fastlane deploy aquit_support>&1 | tee -a ./fastlane/build.log",
     "fast-educ-alpha": "fastlane deploy educ_alpha>&1 | tee -a ./fastlane/build.log",
@@ -52,6 +54,8 @@
     "pod-install": "cd ios && rm -rf pods && rm -f Podfile.lock && pod install --repo-update && cd ..",
     "postinstall": "npx react-native-jetifier; npx patch-package;",
     "prepare-alpha": "node cli/prepare-build.js alpha",
+    "prepare-comm": "node cli/prepare-build.js comm",
+    "prepare-peda": "node cli/prepare-build.js peda",
     "prepare-poc": "node cli/prepare-build.js poc",
     "prepare-rc": "node cli/prepare-build.js rc",
     "prepare-major": "node cli/prepare-build.js major",
@@ -207,7 +211,6 @@
     "@commitlint/config-conventional": "19.6.0",
     "@jumpn/react-native-jetifier": "0.1.4",
     "@nicolo-ribaudo/semver-v6": "6.3.3",
-    "@react-native-community/eslint-config": "3.2.0",
     "@react-native/babel-preset": "0.75.4",
     "@react-native/eslint-config": "0.75.4",
     "@react-native/metro-config": "0.75.4",

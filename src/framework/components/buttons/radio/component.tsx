@@ -5,7 +5,7 @@ import styles from './styles';
 import type { RadioButtonProps } from './types';
 
 import theme from '~/app/theme';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyText, SmallText } from '~/framework/components/text';
 
 export const RadioButton = ({ isChecked, isDisabled, label, onPress, size = 'default', style }: RadioButtonProps) => {
@@ -28,7 +28,7 @@ export const RadioButton = ({ isChecked, isDisabled, label, onPress, size = 'def
         <LabelTextComponent style={[styles.labelText, isDisabled && styles.disabledLabelText]}>{label}</LabelTextComponent>
       ) : null}
       <View style={[styles.iconContainer, isPressed && styles.iconPressedContainer]}>
-        <NamedSVG
+        <Svg
           name={isChecked ? 'ui-radio-checked' : 'ui-radio-unchecked'}
           width={iconSize}
           height={iconSize}

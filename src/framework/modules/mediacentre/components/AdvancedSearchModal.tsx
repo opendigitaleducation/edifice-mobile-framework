@@ -16,8 +16,7 @@ import PrimaryButton from '~/framework/components/buttons/primary';
 import SecondaryButton from '~/framework/components/buttons/secondary';
 import { Checkbox } from '~/framework/components/checkbox';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
-import { Icon } from '~/framework/components/picture/Icon';
+import { Icon, Svg } from '~/framework/components/picture';
 import ScrollView from '~/framework/components/scrollView';
 import { BodyBoldText, SmallText } from '~/framework/components/text';
 import { ButtonGroup } from '~/framework/modules/mediacentre/components/ButtonGroup';
@@ -259,7 +258,7 @@ export const AdvancedSearchModal: React.FunctionComponent<IAdvancedSearchModalPr
         <View style={styles.headerContainer}>
           <BodyBoldText style={styles.headerTitle}>{I18n.get('mediacentre-advancedsearch-title')}</BodyBoldText>
           <TouchableOpacity onPress={props.closeModal}>
-            <NamedSVG name="ui-close" width={24} height={24} fill={theme.ui.text.inverse} />
+            <Svg name="ui-close" width={24} height={24} fill={theme.ui.text.inverse} />
           </TouchableOpacity>
         </View>
         <ScrollView contentContainerStyle={styles.contentContainer} keyboardShouldPersistTaps="handled">

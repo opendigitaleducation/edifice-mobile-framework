@@ -7,7 +7,7 @@ import { UI_SIZES } from '~/framework/components/constants';
 import { EmptyScreen } from '~/framework/components/empty-screens';
 import FlatList from '~/framework/components/list/flat-list';
 import { LoadingIndicator } from '~/framework/components/loading';
-import { Icon } from '~/framework/components/picture/Icon';
+import { Icon } from '~/framework/components/picture';
 import { SmallBoldText, SmallText } from '~/framework/components/text';
 import { IResource, Source } from '~/framework/modules/mediacentre/reducer';
 
