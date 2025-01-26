@@ -1,6 +1,6 @@
 {
   "WARNING": "¡¡¡ USED AND UPDATED BY prepare-build.js - DO NOT EDIT MANUALLY !!!",
-  "last": "2024-12-20 11:13:14",
-  "notes": "update(yarn): yarn cache update\nchore(eslint): fix declaration order\nfeat(wayf): MB-3005, improve saml/oidc token detection using direct communication between wayf anf mobile via messages\nrelease: 1.13.8(1130800)\nupdate(yarn): update yarn cache.\nrelease: 1.13.7-rc.5(1130706)",
-  "version": "1.13.8-rc.1(1130801)"
+  "last": "2025-01-24 13:59:07",
+  "notes": "release: 1.13.10-rc.1(1131001)",
+  "version": "1.13.10-rc.2(1131002)"
 }

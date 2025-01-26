@@ -5,7 +5,6 @@
 import CookieManager from '@react-native-cookies/cookies';
 
 import { getSession } from '~/framework/modules/auth/reducer';
-import appConf from '~/framework/util/appConf';
 import { AnyNavigableModuleConfig, IAnyModuleConfig } from '~/framework/util/moduleTool';
 import { urlSigner } from '~/infra/oauth';
 
@@ -130,77 +129,6 @@ export abstract class AbstractTracker<OptionsType> {
     await this._trackView([moduleConfig.routeName, ...path]);
   }
 }
-
-export interface IMatomoTrackerOptions {
-  url: string;
-  siteId: number;
-}
-
-export class ConcreteMatomoTracker extends AbstractTracker<IMatomoTrackerOptions> {
-  async _init() {
-    return Matomo.initTracker(this.opts.url, this.opts.siteId);
-  }
-
-  async _setUserId(id: string) {
-    await Matomo.setUserId(id);
-    return true;
-  }
-
-  async _setCustomDimension(id: number, name: string, value: string) {
-    await Matomo.setCustomDimension(id, value);
-    return true;
-  }
-
-  async _trackEvent(category: string, action: string, name?: string, value?: number) {
-    await Matomo.trackEvent(category, action, name, value);
-    return true;
-  }
-
-  async _trackView(path: string[]) {
-    const viewPath = path.join('/');
-    await Matomo.trackScreen(viewPath, null);
-    return true;
-  }
-}
-
-/*export class ConcreteAppCenterTracker extends AbstractTracker<undefined> {
-  protected _properties = {};
-
-  async _init() {
-    // Nothing to do, configuration comes from native appcenter config files
-  }
-
-  protected _isDebugTracker(): boolean {
-    return true;
-  }
-
-  async _setUserId(id: string) {
-    await AppCenter.setUserId(id);
-    return true;
-  }
-
-  async _setCustomDimension(id: number, name: string, value: string) {
-    this._properties[name] = value;
-    return true;
-  }
-
-  async _trackEvent(category: string, action: string, name?: string, value?: number) {
-    await Analytics.trackEvent(`${category} ${action} ${name} ${value}`, {
-      action,
-      category,
-      ...(name ? { name } : {}),
-      ...(value ? { value: value.toString() } : {}),
-      ...this._properties,
-    });
-    return true;
-  }
-
-  async _trackView(path: string[]) {
-    const viewPath = path.join('/');
-    await Analytics.trackEvent(`View ${viewPath}`);
-    return true;
-  }
-}*/
 
 export class ConcreteEntcoreTracker extends AbstractTracker<undefined> {
   errorCount: number = 0;
@@ -345,7 +273,7 @@ export class ConcreteTrackerSet {
 
 export const Trackers = new ConcreteTrackerSet(
   new ConcreteEntcoreTracker('Entcore', undefined),
-  new ConcreteMatomoTracker('Matomo', appConf.matomo),
+  //new ConcreteMatomoTracker('Matomo', appConf.matomo),
   //new ConcreteAppCenterTracker('AppCenter', undefined),
 );
 
