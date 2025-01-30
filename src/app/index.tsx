@@ -22,7 +22,7 @@ import { getCurrentBadgeValue, setCurrentBadgeValue } from '~/framework/util/bad
 import { AppModules as AllModulesBackup2 } from '~/framework/util/oauth2';
 import { isEmpty } from '~/framework/util/object';
 import { Trackers } from '~/framework/util/tracker';
-import { ZendeskProvider } from '~/framework/util/zendesk';
+//import { ZendeskProvider } from '~/framework/util/zendesk';
 import { AllModulesBackup } from '~/infra/oauth';
 import connectionTrackerReducer from '~/infra/reducers/connectionTracker';
 
@@ -116,7 +116,8 @@ function App(props: AppProps) {
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
-  return appConf.zendeskEnabled ? <ZendeskProvider zendeskConfig={appConf.zendesk!}>{content}</ZendeskProvider> : <>{content}</>;
+  return <>{content}</>;
+  //return appConf.zendeskEnabled ? <ZendeskProvider zendeskConfig={appConf.zendesk!}>{content}</ZendeskProvider> : <>{content}</>;
 }
 
 // Hack to generate scopes without circular deps. ToDo: fix it !
