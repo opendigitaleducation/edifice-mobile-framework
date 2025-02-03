@@ -1,6 +1,7 @@
 import CookieManager from '@react-native-cookies/cookies';
 import moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
+import { getFormattedNumber, isMobileNumber, isValidNumber } from 'react-native-phone-number-input';
 
 import {
   AccountType,
@@ -30,8 +31,8 @@ import {
   UserChild,
   UserChildren,
 } from './model';
+import { AccountError, AccountErrorCode } from './model/error';
 
-import { getFormattedNumber, isMobileNumber, isValidNumber } from 'react-native-phone-number-input';
 import { I18n } from '~/app/i18n';
 import appConf, { Platform } from '~/framework/util/appConf';
 import { Error } from '~/framework/util/error';
@@ -40,7 +41,6 @@ import { OAuth2ErrorCode } from '~/framework/util/oauth2';
 import { Storage } from '~/framework/util/storage';
 import { fetchJSONWithCache, signedFetch } from '~/infra/fetchWithCache';
 import { initOAuth2, OAuth2RessourceOwnerPasswordClient, uniqueId, urlSigner } from '~/infra/oauth';
-import { AccountError, AccountErrorCode } from './model/error';
 
 export interface IUserRequirements {
   forceChangePassword?: boolean;
@@ -667,9 +667,14 @@ export async function activateAccount(platform: Platform, model: ActivationPaylo
   const getIsValidMobileNumberForRegion = (toVerify: string) => {
     try {
       // Returns whether number is valid for selected region and an actual mobile number
-      const isValidNumberForRegion = isValidNumber(toVerify, phonePrefix);
-      const isValidMobileNumber = isMobileNumber(toVerify, phonePrefix);
-      return isValidNumberForRegion && isValidMobileNumber;
+      let isValidNumberForRegion = isValidNumber(toVerify, phonePrefix);
+      let isValidMobileNumber = isMobileNumber(toVerify, phonePrefix);
+      // Don't throw an error if phone number is not required by platform
+      if (toVerify === '') {
+        isValidNumberForRegion = true;
+        isValidMobileNumber = true;
+        return true;
+      } else return isValidNumberForRegion && isValidMobileNumber;
     } catch {
       // Returns false in case of format error (string is too short, isn't recognized as a phone number, etc.)
       return false;
@@ -679,12 +684,12 @@ export async function activateAccount(platform: Platform, model: ActivationPaylo
   const phoneNumberCleaned = phoneNumber.replaceAll(/[-.]+/g, '');
   const isValidMobileNumberForRegion = getIsValidMobileNumberForRegion(phoneNumberCleaned);
 
-  if (!isValidMobileNumberForRegion) {
-    throw new global.Error('Invalid mobile number submitted');
-  }
-  const mobileNumberFormatted = getFormattedNumber(phoneNumberCleaned, phonePrefix);
+  if (!isValidMobileNumberForRegion) throw new global.Error('Invalid mobile number submitted');
 
-  if (!mobileNumberFormatted) throw new global.Error('Failed to format mobile number');
+  const mobileNumberFormatted = getFormattedNumber(phoneNumberCleaned, phonePrefix);
+  const mobileNumberNotEmpty = mobileNumberFormatted && mobileNumberFormatted.length > 0;
+
+  if (!mobileNumberFormatted && mobileNumberNotEmpty) throw new global.Error('Failed to format mobile number');
 
   const payload: IActivationSubmitPayload = {
     acceptCGU: true,
@@ -694,9 +699,10 @@ export async function activateAccount(platform: Platform, model: ActivationPaylo
     login: model.login,
     mail: model.mail || '',
     password: model.password,
-    phone: mobileNumberFormatted,
+    phone: mobileNumberFormatted || '',
     theme,
   };
+
   const formdata = new FormData();
   for (const key in payload) {
     formdata.append(key, payload[key]);
