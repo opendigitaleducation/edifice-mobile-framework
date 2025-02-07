@@ -15,9 +15,10 @@ import PrimaryButton from '~/framework/components/buttons/primary';
 import { UI_SIZES } from '~/framework/components/constants';
 import InputContainer from '~/framework/components/inputs/container';
 import TextInput from '~/framework/components/inputs/text';
+import { TextInputType } from '~/framework/components/inputs/text/component';
 import { KeyboardPageView } from '~/framework/components/page';
 import { PFLogo } from '~/framework/components/pfLogo';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { HeadingXSText, SmallText } from '~/framework/components/text';
 import { forgotAction } from '~/framework/modules/auth/actions';
 import { API } from '~/framework/modules/auth/service.ts';
@@ -27,10 +28,8 @@ import { ValidatorBuilder } from '~/utils/form';
 
 const keyboardPageViewScrollViewProps = { bounces: false, showsVerticalScrollIndicator: false };
 
-const iconRafterDownComponent = () => (
-  <NamedSVG name="ui-rafterDown" fill={theme.palette.grey.black} style={styles.dropDownArrow} />
-);
-const iconRafterUpComponent = () => <NamedSVG name="ui-rafterUp" fill={theme.palette.grey.black} style={styles.dropDownArrow} />;
+const iconRafterDownComponent = () => <Svg name="ui-rafterDown" fill={theme.palette.grey.black} style={styles.dropDownArrow} />;
+const iconRafterUpComponent = () => <Svg name="ui-rafterUp" fill={theme.palette.grey.black} style={styles.dropDownArrow} />;
 
 export const ForgotPage: React.FC<ForgotScreenPrivateProps> = props => {
   const { navigation, route } = props;
@@ -44,6 +43,7 @@ export const ForgotPage: React.FC<ForgotScreenPrivateProps> = props => {
   const [result, setResult] = React.useState<API.AuthForgotResponse | undefined>(undefined);
   const [structures, setStructures] = React.useState<ForgotScreenStructure[]>([]);
   const [selectedStructureId, setSelectedStructureId] = React.useState<string>('');
+  const firstNameInputRef = React.useRef<TextInputType>(null);
 
   const selectedStructureName = React.useMemo(() => {
     return structures.find(structure => structure.structureId === selectedStructureId)?.structureName;
@@ -130,9 +130,16 @@ export const ForgotPage: React.FC<ForgotScreenPrivateProps> = props => {
     field === 'login' ? setLogin(value) : setFirstName(value);
   }, []);
 
-  const toggleDropDown = React.useCallback((open: (prevState: boolean) => boolean): void => {
-    setDropDownOpened(open);
+  const blurFirstNameInput = React.useCallback((): void => {
+    if (firstNameInputRef.current) {
+      firstNameInputRef.current.blur();
+    }
   }, []);
+
+  const toggleDropDown = React.useCallback((): void => {
+    blurFirstNameInput();
+    setDropDownOpened(!dropDownOpened);
+  }, [dropDownOpened, blurFirstNameInput]);
 
   const setCurrentStructure: typeof setSelectedStructureId = React.useCallback(structureId => {
     setEditing(true);
@@ -211,6 +218,7 @@ export const ForgotPage: React.FC<ForgotScreenPrivateProps> = props => {
                 returnKeyLabel={I18n.get('auth-forgot-submit')}
                 returnKeyType="done"
                 placeholder={I18n.get('auth-forgot-firstname-placeholder')}
+                ref={firstNameInputRef}
                 showError={hasError}
                 spellCheck={false}
                 value={firstName}
@@ -227,6 +235,7 @@ export const ForgotPage: React.FC<ForgotScreenPrivateProps> = props => {
               <View style={styles.dropDownContainer}>
                 <DropDownPicker
                   dropDownContainerStyle={styles.dropDownItems}
+                  dropDownDirection="TOP"
                   items={dropdownItems}
                   open={dropDownOpened}
                   placeholder={selectedStructureName ? selectedStructureName : I18n.get('auth-forgot-structure')}
@@ -247,20 +256,20 @@ export const ForgotPage: React.FC<ForgotScreenPrivateProps> = props => {
         </>
       );
   }, [
+    canSubmit,
+    doSubmit,
+    dropdownItems,
+    dropDownOpened,
+    errorText,
+    firstName,
     forgotMode,
     hasStructures,
     hasError,
-    errorText,
     onChangeFirstName,
-    firstName,
-    dropdownItems,
-    dropDownOpened,
     selectedStructureName,
-    toggleDropDown,
     setCurrentStructure,
     selectedStructureId,
-    canSubmit,
-    doSubmit,
+    toggleDropDown,
   ]);
 
   const renderInstructions = React.useCallback(() => {

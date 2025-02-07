@@ -9,7 +9,7 @@ import { UserSpaceScreenPrivateProps } from './types';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import PrimaryButton from '~/framework/components/buttons/primary';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import ScrollView from '~/framework/components/scrollView';
 import { BodyText, HeadingXSText } from '~/framework/components/text';
 import { UserNavigationParams, userRouteNames } from '~/framework/modules/user/navigation';
@@ -51,12 +51,12 @@ function UserSpaceScreen(props: UserSpaceScreenPrivateProps) {
         iconRight="pictos-external-link"
         action={onPressButton}
       />
-      <NamedSVG name="space-edi2" style={styles.svgEdi} />
-      <NamedSVG name="space-rocket" style={styles.svgRocket} />
-      <NamedSVG name="space-moon" style={styles.svgMoon} />
-      <NamedSVG name="space-star1" style={styles.svgStar1} />
-      <NamedSVG name="space-star2" style={styles.svgStar2} />
-      <NamedSVG name="space-star3" style={styles.svgStar3} />
+      <Svg name="space-edi2" style={styles.svgEdi} />
+      <Svg name="space-rocket" style={styles.svgRocket} />
+      <Svg name="space-moon" style={styles.svgMoon} />
+      <Svg name="space-star1" style={styles.svgStar1} />
+      <Svg name="space-star2" style={styles.svgStar2} />
+      <Svg name="space-star3" style={styles.svgStar3} />
     </ScrollView>
   );
 }

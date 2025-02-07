@@ -5,7 +5,7 @@ import styles from './styles';
 import type { EventButtonProps } from './types';
 
 import theme from '~/app/theme';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyBoldText, BodyText } from '~/framework/components/text';
 
 export default function EventButton(props: EventButtonProps) {
@@ -19,7 +19,7 @@ export default function EventButton(props: EventButtonProps) {
         props.isSelected && { backgroundColor: props.backgroundColor },
         props.disabled && styles.containerDisabled,
       ]}>
-      <NamedSVG name={props.iconName} width={24} height={24} fill={theme.palette.grey.black} />
+      <Svg name={props.iconName} width={24} height={24} fill={theme.palette.grey.black} />
       <TextComponent>{props.text}</TextComponent>
     </TouchableOpacity>
   );

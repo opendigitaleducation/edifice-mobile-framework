@@ -14,7 +14,7 @@ import { deleteAction } from '~/framework/components/menus/actions';
 import PopupMenu from '~/framework/components/menus/popup';
 import NavBarAction from '~/framework/components/navigation/navbar-action';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { HeadingSText, TextSizeStyle } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import { AuthLoggedAccount } from '~/framework/modules/auth/model';
@@ -198,7 +198,7 @@ export class HomeworkTaskDetailsScreen extends React.PureComponent<IHomeworkTask
           <View>
             <HomeworkDayCheckpoint date={date} />
           </View>
-          <NamedSVG name={dayImages[dayOfTheWeek]} style={styles.dayImage} />
+          <Svg name={dayImages[dayOfTheWeek]} style={styles.dayImage} />
         </View>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {title ? <HeadingSText>{title}</HeadingSText> : null}

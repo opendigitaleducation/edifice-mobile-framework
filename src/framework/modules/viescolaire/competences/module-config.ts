@@ -13,7 +13,7 @@ function hasNecessaryRight(entcoreApp: IEntcoreApp): boolean {
 export default new NavigableModuleConfig<'competences', ICompetencesReduxState>({
   displayAs: 'myAppsSecondaryModule',
   displayI18n: 'competences-moduleconfig-appname',
-  displayPicture: { fill: theme.palette.complementary.red.regular, name: 'competences', type: 'NamedSvg' },
+  displayPicture: { fill: theme.palette.complementary.red.regular, name: 'competences', type: 'Svg' },
   entcoreScope: ['competences'],
 
   matchEntcoreApp: entcoreApp => hasNecessaryRight(entcoreApp),

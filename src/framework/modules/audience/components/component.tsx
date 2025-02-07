@@ -11,7 +11,7 @@ import { AudienceAllProps } from './types';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallBoldText, SmallText } from '~/framework/components/text';
 import { audienceService } from '~/framework/modules/audience/service';
 import { getValidReactionTypes } from '~/framework/modules/auth/reducer';
@@ -103,16 +103,17 @@ const Audience = (props: AudienceAllProps) => {
           <View style={styles.statsReactions}>
             {!isEmpty(typesReactions) ? (
               typesReactions.map(reaction => (
-                <NamedSVG
+                <Svg
                   key={reaction}
                   name={`${reaction.toLowerCase()}-round`}
                   height={UI_SIZES.elements.icon.default}
                   width={UI_SIZES.elements.icon.default}
+                  style={styles.statsReactionsItem}
                   cached
                 />
               ))
             ) : (
-              <NamedSVG
+              <Svg
                 name={`${props.validReactionTypes[0].toLowerCase()}-round`}
                 height={UI_SIZES.elements.icon.default}
                 width={UI_SIZES.elements.icon.default}
@@ -125,7 +126,7 @@ const Audience = (props: AudienceAllProps) => {
             onPress={() => navigation.navigate(ModalsRouteNames.AudienceViews, { referer: props.referer })}
             style={styles.statsItem}>
             <SmallText style={styles.statsItemText}>{props.nbViews ?? 0}</SmallText>
-            <NamedSVG
+            <Svg
               name="ui-see"
               fill={theme.palette.grey.graphite}
               height={UI_SIZES.elements.icon.small}
@@ -136,7 +137,7 @@ const Audience = (props: AudienceAllProps) => {
         ) : null}
         <View style={styles.statsItem}>
           <SmallText style={styles.statsItemText}>{props.nbComments ?? 0}</SmallText>
-          <NamedSVG
+          <Svg
             name="ui-messageInfo"
             fill={theme.palette.grey.graphite}
             height={UI_SIZES.elements.icon.small}

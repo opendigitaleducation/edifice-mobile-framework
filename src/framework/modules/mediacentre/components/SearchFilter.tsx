@@ -5,7 +5,7 @@ import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { Checkbox } from '~/framework/components/checkbox';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallText } from '~/framework/components/text';
 import { IResource } from '~/framework/modules/mediacentre/reducer';
 
@@ -125,7 +125,7 @@ const FilterSection: React.FunctionComponent<IFilterSectionProps> = (props: IFil
     <View>
       <TouchableOpacity style={styles.sectionHeaderContainer} onPress={expandSection}>
         <SmallText>{I18n.get(`mediacentre-home-filter-${props.title}`)}</SmallText>
-        <NamedSVG name={iconName} width={18} height={18} fill={theme.ui.text.regular} />
+        <Svg name={iconName} width={18} height={18} fill={theme.ui.text.regular} />
       </TouchableOpacity>
       {expanded ? props.items.map(item => <FilterItem {...props} item={item} sectionTitle={props.title} key={item.value} />) : null}
     </View>
@@ -150,7 +150,7 @@ export const SearchFilter: React.FunctionComponent<ISearchFilterProps> = (props:
   return (
     <View style={[styles.mainContainer, props.containerStyle]}>
       <TouchableOpacity style={styles.titleContainer} onPress={expand}>
-        <NamedSVG name="ui-filter" width={18} height={18} fill={theme.ui.text.regular} style={styles.iconContainer} />
+        <Svg name="ui-filter" width={18} height={18} fill={theme.ui.text.regular} style={styles.iconContainer} />
         <SmallText>{I18n.get('mediacentre-home-filter').toUpperCase()}</SmallText>
       </TouchableOpacity>
       {expanded ? (

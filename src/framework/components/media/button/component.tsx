@@ -12,7 +12,7 @@ import theme from '~/app/theme';
 import { getScaleHeight, getScaleImageSize, UI_SIZES } from '~/framework/components/constants';
 import MediaIcon from '~/framework/components/media/icon';
 import { MediaType, openMediaPlayer } from '~/framework/components/media/player';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallItalicText } from '~/framework/components/text';
 import { Image } from '~/framework/util/media';
 import { urlSigner } from '~/infra/oauth';
@@ -66,7 +66,7 @@ const MediaButton = (props: IPlayerProps) => {
       <TouchableOpacity onPress={() => showMediaPlayer()}>
         <View style={styles.previewAudio}>
           <MediaIcon icon="ui-play-filled" iconSize={iconSizeAudio} style={styles.iconAudio} />
-          <NamedSVG width={widthWaves} height={heightWaves} fill={theme.palette.primary.light} name="ui-wavering" />
+          <Svg width={widthWaves} height={heightWaves} fill={theme.palette.primary.light} name="ui-wavering" />
         </View>
       </TouchableOpacity>
     );

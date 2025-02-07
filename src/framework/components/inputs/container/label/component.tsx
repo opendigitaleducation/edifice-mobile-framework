@@ -6,7 +6,7 @@ import { LabelIndicator, LabelProps } from './types';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallBoldText, SmallItalicText } from '~/framework/components/text';
 
 export default function Label(props: LabelProps) {
@@ -14,7 +14,7 @@ export default function Label(props: LabelProps) {
 
   const renderIcon = useCallback(() => {
     return (
-      <NamedSVG
+      <Svg
         name={icon!}
         width={UI_SIZES.elements.icon.small}
         height={UI_SIZES.elements.icon.small}

@@ -7,7 +7,7 @@ import { NavigableModuleConfig } from '~/framework/util/moduleTool';
 export default new NavigableModuleConfig<'homeworkAssistance', IHomeworkAssistanceReduxState>({
   displayAs: 'myAppsSecondaryModule',
   displayI18n: 'homeworkassistance-appname',
-  displayPicture: { fill: theme.palette.complementary.indigo.regular, name: 'homeworkAssistance', type: 'NamedSvg' },
+  displayPicture: { fill: theme.palette.complementary.indigo.regular, name: 'homeworkAssistance', type: 'Svg' },
   entcoreScope: ['homework-assistance'],
   hasRight: ({ session }) => !!session && !!getHomeworkAssistanceWorkflowInformation(session).send,
 

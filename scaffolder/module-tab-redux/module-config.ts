@@ -13,5 +13,5 @@ export default new NavigableModuleConfig<'{{moduleName | toCamelCase}}', {{modul
   displayI18n: '{{moduleName | toCamelCase}}.tabName',
   displayAs: 'tabModule',
   displayOrder: 0,
-  displayPicture: { type: 'NamedSvg', name: 'ui-tool' },
+  displayPicture: { type: 'Svg', name: 'ui-tool' },
 });

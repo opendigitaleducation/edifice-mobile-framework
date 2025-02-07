@@ -3,7 +3,7 @@ import { ColorValue, StyleSheet, View } from 'react-native';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallText } from '~/framework/components/text';
 import { BottomColoredItem } from '~/framework/modules/viescolaire/dashboard/components/Item';
 
@@ -51,7 +51,7 @@ export const ModuleButton = ({ color, disabled, icon, onPress, text }: ModuleBut
         color={color}
         onPress={onPress}
         disabled={disabled}>
-        <NamedSVG name={icon} height={70} width={70} fill={color} />
+        <Svg name={icon} height={70} width={70} fill={color} />
         <SmallText>{text}</SmallText>
       </BottomColoredItem>
     </View>

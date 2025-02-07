@@ -271,7 +271,7 @@ class NewMailScreen extends React.PureComponent<ConversationNewMailScreenProps, 
         await this.getAttachmentData(new LocalFile(file, { _needIOSReleaseSecureAccess: false }));
         Trackers.trackEventOfModule(moduleConfig, 'Ajouter une pièce jointe', actionName + ' - Succès');
       } catch {
-        Toast.showError('pickfile-error-storageaccess');
+        Toast.showError(I18n.get('conversation-newmail-fullstorage'));
         Trackers.trackEventOfModule(moduleConfig, 'Ajouter une pièce jointe', actionName + ' - Échec');
       }
     },

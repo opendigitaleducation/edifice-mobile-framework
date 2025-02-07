@@ -6,7 +6,7 @@ import { RecipientField } from './RecipientField';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallText } from '~/framework/components/text';
 import { IDraft } from '~/framework/modules/zimbra/model';
 
@@ -54,7 +54,7 @@ export const ComposerHeaders = ({ hasZimbraSendExternalRight, headers, onChange,
           onChange={to => onChange({ ...headers, to })}
         />
         <TouchableOpacity onPress={expand} style={styles.expandActionContainer}>
-          <NamedSVG name={isExpanded ? 'ui-rafterUp' : 'ui-rafterDown'} width={20} height={20} fill={theme.ui.text.regular} />
+          <Svg name={isExpanded ? 'ui-rafterUp' : 'ui-rafterDown'} width={20} height={20} fill={theme.ui.text.regular} />
         </TouchableOpacity>
       </View>
       {isExpanded ? (

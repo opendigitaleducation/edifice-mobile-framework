@@ -14,7 +14,7 @@ import { IGlobalState } from '~/app/store';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
 import { ModalBoxHandle } from '~/framework/components/ModalBox';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { CaptionBoldText, HeadingXSText } from '~/framework/components/text';
 import { AuthLoggedAccount } from '~/framework/modules/auth/model';
 import { getSession } from '~/framework/modules/auth/reducer';
@@ -170,7 +170,7 @@ const DrawerContent = (props: CustomDrawerContentProps) => {
           <View style={styles.foldersHeaderContainer}>
             <HeadingXSText style={styles.categoryText}>{I18n.get('zimbra-maillist-drawercontent-folders')}</HeadingXSText>
             <TouchableOpacity onPress={openFolderCreationModal} style={styles.createFolderContainer}>
-              <NamedSVG name="ui-plus" width={24} height={24} fill={theme.palette.primary.regular} />
+              <Svg name="ui-plus" width={24} height={24} fill={theme.palette.primary.regular} />
             </TouchableOpacity>
           </View>
           <FlatList

@@ -10,7 +10,7 @@ import { InputPhoneProps } from './';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { CaptionItalicText } from '~/framework/components/text';
 
 const countryListLanguages = {
@@ -26,7 +26,7 @@ export const InputPhone = (props: InputPhoneProps) => {
       <PhoneInput
         defaultCode={props.defaultCode}
         onChangeCountry={props.onChangeCountry}
-        onChangeText={props.onChangeText}
+        onChangeFormattedText={props.onChangeText}
         placeholder={props.placeholder}
         layout="third"
         value={props.phoneNumber}
@@ -50,7 +50,7 @@ export const InputPhone = (props: InputPhoneProps) => {
           ios: UI_SIZES.dimensions.width.larger,
         })}
         drowDownImage={
-          <NamedSVG
+          <Svg
             style={styles.dropDownArrow}
             name="ui-rafterDown"
             fill={theme.ui.text.regular}

@@ -6,7 +6,7 @@ import { RichToolbarItemProps } from './types';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 
 export const RichToolbarItem = (props: RichToolbarItemProps) => {
   const renderColor = () => {
@@ -19,7 +19,7 @@ export const RichToolbarItem = (props: RichToolbarItemProps) => {
       disabled={props.disabled}
       onPress={props.onSelected}
       style={[styles.item, props.selected ? styles.selected : {}]}>
-      <NamedSVG name={props.icon} fill={renderColor()} height={UI_SIZES.elements.icon.small} width={UI_SIZES.elements.icon.small} />
+      <Svg name={props.icon} fill={renderColor()} height={UI_SIZES.elements.icon.small} width={UI_SIZES.elements.icon.small} />
     </TouchableOpacity>
   );
 };

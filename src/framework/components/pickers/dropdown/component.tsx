@@ -9,7 +9,7 @@ import { DropdownPickerProps } from './types';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyItalicText, BodyText } from '~/framework/components/text';
 
 export const BUTTON_ICON_SIZE = UI_SIZES.elements.icon.small;
@@ -21,7 +21,7 @@ export const DropdownPicker = <T extends ValueType>(props: DropdownPickerProps<T
 
   const renderBody = () => (
     <View style={styles.bodyContainer}>
-      {iconName ? <NamedSVG name={iconName} width={22} height={22} fill={theme.palette.grey.black} /> : null}
+      {iconName ? <Svg name={iconName} width={22} height={22} fill={theme.palette.grey.black} /> : null}
       {value !== null ? (
         <BodyText style={disabled && styles.disabledText}>{getSelectedItemLabel()}</BodyText>
       ) : (
@@ -31,11 +31,11 @@ export const DropdownPicker = <T extends ValueType>(props: DropdownPickerProps<T
   );
 
   const renderArrowUpIcon = () => (
-    <NamedSVG name="ui-rafterUp" width={16} height={16} fill={disabled ? theme.palette.grey.stone : theme.palette.grey.black} />
+    <Svg name="ui-rafterUp" width={16} height={16} fill={disabled ? theme.palette.grey.stone : theme.palette.grey.black} />
   );
 
   const renderArrowDownIcon = () => (
-    <NamedSVG name="ui-rafterDown" width={16} height={16} fill={disabled ? theme.palette.grey.stone : theme.palette.grey.black} />
+    <Svg name="ui-rafterDown" width={16} height={16} fill={disabled ? theme.palette.grey.stone : theme.palette.grey.black} />
   );
 
   return (

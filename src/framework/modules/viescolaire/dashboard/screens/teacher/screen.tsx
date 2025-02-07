@@ -16,7 +16,7 @@ import TertiaryButton from '~/framework/components/buttons/tertiary';
 import { EmptyScreen } from '~/framework/components/empty-screens';
 import { LoadingIndicator } from '~/framework/components/loading';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallBoldText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import { AccountType } from '~/framework/modules/auth/model';
@@ -124,7 +124,7 @@ const DashboardTeacherScreen = (props: DashboardTeacherScreenPrivateProps) => {
     return (
       <View style={styles.presencesContainer}>
         <View style={styles.presencesHeadingContainer}>
-          <NamedSVG name="presences" fill={theme.palette.complementary.yellow.regular} height={24} width={24} />
+          <Svg name="presences" fill={theme.palette.complementary.yellow.regular} height={24} width={24} />
           <SmallBoldText>{I18n.get('dashboard-teacher-presences-heading')}</SmallBoldText>
         </View>
         <View style={styles.presencesCallContainer}>
@@ -134,7 +134,7 @@ const DashboardTeacherScreen = (props: DashboardTeacherScreenPrivateProps) => {
             <CallCard course={currentCourse} showStatus onPress={() => openCall(currentCourse)} />
           ) : (
             <View style={styles.presencesEmptyContainer}>
-              <NamedSVG name="ui-infoCircle" fill={theme.palette.grey.graphite} height={24} width={24} />
+              <Svg name="ui-infoCircle" fill={theme.palette.grey.graphite} height={24} width={24} />
               <SmallBoldText style={styles.presencesEmptyText}>{I18n.get('dashboard-teacher-presences-empty')}</SmallBoldText>
             </View>
           )}

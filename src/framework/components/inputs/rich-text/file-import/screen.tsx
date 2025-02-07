@@ -16,7 +16,7 @@ import FlatList from '~/framework/components/list/flat-list';
 import { cameraAction, galleryAction, ImagePicked, imagePickedToLocalFile } from '~/framework/components/menus/actions';
 import { NavBarAction } from '~/framework/components/navigation';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { CaptionBoldText, SmallText } from '~/framework/components/text';
 import usePreventBack from '~/framework/hooks/prevent-back';
 import { getSession } from '~/framework/modules/auth/reducer';
@@ -324,7 +324,7 @@ export default function FileImportScreen(props: FileImportScreenProps.AllProps) 
               file.status === UploadStatus.KO ? theme.palette.status.failure.pale : theme.palette.complementary.green.pale,
           },
         ]}>
-        <NamedSVG
+        <Svg
           name={file.status === UploadStatus.KO ? 'ui-error' : 'ui-image'}
           height={UI_SIZES.elements.icon.small}
           width={UI_SIZES.elements.icon.small}

@@ -38,7 +38,7 @@ export function BlogPostDetails(props: BlogPostDetailsProps) {
                 <SmallBoldText numberOfLines={1}>{`${I18n.get('common-by')} ${post.author.username}`}</SmallBoldText>
               ) : undefined
             }
-            date={blog.modified}
+            date={post.modified}
           />
         </View>
         {post.state === 'SUBMITTED' ? (

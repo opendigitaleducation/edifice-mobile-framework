@@ -49,7 +49,7 @@ const MyAppsHomeScreen = (props: MyAppsHomeScreenProps) => {
           text={I18n.get(item.config.displayI18n)}
           picture={
             item.config.displayPicture
-              ? item.config.displayPicture.type === 'NamedSvg'
+              ? item.config.displayPicture.type === 'Svg'
                 ? { ...item.config.displayPicture, height: 64, width: '100%' }
                 : item.config.displayPicture.type === 'Image'
                   ? { ...item.config.displayPicture }

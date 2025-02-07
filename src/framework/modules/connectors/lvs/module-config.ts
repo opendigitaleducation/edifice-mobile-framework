@@ -9,7 +9,7 @@ function hasConnectorApp(entcoreApp: IEntcoreApp): boolean {
 export default new NavigableModuleConfig<'lvs', null>({
   displayAs: 'myAppsConnector',
   displayI18n: 'lvs-moduleconfig-appname',
-  displayPicture: { name: 'lvs', type: 'NamedSvg' },
+  displayPicture: { name: 'lvs', type: 'Svg' },
   entcoreScope: ['lvs'],
 
   matchEntcoreApp: entcoreApp => hasConnectorApp(entcoreApp),

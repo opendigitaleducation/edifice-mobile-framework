@@ -14,7 +14,7 @@ import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import AlertCard from '~/framework/components/alert';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyText, SmallText } from '~/framework/components/text';
 import { Toggle } from '~/framework/components/toggle';
 import { setXmasMusicAction, setXmasThemeAction } from '~/framework/modules/user/actions';
@@ -58,7 +58,7 @@ const XmasScreen = ({ onSetXmasMusic, onSetXmasTheme, xmasMusic, xmasTheme }: Us
           <SmallText>{I18n.get('user-xmas-description-wish', { appName: DeviceInfo.getApplicationName() })}</SmallText>
         </View>
         <View style={styles.xmasTreeSubcontainer}>
-          <NamedSVG style={styles.xmasTree} name="xmas" width="140%" height="70%" />
+          <Svg style={styles.xmasTree} name="xmas" width="140%" height="70%" />
         </View>
       </View>
     </PageView>

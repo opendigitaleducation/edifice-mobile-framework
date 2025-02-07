@@ -21,7 +21,7 @@ import {
   ResourceExplorerItemWithImage,
 } from '~/framework/components/explorer/resource-explorer/types';
 import { PageView } from '~/framework/components/page';
-import { NamedSVGProps } from '~/framework/components/picture';
+import { SvgProps } from '~/framework/components/picture';
 import { AuthLoggedAccount } from '~/framework/modules/auth/model';
 import { getSession } from '~/framework/modules/auth/reducer';
 import { fetchBlogsAndFoldersAction } from '~/framework/modules/blog/actions';
@@ -184,7 +184,7 @@ const BlogExplorerScreen = (props: BlogExplorerScreenProps) => {
           const { thumbnail, ...b } = bb;
           return {
             ...b,
-            color: (moduleConfig.displayPicture as NamedSVGProps).fill ?? theme.palette.complementary.indigo.regular,
+            color: (moduleConfig.displayPicture as SvgProps).fill ?? theme.palette.complementary.indigo.regular,
             date: moment.max(
               b.fetchPosts?.[0]?.firstPublishDate ??
                 b.fetchPosts?.[0]?.modified ??
@@ -201,7 +201,7 @@ const BlogExplorerScreen = (props: BlogExplorerScreenProps) => {
 
       const df = finalFolders.map(f => ({
         ...f,
-        color: (moduleConfig.displayPicture as NamedSVGProps).fill ?? theme.palette.complementary.indigo.regular,
+        color: (moduleConfig.displayPicture as SvgProps).fill ?? theme.palette.complementary.indigo.regular,
       }));
       return { displayedblogs: db, displayedFolders: df };
     })();

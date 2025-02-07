@@ -8,7 +8,7 @@ import type { StudentStatusProps } from './types';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import PrimaryButton from '~/framework/components/buttons/primary';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyText, SmallText } from '~/framework/components/text';
 import { CallEventType } from '~/framework/modules/viescolaire/presences/model';
 import { SingleAvatar } from '~/ui/avatars/SingleAvatar';
@@ -56,7 +56,7 @@ export default function StudentStatus({
     if (exemption_attendance || lastCourseAbsent)
       return (
         <View style={styles.info}>
-          <NamedSVG
+          <Svg
             name={exemption_attendance ? 'ui-block' : 'ui-error-past'}
             height={20}
             width={20}

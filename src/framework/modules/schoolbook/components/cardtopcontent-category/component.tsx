@@ -8,7 +8,7 @@ import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import CardTopContent from '~/framework/components/card/top-content';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 
 export const CardTopContentCategory = (props: CardTopContentCategoryProps) => {
   const { category } = props;
@@ -17,7 +17,7 @@ export const CardTopContentCategory = (props: CardTopContentCategoryProps) => {
     <CardTopContent
       image={
         <View style={[styles.boxIcon, { backgroundColor: theme.color.schoolbook.categories[category] }]}>
-          <NamedSVG
+          <Svg
             width={UI_SIZES.dimensions.width.medium}
             height={UI_SIZES.dimensions.height.medium}
             cached

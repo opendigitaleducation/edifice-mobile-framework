@@ -8,7 +8,7 @@ import getPath from '@flyerhq/react-native-android-uri-path';
 import moment from 'moment';
 import DeviceInfo from 'react-native-device-info';
 import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
-import { copyFile, DownloadDirectoryPath, exists, UploadFileItem } from 'react-native-fs';
+import { copyFile, DownloadDirectoryPath, UploadFileItem } from 'react-native-fs';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
 
 import { openDocument } from './actions';
@@ -64,7 +64,8 @@ const processImage = async (pic: Image) => {
 };
 
 const processImages = (pics: Image[]) => {
-  return Promise.all(pics.map(pic => processImage(pic)));
+  const picsToConvert = pics.length ? pics : [pics];
+  return Promise.all(picsToConvert.map(pic => processImage(pic)));
 };
 
 /**
@@ -126,7 +127,8 @@ export class LocalFile implements LocalFile.CustomUploadFileItem {
     try {
       await assertPermissions('galery.read');
       const pics = await ImagePicker.openPicker({
-        multiple,
+        maxFiles: 0,
+        multiple, // Default value is 5 somewhere in the third-party package, so we must set it to 0 here to allow unlimited selection.
       });
 
       pickedFiles = await processImages(pics);
@@ -163,7 +165,11 @@ export class LocalFile implements LocalFile.CustomUploadFileItem {
       pickedFile = [compressPic];
       const image: LocalFile[] = pickedFile.map(f => new LocalFile(f, { _needIOSReleaseSecureAccess: false }));
       await this.imageCallback(image, callback, synchrone, callbackOnce);
-    } catch {
+    } catch (e) {
+      if (e instanceof Error && (e as { code?: unknown }).code === 'E_PICKER_CANCELLED') {
+        await this.imageCallback([], callback, synchrone, callbackOnce);
+        return;
+      }
       Alert.alert(
         I18n.get('camera-permissionblocked-title'),
         I18n.get('camera-permissionblocked-text', { appName: DeviceInfo.getApplicationName() }),
@@ -253,12 +259,9 @@ export class LocalFile implements LocalFile.CustomUploadFileItem {
   async mirrorToDownloadFolder() {
     await assertPermissions('documents.write');
     const destFolder = DownloadDirectoryPath;
-    let destPath = `${destFolder}/${this.filename}`;
-    if (await exists(destPath)) {
-      const splitFilename = this.filename.split('.');
-      const ext = splitFilename.pop();
-      destPath = `${destFolder}/${splitFilename.join('.')}-${moment().format('YYYYMMDD-HHmmss')}.${ext}`;
-    }
+    const splitFilename = this.filename.split('.');
+    const ext = splitFilename.pop();
+    let destPath = `${destFolder}/${splitFilename.join('.')}-${moment().format('YYYYMMDD-HHmmss')}.${ext}`;
     copyFile(this.filepath, destPath)
       .then(() => {})
       .catch(error => {

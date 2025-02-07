@@ -8,7 +8,7 @@ import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
 import { ListItem } from '~/framework/components/listItem';
-import { Icon } from '~/framework/components/picture/Icon';
+import { Icon } from '~/framework/components/picture';
 import { CaptionText, NestedText, SmallBoldText, SmallText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import { getFileIcon } from '~/framework/modules/conversation/utils/fileIcon';

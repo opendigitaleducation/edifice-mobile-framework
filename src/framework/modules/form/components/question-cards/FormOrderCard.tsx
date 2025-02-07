@@ -7,7 +7,7 @@ import { FormAnswerText } from './FormAnswerText';
 
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallText } from '~/framework/components/text';
 import { FormQuestionCard } from '~/framework/modules/form/components/FormQuestionCard';
 import { IQuestion, IQuestionChoice, IQuestionResponse } from '~/framework/modules/form/model';
@@ -72,7 +72,7 @@ export const FormOrderCard = ({ isDisabled, onChangeAnswer, onEditQuestion, ques
           onPressIn={drag}
           disabled={isDisabled || isActive}
           style={[styles.choiceContainer, { backgroundColor: isActive ? theme.palette.grey.pearl : theme.palette.grey.fog }]}>
-          <NamedSVG name="ui-drag" fill={isDisabled ? theme.palette.grey.grey : theme.palette.grey.black} width={18} height={18} />
+          <Svg name="ui-drag" fill={isDisabled ? theme.palette.grey.grey : theme.palette.grey.black} width={18} height={18} />
           <SmallText style={styles.valueText}>{item.value}</SmallText>
         </TouchableOpacity>
       </ScaleDecorator>

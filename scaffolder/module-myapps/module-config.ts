@@ -12,5 +12,5 @@ export default new NavigableModuleConfig<'{{moduleName | toCamelCase}}', null>({
   displayI18n: '{{moduleName | toCamelCase}}.tabName',
   displayAs: 'myAppsModule',
   displayOrder: 0,
-  displayPicture: { type: 'NamedSvg', name: 'ui-tool', fill: theme.palette.complementary.orange.regular },
+  displayPicture: { type: 'Svg', name: 'ui-tool', fill: theme.palette.complementary.orange.regular },
 });

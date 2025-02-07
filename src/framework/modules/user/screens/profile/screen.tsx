@@ -20,7 +20,7 @@ import TertiaryButton from '~/framework/components/buttons/tertiary';
 import { UI_SIZES } from '~/framework/components/constants';
 import { EmptyConnectionScreen } from '~/framework/components/empty-screens';
 import { ImagePicked, MenuAction } from '~/framework/components/menus/actions';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import ScrollView from '~/framework/components/scrollView';
 import { BodyText, HeadingSText, SmallItalicText, SmallText } from '~/framework/components/text';
 import { TextAvatar } from '~/framework/components/textAvatar';
@@ -141,7 +141,7 @@ const UserProfileScreen = (props: ProfilePageProps) => {
       await onUpdateAvatar(sc.url);
     } catch (err: any) {
       if (err.message === 'Error picking image') {
-        Toast.showError('pickfile-error-storageaccess');
+        Toast.showError(I18n.get('pickfile-error-storageaccess'));
       } else if (!(err instanceof Error)) {
         onUploadAvatarError();
       }
@@ -243,7 +243,7 @@ const UserProfileScreen = (props: ProfilePageProps) => {
           style={styles.userFamily}
           onPress={() => navigation.push(userRouteNames.profile, { userId: user.relatedId! })}>
           <TextAvatar userId={user.relatedId!} text={user.relatedName!} isHorizontal />
-          <NamedSVG
+          <Svg
             style={styles.userFamilyIcon}
             name="ui-rafterRight"
             width={UI_SIZES.dimensions.width.mediumPlus}
@@ -274,7 +274,7 @@ const UserProfileScreen = (props: ProfilePageProps) => {
           family?.map(user => renderPersonFamily(user))
         ) : (
           <View style={styles.emptyFamily}>
-            <NamedSVG
+            <Svg
               name="ui-question"
               width={UI_SIZES.dimensions.width.largePlus}
               height={UI_SIZES.dimensions.width.largePlus}

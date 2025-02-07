@@ -9,7 +9,7 @@ import type { CallCardProps, CallCardStyle } from './types';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES, UI_STYLES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyText, HeadingSText, NestedText } from '~/framework/components/text';
 import { CallState } from '~/framework/modules/viescolaire/presences/model';
 import appConf from '~/framework/util/appConf';
@@ -81,7 +81,7 @@ export default class CallCard extends React.PureComponent<CallCardProps> {
       <TouchableOpacity onPress={onPress} disabled={disabled} style={[styles.container, { borderColor, borderWidth }]}>
         <View style={styles.leftContainer}>
           <View style={styles.rowContainer}>
-            <NamedSVG name="ui-clock" width={22} height={22} fill={textColor} />
+            <Svg name="ui-clock" width={22} height={22} fill={textColor} />
             <BodyText numberOfLines={1} style={[UI_STYLES.flexShrink1, { color: textColor }]}>
               {appConf.is1d ? classLabel : hoursLabel}
               {roomLabel ? <NestedText style={styles.roomText}>{`  -  ${roomLabel}`}</NestedText> : null}
@@ -93,7 +93,7 @@ export default class CallCard extends React.PureComponent<CallCardProps> {
         </View>
         {showStatus ? (
           <View style={[styles.statusContainer, { backgroundColor: status!.backgroundColor }]}>
-            <NamedSVG name={status!.iconName} width={32} height={32} fill={status!.iconColor} />
+            <Svg name={status!.iconName} width={32} height={32} fill={status!.iconColor} />
           </View>
         ) : null}
       </TouchableOpacity>

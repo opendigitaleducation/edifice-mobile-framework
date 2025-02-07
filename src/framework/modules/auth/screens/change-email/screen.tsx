@@ -15,8 +15,7 @@ import theme from '~/app/theme';
 import PrimaryButton from '~/framework/components/buttons/primary';
 import { UI_SIZES } from '~/framework/components/constants';
 import { KeyboardPageView } from '~/framework/components/page';
-import { Picture } from '~/framework/components/picture';
-import { NamedSVG } from '~/framework/components/picture/NamedSVG';
+import { Picture, Svg } from '~/framework/components/picture';
 import { CaptionItalicText, HeadingSText, SmallBoldText, SmallText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import usePreventBack from '~/framework/hooks/prevent-back';
@@ -142,7 +141,7 @@ const AuthChangeEmailScreen = (props: AuthChangeEmailScreenPrivateProps) => {
     <KeyboardPageView style={styles.page} scrollable>
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <NamedSVG name="user-email" width={UI_SIZES.elements.thumbnail} height={UI_SIZES.elements.thumbnail} />
+          <Svg name="user-email" width={UI_SIZES.elements.thumbnail} height={UI_SIZES.elements.thumbnail} />
         </View>
         <HeadingSText style={styles.title} testID="email-change-title">
           {texts.title}
@@ -152,7 +151,7 @@ const AuthChangeEmailScreen = (props: AuthChangeEmailScreenPrivateProps) => {
         </SmallText>
         <View style={styles.inputTitleContainer} testID="email-field-label">
           <Picture
-            type="NamedSvg"
+            type="Svg"
             name="pictos-mail"
             fill={theme.palette.grey.black}
             width={UI_SIZES.dimensions.width.mediumPlus}

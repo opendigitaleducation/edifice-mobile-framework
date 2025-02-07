@@ -18,7 +18,7 @@ import DateTimePicker from '~/framework/components/dateTimePicker';
 import { EmptyContentScreen } from '~/framework/components/empty-screens';
 import { LoadingIndicator } from '~/framework/components/loading';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { CaptionBoldText, CaptionText, SmallBoldItalicText, SmallBoldText, SmallText } from '~/framework/components/text';
 import { AccountType } from '~/framework/modules/auth/model';
 import { getSession } from '~/framework/modules/auth/reducer';
@@ -296,7 +296,7 @@ const EdtHomeScreen = (props: EdtHomeScreenPrivateProps) => {
     return (
       <>
         <View style={styles.weekPickerView}>
-          <NamedSVG
+          <Svg
             name="ui-calendar"
             width={UI_SIZES.elements.icon.small}
             height={UI_SIZES.elements.icon.small}

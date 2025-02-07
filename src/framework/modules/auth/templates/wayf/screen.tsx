@@ -356,17 +356,17 @@ class WayfScreen extends React.Component<IWayfScreenProps, IWayfScreenState> {
       // Execute right action depending on message type
       const { token, type } = message;
       switch (type) {
-        // Redirect to login page
-        case 'ENT':
-          this.props.navigation.dispatch(this.props.loginCredentialsNavAction);
+        // Login with SAML token if received
+        case 'SAML':
+          if (token) this.loginWithSaml(token);
           break;
         // Login with OpenID token if received
         case 'OIDC':
           if (token) this.loginWithOpenID(token);
           break;
-        // Login with SAML token if received
-        case 'SAML':
-          if (token) this.loginWithSaml(token);
+        // Redirect to login page
+        case 'ENT':
+          this.props.navigation.dispatch(this.props.loginCredentialsNavAction);
           break;
         default:
           console.error('WAYFScreen::onMessage => Wrong type received - ', type);

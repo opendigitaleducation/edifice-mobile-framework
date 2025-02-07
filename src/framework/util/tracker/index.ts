@@ -5,10 +5,9 @@
 import CookieManager from '@react-native-cookies/cookies';
 import AppCenter from 'appcenter';
 import Analytics from 'appcenter-analytics';
-import Matomo from 'react-native-matomo';
+//import Matomo from 'react-native-matomo';
 
 import { getSession } from '~/framework/modules/auth/reducer';
-import appConf from '~/framework/util/appConf';
 import { AnyNavigableModuleConfig, IAnyModuleConfig } from '~/framework/util/moduleTool';
 import { urlSigner } from '~/infra/oauth';
 
@@ -134,7 +133,7 @@ export abstract class AbstractTracker<OptionsType> {
   }
 }
 
-export interface IMatomoTrackerOptions {
+/*export interface IMatomoTrackerOptions {
   url: string;
   siteId: number;
 }
@@ -164,7 +163,7 @@ export class ConcreteMatomoTracker extends AbstractTracker<IMatomoTrackerOptions
     await Matomo.trackScreen(viewPath, null);
     return true;
   }
-}
+}*/
 
 export class ConcreteAppCenterTracker extends AbstractTracker<undefined> {
   protected _properties = {};
@@ -347,7 +346,7 @@ export class ConcreteTrackerSet {
 }
 
 export const Trackers = new ConcreteTrackerSet(
-  new ConcreteMatomoTracker('Matomo', appConf.matomo),
+  //new ConcreteMatomoTracker('Matomo', appConf.matomo),
   new ConcreteAppCenterTracker('AppCenter', undefined),
   new ConcreteEntcoreTracker('Entcore', undefined),
 );

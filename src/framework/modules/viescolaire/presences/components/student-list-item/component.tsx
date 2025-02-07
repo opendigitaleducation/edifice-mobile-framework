@@ -5,7 +5,7 @@ import styles from './styles';
 import type { StudentListItemProps } from './types';
 
 import theme from '~/app/theme';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyText } from '~/framework/components/text';
 import { CallEventType, CallState } from '~/framework/modules/viescolaire/presences/model';
 import { SingleAvatar } from '~/ui/avatars/SingleAvatar';
@@ -24,10 +24,10 @@ export default class StudentListItem extends React.PureComponent<StudentListItem
     const { student } = this.props;
 
     if (student.exemption_attendance)
-      return <NamedSVG name="ui-block" width={20} height={20} fill={theme.palette.status.warning.regular} />;
+      return <Svg name="ui-block" width={20} height={20} fill={theme.palette.status.warning.regular} />;
     if (student.lastCourseAbsent)
       return (
-        <NamedSVG
+        <Svg
           name="ui-error-past"
           width={20}
           height={20}
@@ -43,7 +43,7 @@ export default class StudentListItem extends React.PureComponent<StudentListItem
 
     if (!eventTypes.length)
       return (
-        <NamedSVG
+        <Svg
           name="ui-success_outline"
           width={32}
           height={32}
@@ -51,11 +51,11 @@ export default class StudentListItem extends React.PureComponent<StudentListItem
         />
       );
     if (eventTypes.includes(CallEventType.ABSENCE))
-      return <NamedSVG name="ui-error" width={32} height={32} fill={theme.palette.status.failure.regular} />;
+      return <Svg name="ui-error" width={32} height={32} fill={theme.palette.status.failure.regular} />;
     if (eventTypes.includes(CallEventType.LATENESS))
-      return <NamedSVG name="ui-clock-alert" width={32} height={32} fill={theme.palette.status.warning.regular} />;
+      return <Svg name="ui-clock-alert" width={32} height={32} fill={theme.palette.status.warning.regular} />;
     if (eventTypes.includes(CallEventType.DEPARTURE))
-      return <NamedSVG name="ui-leave" width={32} height={32} fill={theme.palette.status.warning.regular} />;
+      return <Svg name="ui-leave" width={32} height={32} fill={theme.palette.status.warning.regular} />;
   }
 
   public render() {

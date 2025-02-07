@@ -6,7 +6,7 @@ import { SearchBarProps } from './types';
 
 import theme from '~/app/theme';
 import IconButton from '~/framework/components/buttons/icon';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 
 export const SearchBar = (props: SearchBarProps) => {
   const inputRef = useRef<TextInput>(null);
@@ -30,7 +30,7 @@ export const SearchBar = (props: SearchBarProps) => {
 
   return (
     <TouchableOpacity onPress={focusInput} activeOpacity={1} style={[styles.container, { borderColor }, props.containerStyle]}>
-      <NamedSVG name="ui-search" width={20} height={20} fill={theme.ui.text.regular} style={styles.searchIcon} />
+      <Svg name="ui-search" width={20} height={20} fill={theme.ui.text.regular} style={styles.searchIcon} />
       <TextInput
         ref={inputRef}
         value={props.query}

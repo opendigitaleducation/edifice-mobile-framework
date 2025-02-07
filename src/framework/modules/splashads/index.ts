@@ -27,7 +27,7 @@ const timeoutPromise = new Promise((resolve, reject) => {
 
 export const checkAndShowSplashAds = async (platform: Platform, userType: AccountType) => {
   const fetchSplashads = async () => {
-    const source = `${platform.splashads}/${userType}/${getSplashadsLocale()}`;
+    const source = `${platform.splashads}/${userType}/${getSplashadsLocale()}`.toLocaleLowerCase();
     try {
       const response = await Promise.race([timeoutPromise, fetch(source)]);
 

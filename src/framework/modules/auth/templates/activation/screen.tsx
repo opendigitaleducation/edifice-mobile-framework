@@ -21,7 +21,7 @@ import PasswordInput from '~/framework/components/inputs/password';
 import InputPhone from '~/framework/components/inputs/phone/';
 import { KeyboardPageView } from '~/framework/components/page';
 import { openPDFReader } from '~/framework/components/pdf/pdf-reader';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { HeadingSText, SmallActionText, SmallText } from '~/framework/components/text';
 import toast from '~/framework/components/toast';
 import { useConstructor } from '~/framework/hooks/constructor';
@@ -107,8 +107,6 @@ export class ActivationScreen extends React.PureComponent<
   };
 
   private onCheckBoxPress = () => {
-    // ensures phone number formatting before submit
-    this.onPhoneInputBlur();
     this.setState(prevState => ({ acceptCGU: !prevState.acceptCGU }));
   };
 
@@ -119,7 +117,9 @@ export class ActivationScreen extends React.PureComponent<
 
   private onPhoneInputBlur = () => {
     const { phone } = this.state;
-    this.verifyAndFormatPhoneNumber(phone);
+    if (this.props.context.mandatory?.phone) {
+      this.verifyAndFormatPhoneNumber(phone);
+    }
   };
 
   private onSetCountry = (newCountry: Country): void => {
@@ -211,7 +211,7 @@ export class ActivationScreen extends React.PureComponent<
       <KeyboardPageView scrollable scrollViewProps={keyboardPageViewScrollViewProps} safeArea style={styles.page}>
         <Pressable onPress={() => formModel.blur()} style={styles.pressable}>
           <View style={styles.infos}>
-            <NamedSVG name="ui-userSearchColor" />
+            <Svg name="ui-userSearchColor" />
             <HeadingSText style={styles.infosText}>{I18n.get('auth-activation-welcome')}</HeadingSText>
             <SmallText style={styles.infosSubText}>{I18n.get('auth-activation-form-infos')}</SmallText>
           </View>

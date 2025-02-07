@@ -7,7 +7,7 @@ import moment, { Moment } from 'moment';
 import ViewOverflow from 'react-native-view-overflow';
 import { ThunkDispatch } from 'redux-thunk';
 
-import HomeworkCard from './HomeworkCard';
+import HomeworkCard from './homework-card';
 import HomeworkDayCheckpoint from './HomeworkDayCheckpoint';
 import HomeworkTimeline from './HomeworkTimeline';
 
@@ -400,7 +400,7 @@ class HomeworkTaskListScreen extends React.PureComponent<IHomeworkTaskListScreen
 
   private renderList() {
     const stylesContentSectionList = {
-      flex: this.noFutureHomeworkHiddenPast() ? 1 : undefined,
+      flexGrow: 1,
       padding: this.hasHomework() ? UI_SIZES.spacing.medium : undefined,
       paddingTop: !this.hasPastHomeWork() ? UI_SIZES.spacing.big + pageGutterSize : this.hasHomework() ? undefined : 0,
     };

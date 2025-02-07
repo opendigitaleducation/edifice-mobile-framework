@@ -7,7 +7,7 @@ import { PanGestureHandler, ScrollView, State } from 'react-native-gesture-handl
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyBoldText, SmallBoldText, SmallText } from '~/framework/components/text';
 import { Homework } from '~/framework/modules/viescolaire/common/utils/diary';
 import { LeftColoredItem } from '~/framework/modules/viescolaire/dashboard/components/Item';
@@ -126,7 +126,7 @@ export default class DisplayHomework extends React.PureComponent<IDisplayHomewor
               <LeftColoredItem shadow style={styles.LeftColoredItemInfoBar} color={theme.palette.complementary.orange.regular}>
                 {homeworkList && homeworkList[indexSelectedHomework]?.created_date ? (
                   <>
-                    <NamedSVG name="ui-calendarLight" width={20} height={20} fill={theme.palette.complementary.orange.regular} />
+                    <Svg name="ui-calendarLight" width={20} height={20} fill={theme.palette.complementary.orange.regular} />
                     <SmallText>&ensp;{moment(homeworkList[indexSelectedHomework].created_date).format('DD/MM/YY')}</SmallText>
                   </>
                 ) : null}

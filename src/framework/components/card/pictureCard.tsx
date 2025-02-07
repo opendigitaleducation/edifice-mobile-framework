@@ -5,6 +5,7 @@ import { Card, CardWithoutPadding, TouchCard } from './base';
 
 import { getScaleHeight, UI_SIZES } from '~/framework/components/constants';
 import { Picture, PictureProps } from '~/framework/components/picture';
+
 import { SmallText } from '~/framework/components/text';
 
 export type PictureCardProps = {

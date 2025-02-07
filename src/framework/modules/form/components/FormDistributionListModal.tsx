@@ -6,7 +6,7 @@ import theme from '~/app/theme';
 import PrimaryButton from '~/framework/components/buttons/primary';
 import { UI_SIZES } from '~/framework/components/constants';
 import ModalBox, { ModalBoxHandle } from '~/framework/components/ModalBox';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyText, SmallText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import { assertSession } from '~/framework/modules/auth/reducer';
@@ -105,7 +105,7 @@ const FormDistributionListModal = React.forwardRef<ModalBoxHandle, IFormDistribu
     return (
       <TouchableOpacity onPress={() => openSentDistribution(distribution.id)} style={styles.itemContainer}>
         <SmallText>{text}</SmallText>
-        <NamedSVG width={20} height={20} name="ui-eye" fill={theme.palette.primary.regular} style={styles.itemIconMargin} />
+        <Svg width={20} height={20} name="ui-eye" fill={theme.palette.primary.regular} style={styles.itemIconMargin} />
       </TouchableOpacity>
     );
   };

@@ -10,7 +10,7 @@ import { I18n } from '~/app/i18n';
 import PrimaryButton from '~/framework/components/buttons/primary';
 import { getScaleWidth } from '~/framework/components/constants';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { HeadingSText, SmallText } from '~/framework/components/text';
 import { AuthNavigationParams } from '~/framework/modules/auth/navigation';
 import { navBarOptions } from '~/framework/navigation/navBar';
@@ -30,7 +30,7 @@ export default function AuthIntroductionScreen(props: AuthIntroductionScreenPriv
   return (
     <PageView style={styles.page}>
       <View style={styles.topContainer}>
-        <NamedSVG name={props.svgName} width={getScaleWidth(130)} height={getScaleWidth(130)} />
+        <Svg name={props.svgName} width={getScaleWidth(130)} height={getScaleWidth(130)} />
         <HeadingSText style={styles.title}>{props.title}</HeadingSText>
         <SmallText style={styles.description}>{props.description}</SmallText>
       </View>

@@ -6,7 +6,7 @@ import moment, { Moment } from 'moment';
 
 import { TouchCardWithoutPadding } from './card/base';
 import { UI_SIZES } from './constants';
-import { NamedSVG } from './picture';
+import { Svg } from './picture';
 import { SmallText } from './text';
 
 import theme from '~/app/theme';
@@ -68,7 +68,7 @@ const DateTimePickerAndroid = (props: DateTimePickerProps) => {
   return (
     <>
       <TouchCardWithoutPadding onPress={showPicker} disabled={props.disabled} style={[styles.buttonContainer, props.style]}>
-        <NamedSVG
+        <Svg
           name={props.mode === 'date' ? 'ui-calendarLight' : 'ui-clock'}
           width={20}
           height={20}

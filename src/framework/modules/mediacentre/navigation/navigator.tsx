@@ -7,6 +7,8 @@ import { createModuleNavigator } from '~/framework/navigation/moduleScreens';
 import { IEntcoreApp, IEntcoreWidget } from '~/framework/util/moduleTool';
 import { MediacentreNavigationParams, mediacentreRouteNames } from '.';
 
+import { MediacentreNavigationParams, mediacentreRouteNames } from '.';
+
 export default (apps: IEntcoreApp[], widgets: IEntcoreWidget[]) =>
   createModuleNavigator<MediacentreNavigationParams>(moduleConfig.name, Stack => (
     <>

@@ -14,7 +14,7 @@ import PasswordInput from '~/framework/components/inputs/password';
 import TextInput from '~/framework/components/inputs/text';
 import { KeyboardPageView } from '~/framework/components/page';
 import { PFLogo } from '~/framework/components/pfLogo';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyText, HeadingXSText } from '~/framework/components/text';
 import { AuthActiveAccountWithCredentials, AuthSavedLoggedOutAccountWithCredentials } from '~/framework/modules/auth/model';
 import { getAccountById } from '~/framework/modules/auth/reducer';
@@ -137,7 +137,7 @@ const LoginCredentialsScreen = (props: LoginCredentialsScreenPrivateProps) => {
     }
     return (
       <View style={[styles.boxError, styles.userError]}>
-        <NamedSVG
+        <Svg
           name="ui-error"
           fill={theme.palette.status.failure.regular}
           width={UI_SIZES.elements.icon.default}
@@ -225,7 +225,9 @@ const LoginCredentialsScreen = (props: LoginCredentialsScreenPrivateProps) => {
       (errtype === Error.LoginErrorType.ACCOUNT_INELIGIBLE_NOT_PREMIUM ||
         errtype === Error.LoginErrorType.ACCOUNT_INELIGIBLE_PRE_DELETED)
     ) {
-      return <PrimaryButton action={goToWeb} text={I18n.get('LoginWeb')} iconRight="ui-externalLink" testID="login-opentoweb" />;
+      return (
+        <PrimaryButton action={goToWeb} text={I18n.get('auth-login-web')} iconRight="ui-externalLink" testID="login-opentoweb" />
+      );
     } else {
       return (
         <PrimaryButton

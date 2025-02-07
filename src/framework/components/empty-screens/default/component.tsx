@@ -13,7 +13,7 @@ import theme from '~/app/theme';
 import PrimaryButton from '~/framework/components/buttons/primary';
 import { getScaleImageSize, UI_SIZES } from '~/framework/components/constants';
 import { PageViewStyle } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture/NamedSVG';
+import { Svg } from '~/framework/components/picture';
 import { HeadingSText, SmallText } from '~/framework/components/text';
 
 const EmptyScreen = ({
@@ -53,7 +53,7 @@ const EmptyScreen = ({
         },
         customStyle,
       ]}>
-      <NamedSVG style={styles.icon} name={svgImage} width={imageWidth} height={imageHeight} fill={svgFillColor} />
+      <Svg style={styles.icon} name={svgImage} width={imageWidth} height={imageHeight} fill={svgFillColor} />
       {title ? (
         <HeadingSText
           numberOfLines={2}

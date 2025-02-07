@@ -9,7 +9,7 @@ import styles from './styles';
 import { TimelineSpaceProps } from './types';
 
 import { I18n } from '~/app/i18n';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { HeadingXSText, HeadingXXSText } from '~/framework/components/text';
 import { timelineRouteNames } from '~/framework/modules/timeline/navigation';
 import appConf from '~/framework/util/appConf';
@@ -50,7 +50,7 @@ export function TimelineSpace(props: TimelineSpaceProps) {
         <HeadingXXSText style={styles.spaceBadgeText}>{I18n.get('user-page-spacebadge')}</HeadingXXSText>
       </View>
       <HeadingXSText style={styles.spaceText}>{I18n.get('user-page-spacetext')}</HeadingXSText>
-      <NamedSVG name="space-edi" style={styles.spaceSvg} />
+      <Svg name="space-edi" style={styles.spaceSvg} />
     </TouchableOpacity>
   ) : null;
 }

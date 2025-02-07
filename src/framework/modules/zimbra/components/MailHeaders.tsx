@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { I18n } from '~/app/i18n';
 import theme from '~/app/theme';
 import { UI_SIZES, UI_STYLES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { HeadingSText, SmallText } from '~/framework/components/text';
 import { IMail } from '~/framework/modules/zimbra/model';
 import { getUserColor } from '~/framework/modules/zimbra/utils/userColor';
@@ -101,12 +101,7 @@ export const MailHeaders = ({ mail }: { mail: IMail }) => {
                 ' ' +
                 mail.to.map(id => mail.displayNames.find(item => item[0] === id)?.[1] ?? id).join(', ')}
             </SmallText>
-            <NamedSVG
-              name={areDetailsVisible ? 'ui-rafterUp' : 'ui-rafterDown'}
-              width={14}
-              height={14}
-              fill={theme.ui.text.light}
-            />
+            <Svg name={areDetailsVisible ? 'ui-rafterUp' : 'ui-rafterDown'} width={14} height={14} fill={theme.ui.text.light} />
           </View>
         </View>
       </Pressable>

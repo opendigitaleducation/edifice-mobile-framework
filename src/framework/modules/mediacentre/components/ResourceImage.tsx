@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ImageResizeMode, ImageStyle, StyleProp, StyleSheet, View } from 'react-native';
 
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { getSession } from '~/framework/modules/auth/reducer';
 import { Source } from '~/framework/modules/mediacentre/reducer';
 import { Image } from '~/framework/util/media';
@@ -36,7 +36,7 @@ export const ResourceImage: React.FunctionComponent<IResourceImageProps> = (prop
     const style = StyleSheet.flatten(props.style);
     return (
       <View style={props.style}>
-        <NamedSVG name="textbook-default" width={style.width || 50} height={style.height || 70} />
+        <Svg name="textbook-default" width={style.width || 50} height={style.height || 70} />
       </View>
     );
   }

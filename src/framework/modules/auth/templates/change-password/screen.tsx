@@ -22,7 +22,7 @@ import PasswordInput from '~/framework/components/inputs/password';
 import TextInput from '~/framework/components/inputs/text';
 import { TextInputType } from '~/framework/components/inputs/text/component';
 import { KeyboardPageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { SmallText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import { useConstructor } from '~/framework/hooks/constructor';
@@ -60,7 +60,7 @@ const ChangePasswordScreen = (props: ChangePasswordScreenPrivateProps & { contex
     () =>
       context.passwordRegexI18n?.[I18n.getLanguage()] ? (
         <View style={styles.infos}>
-          <NamedSVG name="ui-lock-alternate" />
+          <Svg name="ui-lock-alternate" />
           <SmallText style={styles.infosText} testID="change-password-rules">
             {context.passwordRegexI18n?.[I18n.getLanguage()]}
           </SmallText>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { Image } from '~/framework/util/media';
 
 const styles = StyleSheet.create({
@@ -26,7 +26,7 @@ export const FormPicture = ({ pictureUri }: IFormPictureProps) => {
   return (
     <View style={styles.container}>
       {!pictureUri || loadingFailed ? (
-        <NamedSVG name="form-default" width={75} height={75} />
+        <Svg name="form-default" width={75} height={75} />
       ) : (
         <Image source={{ height: 75, uri: pictureUri, width: 75 }} onError={onError} />
       )}

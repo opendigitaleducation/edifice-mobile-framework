@@ -13,7 +13,7 @@ import { UI_SIZES } from '~/framework/components/constants';
 import { actions } from '~/framework/components/inputs/rich-text/editor/const';
 import type RichEditor from '~/framework/components/inputs/rich-text/editor/RichEditor';
 import { RichToolbarItemsList } from '~/framework/components/inputs/rich-text/toolbar/list';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 
 const toolbarTextOptions = [
   actions.setBold,
@@ -188,7 +188,7 @@ export default class RichToolbar extends Component<RichToolbarProps, RichToolbar
                 color={theme.palette.grey.white}
                 style={styles.closeUnderMenuCross}
               />
-              <NamedSVG
+              <Svg
                 fill={theme.palette.grey.black}
                 name="ui-text-options"
                 width={UI_SIZES.elements.icon.small}

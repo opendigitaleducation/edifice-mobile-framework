@@ -17,7 +17,7 @@ import DateTimePicker from '~/framework/components/dateTimePicker';
 import TextInput from '~/framework/components/inputs/text';
 import { KeyboardPageView, PageView } from '~/framework/components/page';
 import DropdownPicker from '~/framework/components/pickers/dropdown';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyText, SmallBoldText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import usePreventBack from '~/framework/hooks/prevent-back';
@@ -176,7 +176,7 @@ const PresencesDeclareEventScreen = (props: PresencesDeclareEventScreenPrivatePr
             {student.name}
           </BodyText>
         </View>
-        <NamedSVG name={iconName} width={32} height={32} fill={color} />
+        <Svg name={iconName} width={32} height={32} fill={color} />
       </View>
     );
   };

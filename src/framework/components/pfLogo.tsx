@@ -18,8 +18,8 @@ const ImageLogo = styled(Image)({
 
 export const PFLogo = ({ pf }: { pf: Platform }) => {
   const { logoSize } = UI_SIZES.elements;
-  return pf.logoType === 'NamedSvg' ? (
-    <Picture type="NamedSvg" name={pf.logo} height={logoSize.height} width={logoSize.width} />
+  return pf.logoType === 'Svg' ? (
+    <Picture type="Svg" name={pf.logo} height={logoSize.height} width={logoSize.width} />
   ) : (
     <ImageLogo source={pf.logo} />
   );

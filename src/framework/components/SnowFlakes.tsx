@@ -28,12 +28,8 @@ const SnowFlakes = ({ isFlakesFalling, isXmasActivated, session }: SnowFlakesRed
   // Pause and resume playback depending on app state
   React.useEffect(() => {
     const subscription = AppState.addEventListener('change', event => {
-      if (event === 'background') jingleBells.pause();
-      if (event === 'active') {
-        jingleBells.getCurrentTime(currentTime => {
-          if (currentTime > 0) jingleBells.play();
-        });
-      }
+      if (event === 'background') jingleBells.setVolume(0);
+      if (event === 'active') jingleBells.setVolume(0.5);
     });
     return () => subscription.remove();
   }, []);

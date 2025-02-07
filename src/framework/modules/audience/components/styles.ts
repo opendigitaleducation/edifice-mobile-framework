@@ -55,8 +55,11 @@ const styles = StyleSheet.create({
     marginRight: UI_SIZES.spacing.minor,
   },
   statsReactions: {
-    columnGap: -UI_SIZES.spacing.minor,
+    marginRight: UI_SIZES.spacing.minor,
     flexDirection: 'row',
+  },
+  statsReactionsItem: {
+    marginRight: -UI_SIZES.spacing.minor,
   },
 });
 

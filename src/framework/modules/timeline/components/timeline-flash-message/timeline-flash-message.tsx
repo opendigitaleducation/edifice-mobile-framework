@@ -9,7 +9,7 @@ import theme, { IShades } from '~/app/theme';
 import IconButton from '~/framework/components/buttons/icon';
 import TertiaryButton from '~/framework/components/buttons/tertiary';
 import { getScaleWidth } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { getLineHeight, SmallBoldText, TextFontStyle } from '~/framework/components/text';
 import { IEntcoreFlashMessage } from '~/framework/modules/timeline/reducer/flash-messages';
 import HtmlContentView from '~/ui/HtmlContentView';
@@ -132,7 +132,7 @@ export class TimelineFlashMessage extends React.PureComponent<ITimelineFlashMess
         />
         <View style={[styles.iconShadow, { backgroundColor: messageTint.pale }]}>
           <View style={[styles.iconWrapper, { backgroundColor: messageTint.regular, borderColor: messageTint.light }]}>
-            <NamedSVG
+            <Svg
               name={messageIcon}
               fill={theme.palette.grey.white}
               width={getScaleWidth(24)}

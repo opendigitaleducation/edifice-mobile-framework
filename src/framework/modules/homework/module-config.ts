@@ -9,7 +9,7 @@ export const moduleColor = theme.palette.complementary[appConf.is1d ? 'blue' : '
 export default new NavigableModuleConfig<'homework', ReturnType<typeof reducer>>({
   displayAs: 'myAppsModule',
   displayI18n: 'homework',
-  displayPicture: { fill: moduleColor.regular, name: 'homework1D', type: 'NamedSvg' },
+  displayPicture: { fill: moduleColor.regular, name: 'homework1D', type: 'Svg' },
   entcoreScope: ['homeworks'],
 
   matchEntcoreApp: '/homeworks',

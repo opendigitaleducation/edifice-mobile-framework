@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 
 import theme from '~/app/theme';
 import { getScaleWidth, UI_SIZES } from '~/framework/components/constants';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 
 export interface CheckboxProps {
   onPress: () => void;
@@ -34,7 +34,7 @@ export const Checkbox = ({ checked, customContainerStyle, onPress, partialyCheck
   const renderStatus = () => {
     if (partialyChecked)
       return (
-        <NamedSVG
+        <Svg
           name="ui-checkbox-partial"
           width={UI_SIZES.elements.icon.xsmall}
           height={UI_SIZES.elements.icon.xsmall}
@@ -43,7 +43,7 @@ export const Checkbox = ({ checked, customContainerStyle, onPress, partialyCheck
       );
     if (checked)
       return (
-        <NamedSVG
+        <Svg
           name="ui-checkbox-check"
           width={UI_SIZES.elements.icon.xsmall}
           height={UI_SIZES.elements.icon.xsmall}

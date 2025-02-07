@@ -10,7 +10,7 @@ import { UI_SIZES } from '~/framework/components/constants';
 import FlatList from '~/framework/components/list/flat-list';
 import { ListItem } from '~/framework/components/listItem';
 import { PageView } from '~/framework/components/page';
-import { NamedSVG } from '~/framework/components/picture';
+import { Svg } from '~/framework/components/picture';
 import { BodyBoldText, SmallText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import { Image } from '~/framework/util/media';
@@ -19,6 +19,7 @@ const ResourcePicker = ({ data, defaultThumbnail, emptyComponent, onPressItem, o
   const listAdditionalStyle = { paddingBottom: data?.length === 0 ? undefined : UI_SIZES.screen.bottomInset };
 
   const [isRefreshing, setIsRefreshing] = React.useState(false);
+  const [itemsErrorThumbnail, setItemsErrorThumbnail] = React.useState<string[]>([]);
 
   const handleRefresh = async () => {
     try {
@@ -47,11 +48,15 @@ const ResourcePicker = ({ data, defaultThumbnail, emptyComponent, onPressItem, o
         <ListItem
           leftElement={
             <View style={styles.item}>
-              {item.thumbnail ? (
-                <Image source={{ uri: item.thumbnail }} style={styles.itemImage} />
+              {item.thumbnail && !itemsErrorThumbnail.includes(item.id) ? (
+                <Image
+                  source={{ uri: item.thumbnail }}
+                  style={styles.itemImage}
+                  onError={() => setItemsErrorThumbnail([...itemsErrorThumbnail, item.id])}
+                />
               ) : (
                 <View style={[styles.itemImage, styles.itemNoImage, defaultBackground]}>
-                  <NamedSVG
+                  <Svg
                     name={defaultThumbnail.name}
                     fill={defaultThumbnail.fill}
                     width={UI_SIZES.dimensions.width.hug}
@@ -66,7 +71,7 @@ const ResourcePicker = ({ data, defaultThumbnail, emptyComponent, onPressItem, o
             </View>
           }
           rightElement={
-            <NamedSVG
+            <Svg
               name="ui-rafterRight"
               fill={theme.palette.primary.regular}
               width={UI_SIZES.elements.icon.small}

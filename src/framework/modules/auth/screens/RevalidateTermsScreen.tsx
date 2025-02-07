@@ -16,7 +16,7 @@ import PrimaryButton from '~/framework/components/buttons/primary';
 import { UI_SIZES } from '~/framework/components/constants';
 import { PageView, PageViewStyle } from '~/framework/components/page';
 import { openPDFReader } from '~/framework/components/pdf/pdf-reader';
-import { NamedSVG } from '~/framework/components/picture/NamedSVG';
+import { Svg } from '~/framework/components/picture';
 import { HeadingSText, SmallActionText, SmallBoldText, SmallText } from '~/framework/components/text';
 import Toast from '~/framework/components/toast';
 import { manualLogoutAction, revalidateTermsAction } from '~/framework/modules/auth/actions';
@@ -108,7 +108,7 @@ const RevalidateTermsScreen = (props: IRevalidateTermsScreenProps) => {
         }}>
         <View style={{ paddingHorizontal: UI_SIZES.spacing.big }}>
           <View style={{ height: imageHeight }}>
-            <NamedSVG name="empty-eula" width={imageWidth} height={imageHeight} />
+            <Svg name="empty-eula" width={imageWidth} height={imageHeight} />
           </View>
         </View>
         <HeadingSText numberOfLines={2} style={styles.newEULALabel}>

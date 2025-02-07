@@ -17,6 +17,7 @@ import {
   SingleUserAvatarSpecificProps,
 } from './types';
 
+import theme from '~/app/theme';
 import { AuthLoggedAccount, AuthSavedAccount } from '~/framework/modules/auth/model';
 import appConf, { Platform } from '~/framework/util/appConf';
 import { urlSigner } from '~/infra/oauth';
@@ -26,6 +27,7 @@ const useAvatarStyle = (props: Pick<SingleAvatarProps, 'size' | 'style'>) => {
     () => [
       props.style,
       {
+        backgroundColor: theme.ui.background.card,
         borderRadius: AvatarSizes[props.size] / 2,
         height: AvatarSizes[props.size],
         width: AvatarSizes[props.size],

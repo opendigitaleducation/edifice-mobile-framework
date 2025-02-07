@@ -50,7 +50,7 @@ export namespace Error {
       currentError = currentError.cause;
     }
     return currentError;
-  }
+  };
 
   /**
    * Generates a error key to be stored in a ErrorWithKey object.
@@ -70,7 +70,7 @@ export namespace Error {
   //                                                                                                   Y8b d88P 888
   //                                                                                                    "Y88P"  888
 
-  export enum AnyErrorType { }
+  export enum AnyErrorType {}
 
   export class ErrorWithType<Types = AnyErrorType> extends global.Error {
     constructor(
@@ -90,9 +90,11 @@ export namespace Error {
    */
   export const getDeepErrorType = <ErrorClass = ErrorWithType>(error?: WithKey | Error) => {
     let currentError = (error as WithKey)?.info ?? error;
-    let type: Error.ErrorTypes<ErrorClass> | undefined;
+    let type: Error.ErrorTypes<ErrorClass> | undefined | unknown;
     do {
       if (currentError instanceof Error.ErrorWithType) type = currentError.type as Error.ErrorTypes<ErrorClass>;
+      else if (currentError instanceof global.Error && (currentError as WithCode<unknown>).code !== undefined)
+        type = (currentError as WithCode<unknown>).code;
       currentError = currentError?.cause as Error;
     } while (currentError);
     return type;
@@ -192,6 +194,7 @@ export namespace Error {
       case Error.LoginErrorType.ACCOUNT_INELIGIBLE_NOT_PREMIUM:
         return I18n.get('auth-error-notpremium');
       case Error.LoginErrorType.ACCOUNT_INELIGIBLE_PRE_DELETED:
+      case AccountErrorCode.ACCOUNT_INELIGIBLE_PRE_DELETED:
         return I18n.get('auth-error-predeleted', { currentplatform: platformUrl });
 
       case OAuth2ErrorCode.SAML_MULTIPLE_VECTOR:

@@ -13,13 +13,17 @@ import CardTopContent from '~/framework/components/card/top-content';
 import { BodyText, CaptionItalicText, SmallText } from '~/framework/components/text';
 import ThumbnailThread from '~/framework/modules/news/components/thumbnail-thread';
 import { displayDate } from '~/framework/util/date';
-import { extractTextFromHtml } from '~/framework/util/htmlParser/content';
 import { commentsString } from '~/framework/util/string';
 import { ArticleContainer } from '~/ui/ContainerContent';
 
+const { convert } = require('html-to-text');
+
+const options = {
+  wordwrap: 250,
+};
 export default function NewsCard(props: NewsCardProps) {
   const { news, thread } = props;
-  const newsText = extractTextFromHtml(news.content);
+  const newsText = convert(news.content, options);
 
   return (
     <ArticleContainer>

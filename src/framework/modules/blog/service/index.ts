@@ -181,12 +181,12 @@ export const blogUriCaptureFunction: IResourceUriCaptureFunction<{ blogId: strin
   const blogPostIdMatch = url.match(blogPostIdRegex);
   return !blogPostIdMatch
     ? {
-        blogId: url.match(blogIdRegex)?.[1],
-      }
+      blogId: url.match(blogIdRegex)?.[1],
+    }
     : {
-        blogId: blogPostIdMatch?.[1],
-        postId: blogPostIdMatch?.[2],
-      };
+      blogId: blogPostIdMatch?.[1],
+      postId: blogPostIdMatch?.[2],
+    };
 };
 export const blogPostGenerateResourceUriFunction = ({ blogId, postId }: { blogId: string; postId: string }) => {
   return `/blog#/detail/${blogId}/${postId}`;
