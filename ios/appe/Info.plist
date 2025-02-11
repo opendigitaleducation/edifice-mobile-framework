@@ -25,6 +25,19 @@
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleVersion</key>
+		<key>CFBundleURLTypes</key>
+  		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLName</key>
+				<string>com.ode.appe</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>appeapp</string>
+				</array>
+			</dict>
+  		</array>
 		<string>1140000</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>

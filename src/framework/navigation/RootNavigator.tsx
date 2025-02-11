@@ -3,7 +3,7 @@
  * It can render the SplashScreen, auth flow or main flow in function of token loading and status.
  */
 import * as React from 'react';
-import { Platform, StatusBar } from 'react-native';
+import { Linking, Platform, StatusBar } from 'react-native';
 
 import inAppMessaging from '@react-native-firebase/in-app-messaging';
 import { NavigationContainer, NavigationState } from '@react-navigation/native';
@@ -26,6 +26,7 @@ import type { AuthLoggedAccountMap } from '~/framework/modules/auth/model';
 import useAuthNavigation from '~/framework/modules/auth/navigation/main-account/navigator';
 import { getAuthNavigationState, getFirstTabRoute } from '~/framework/modules/auth/navigation/main-account/router';
 import { getState as getAuthState, IAuthState } from '~/framework/modules/auth/reducer';
+import appConf from '~/framework/util/appConf';
 import { AppPushNotificationHandlerComponent } from '~/framework/util/notifications/cloudMessaging';
 import { useNavigationSnowHandler } from '~/framework/util/tracker/useNavigationSnow';
 import { useNavigationTracker } from '~/framework/util/tracker/useNavigationTracker';
@@ -116,6 +117,79 @@ function RootNavigator(props: RootNavigatorProps) {
 
   const screenOptions = React.useMemo(() => ({ headerShown: true }), []);
 
+  const config = {
+    screens: {
+      $tabs: {
+        screens: {
+          ['$tab.myapps']: {
+            screens: {
+              ['blog']: 'deeplinks/blog',
+            },
+          },
+          ['$tab.conversation']: 'deeplinks/conv',
+          ['$tab.timeline']: 'deeplinks/timeline',
+          ['$tab.user']: 'deeplinks/user',
+        },
+      },
+    },
+  };
+
+  const appUrlDeeplink = appConf?.deeplinks?.url;
+  const appNameDeeplink = appConf?.deeplinks?.name;
+
+  const linking = {
+    prefixes: [appUrlDeeplink, `${appNameDeeplink}://`],
+
+    async getInitialURL() {
+      const url = await Linking.getInitialURL();
+      if (url) {
+        await Linking.openURL(url);
+      }
+
+      return url;
+    },
+
+    subscribe(listener) {
+      const linkingSubscription = Linking.addEventListener('url', ({ url }) => {
+        console.error(url, 'test léa');
+        listener(url);
+      });
+
+      return () => {
+        linkingSubscription.remove();
+      };
+    },
+
+    config,
+  };
+
+  // ex branche léa
+  // const linking = {
+  //   prefixes: [appConf.deeplinks?.urlscheme, `https://${appConf.deeplinks?.url}`],
+
+  //   async getInitialURL() {
+  //     const url = await Linking.getInitialURL();
+  //     if (url) {
+  //       await Linking.openURL(url);
+  //     }
+
+  //     return url;
+  //   },
+
+  //   subscribe(listener) {
+  //     const linkingSubscription = Linking.addEventListener('url', ({ url }) => {
+  //       console.error(url, 'test léa');
+  //       listener(url);
+  //     });
+
+  //     return () => {
+  //       linkingSubscription.remove();
+  //     };
+  //   },
+
+  //   config,
+  // };
+
   const ret = React.useMemo(() => {
     return (
       <>
@@ -125,6 +199,7 @@ function RootNavigator(props: RootNavigatorProps) {
             // key={lastAddAccount}
             ref={navigationRef}
             initialState={navigationState}
+            linking={linking}
             onStateChange={onStateChange}>
             <AppPushNotificationHandlerComponent>
               <RootStack.Navigator screenOptions={screenOptions}>

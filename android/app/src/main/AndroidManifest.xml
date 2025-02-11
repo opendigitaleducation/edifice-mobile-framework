@@ -49,10 +49,11 @@
             android:launchMode="singleTask"
             android:exported="true"
             tools:ignore="LockedOrientationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />                    
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="appe.edifice.io" android:pathPrefix="/some-path" />
             </intent-filter>
         </activity>
         <activity android:name="zendesk.support.guide.HelpCenterActivity"

@@ -600,7 +600,12 @@ async function _override_performSpecialUpdates() {
   infoPlist = infoPlist
     .replace(/(<key>CFBundleIdentifier<\/key>\s*<string>)(.*)(<\/string>)/, '$1' + appidIos + '$3')
     .replace(/(<key>CFBundleDisplayName<\/key>\s*<string>)(.*)(<\/string>)/, '$1' + appnameIos + '$3')
-    .replace(/(<key>BundleVersionOverride<\/key>\s*<string>)(.*)(<\/string>)/, '$1' + override + '$3');
+
+    .replace(/(<key>BundleVersionOverride<\/key>\s*<string>)(.*)(<\/string>)/, '$1' + override + '$3')
+
+    .replace(/(<key>CFBundleURLName<\/key>\s*<string>)(.*)(<\/string>)/, '$1' + appidIos + '$3')
+
+    .replace(/(<key>CFBundleURLSchemes<\/key>\s*<array>\s*<string>)(.*)(<\/string>)/, '$1' + appnameIos.toLowerCase() + '$3');
   opts.verbose && console.info(`Update ${_override_specialUpdates['ios.plist']}`);
   await writeFile(infoPlistPath, infoPlist);
   ret.push(_override_specialUpdates['ios.plist']);
@@ -622,6 +627,30 @@ async function _override_performSpecialUpdates() {
     .replace(/(APPOVERRIDE=)(.*)/, '$1' + override);
   opts.verbose && console.info(`Update ${_override_specialUpdates.android}`);
   await writeFile(gradlePropertiesPath, gradleProperties);
+
+  // 5. iOS appe.entitlements
+  const entitlementsPath = path.resolve(_projectPathAbsolute, 'ios/appe/appe.entitlements');
+  let entitlementsContent = await readFile(entitlementsPath, { encoding: 'utf-8' });
+  // ligne ci dessous à décommenter quand le deeplink sera recevable
+  // entitlementsContent = entitlementsContent.replace(/<string>applinks:<\/string>/, `<string>applinks:${appUrlDeeplink}<\/string>`);
+  await writeFile(entitlementsPath, entitlementsContent);
+  opts.verbose && console.info(`Updated ${entitlementsPath}`);
+  ret.push('ios/appe/appe.entitlements');
+
+  // 6. android AndroidManifest
+  const androidManifestPath = path.resolve(_projectPathAbsolute, 'android/app/src/main/AndroidManifest.xml');
+  let androidManifestContent = await readFile(androidManifestPath, { encoding: 'utf-8' });
+
+  androidManifestContent = androidManifestContent;
+
+  // 2 lignes ci dessous à décommenter quand le deeplink sera recevable
+  // .replace(/android:host="appe\.edifice\.io"/, `android:host="${appUrlDeeplink}"`)
+  // .replace(/android:pathPrefix="\/some-path"/, `android:pathPrefix="${appPrefixDeeplink}"`);
+
+  await writeFile(androidManifestPath, androidManifestContent);
+  opts.verbose && console.info(`Updated ${androidManifestPath}`);
+  ret.push('android/app/src/main/AndroidManifest.xml');
+
   ret.push(_override_specialUpdates.android);
 
   return ret;
