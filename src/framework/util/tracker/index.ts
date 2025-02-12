@@ -1,7 +1,3 @@
-/**
- * Tracking manager, aka "Tracker"
- * Collect data throught Matomo and Crashlytics.
- */
 import CookieManager from '@react-native-cookies/cookies';
 
 import analytics from '@react-native-firebase/analytics';
@@ -351,7 +347,7 @@ export class ConcreteAnalyticsTracker extends AbstractTracker<undefined> {
   }
 }
 
-export class ConcreteCrashlyticsTracker extends AbstractTracker<undefined> {
+export class ConcreteCrashsTracker extends AbstractTracker<undefined> {
   protected _properties = {};
 
   async _init() {
@@ -459,8 +455,8 @@ export class ConcreteTrackerSet {
 
 export const Trackers = new ConcreteTrackerSet(
   new ConcreteEntcoreTracker('Entcore', undefined),
-  new ConcreteAnalyticsTracker('Firebase Analytics', undefined),
-  new ConcreteCrashlyticsTracker('Firebase Crashlytics', undefined),
+  new ConcreteAnalyticsTracker('Analytics', undefined),
+  new ConcreteCrashsTracker('Crashs', undefined),
 );
 
 export const TRACKING_ACTION_SUFFIX_SUCCESS = 'Succès';
