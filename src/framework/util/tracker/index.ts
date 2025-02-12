@@ -4,6 +4,8 @@
  */
 import CookieManager from '@react-native-cookies/cookies';
 
+import analytics from '@react-native-firebase/analytics';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { getSession } from '~/framework/modules/auth/reducer';
 import { AnyNavigableModuleConfig, IAnyModuleConfig } from '~/framework/util/moduleTool';
 import { urlSigner } from '~/infra/oauth';
@@ -109,6 +111,26 @@ export abstract class AbstractTracker<OptionsType> {
     await this.trackEvent(moduleConfig.trackingName, action, name, value);
   }
 
+  async trackDebugEvent(category: string, action: string, name?: string, value?: number) {
+    try {
+      if (!this.isReady) {
+        throw new Error('Tracker is not initialized');
+      }
+      await this._trackEvent(category, action, name, value);
+    } catch {
+      // TODO: Manage error
+    }
+  }
+
+  async trackDebugEventOfModule(
+    moduleConfig: Pick<AnyNavigableModuleConfig, 'trackingName'>,
+    action: string,
+    name?: string,
+    value?: number,
+  ) {
+    await this.trackEvent(moduleConfig.trackingName, action, name, value);
+  }
+
   // Track view procedure. Override _trackView() function to create custom trackers.
   protected async _trackView(path: string[]): Promise<boolean> {
     throw new Error('not implemented');
@@ -127,6 +149,66 @@ export abstract class AbstractTracker<OptionsType> {
 
   async trackViewOfModule(moduleConfig: Pick<AnyNavigableModuleConfig, 'routeName'>, path: string[]) {
     await this._trackView([moduleConfig.routeName, ...path]);
+  }
+
+  async trackDebugView(path: string[]) {
+    try {
+      if (!this.isReady) {
+        throw new Error('Tracker is not initialized');
+      }
+      await this._trackView(path);
+    } catch {
+      // TODO: Manage error
+    }
+  }
+
+  async trackDebugViewOfModule(moduleConfig: Pick<AnyNavigableModuleConfig, 'routeName'>, path: string[]) {
+    await this._trackView([moduleConfig.routeName, ...path]);
+  }
+
+  protected async _setCrashAttribute(attributeName: string, attribute: string): Promise<boolean> {
+    throw new Error('not implemented');
+  }
+
+  async setCrashAttribute(attributeName: string, attribute: string) {
+    try {
+      if (!this.isReady) {
+        throw new Error('Tracker is not initialized');
+      }
+      await this._setCrashAttribute(attributeName, attribute);
+    } catch {
+      // TODO: Manage error
+    }
+  }
+
+  protected async _setCrashAttributes(attributes: Record<string, string>): Promise<boolean> {
+    throw new Error('not implemented');
+  }
+
+  async setCrashAttributes(attributes: Record<string, string>) {
+    try {
+      if (!this.isReady) {
+        throw new Error('Tracker is not initialized');
+      }
+      await this._setCrashAttributes(attributes);
+    } catch {
+      // TODO: Manage error
+    }
+  }
+
+  protected async _recordCrashError(error: Error, errorName?: string): Promise<boolean> {
+    throw new Error('not implemented');
+  }
+
+  async recordCrashError(error: Error, errorName?: string) {
+    try {
+      if (!this.isReady) {
+        throw new Error('Tracker is not initialized');
+      }
+      await this._recordCrashError(error, errorName);
+    } catch {
+      // TODO: Manage error
+    }
   }
 }
 
@@ -219,6 +301,98 @@ export class ConcreteEntcoreTracker extends AbstractTracker<undefined> {
   }
 }
 
+export class ConcreteAnalyticsTracker extends AbstractTracker<undefined> {
+  protected _properties = {};
+
+  async _init() {
+    // Nothing to do, configuration comes from native firebase config files
+  }
+
+  protected _isDebugTracker(): boolean {
+    return true;
+  }
+
+  async _setUserId(id: string) {
+    await analytics().setUserId(id);
+    return true;
+  }
+
+  async _setCustomDimension(id: number, name: string, value: string) {
+    this._properties[name] = value;
+    return true;
+  }
+
+  async _trackView(path: string[]) {
+    const viewPath = path.join('/');
+
+    try {
+      await analytics().logScreenView({
+        screen_class: viewPath,
+        screen_name: viewPath,
+      });
+    } catch (error) {
+      console.error('Error logging screen view:', error);
+    }
+    return true;
+  }
+
+  async _trackDebugView(path: string[]) {
+    const viewPath = path.join('/');
+
+    try {
+      await analytics().logScreenView({
+        screen_class: viewPath,
+        screen_name: viewPath,
+      });
+    } catch (error) {
+      console.error('Error logging screen debug view:', error);
+    }
+    return true;
+  }
+}
+
+export class ConcreteCrashlyticsTracker extends AbstractTracker<undefined> {
+  protected _properties = {};
+
+  async _init() {
+    // Nothing to do, configuration comes from native firebase config files
+  }
+
+  protected _isDebugTracker(): boolean {
+    return true;
+  }
+
+  async _setUserId(id: string) {
+    await crashlytics().setUserId(id);
+    return true;
+  }
+
+  async _setCustomDimension(id: number, name: string, value: string) {
+    this._properties[name] = value;
+    return true;
+  }
+
+  async _trackEvent(category: string, action: string, name?: string, value?: number) {
+    crashlytics().log(`${category} ${action} ${name} ${value}`);
+    return true;
+  }
+
+  async _setCrashAttribute(attributeName: string, attribute: string) {
+    await crashlytics().setAttribute(attributeName, attribute);
+    return true;
+  }
+
+  async _setCrashAttributes(attributes: Record<string, string>) {
+    await crashlytics().setAttributes(attributes);
+    return true;
+  }
+
+  async _recordCrashError(error: Error, errorName?: string) {
+    await crashlytics().recordError(error, errorName);
+    return true;
+  }
+}
+
 export class ConcreteTrackerSet {
   private _trackers: AbstractTracker<any>[] = [];
 
@@ -234,8 +408,26 @@ export class ConcreteTrackerSet {
     await Promise.all(this._trackers.map(t => t.init()));
   }
 
-  async trackDebugEvent(category: string, action: string, name?: string, value?: number) {
-    await Promise.all(this._trackers.filter(t => t.isDebugTracker()).map(t => t.trackEvent(category, action, name, value)));
+  async setCrashAttribute(attributeName: string, attribute: string) {
+    await Promise.all(this._trackers.map(t => t.setCrashAttribute(attributeName, attribute)));
+  }
+
+  async setCrashAttributes(attributes: Record<string, string>) {
+    await Promise.all(this._trackers.map(t => t.setCrashAttributes(attributes)));
+  }
+
+  async recordCrashError(error: Error, errorName?: string) {
+    await Promise.all(this._trackers.map(t => t.recordCrashError(error, errorName)));
+  }
+
+  async setCustomDimension(id: number, name: string, value: string) {
+    console.debug('[Tracking] Set Dimension :', id, '|', name, '|', value);
+    await Promise.all(this._trackers.map(t => t.setCustomDimension(id, name, value)));
+  }
+
+  async setUserId(id: string) {
+    console.debug('[Tracking] Set ID :', id);
+    await Promise.all(this._trackers.map(t => t.setUserId(id)));
   }
 
   async trackEvent(category: string, action: string, name?: string, value?: number) {
@@ -247,6 +439,10 @@ export class ConcreteTrackerSet {
     await this.trackEvent(moduleConfig.trackingName, action, name, value);
   }
 
+  async trackDebugEvent(category: string, action: string, name?: string, value?: number) {
+    await Promise.all(this._trackers.filter(t => t.isDebugTracker()).map(t => t.trackEvent(category, action, name, value)));
+  }
+
   async trackView(path: string[]) {
     console.debug('[Tracking] View :', path.join('/'));
     await Promise.all(this._trackers.map(t => t.trackView(path)));
@@ -256,16 +452,6 @@ export class ConcreteTrackerSet {
     await this.trackView([moduleConfig.routeName, ...path]);
   }
 
-  async setUserId(id: string) {
-    console.debug('[Tracking] Set ID :', id);
-    await Promise.all(this._trackers.map(t => t.setUserId(id)));
-  }
-
-  async setCustomDimension(id: number, name: string, value: string) {
-    console.debug('[Tracking] Set Dimension :', id, '|', name, '|', value);
-    await Promise.all(this._trackers.map(t => t.setCustomDimension(id, name, value)));
-  }
-
   get isReady() {
     return this._trackers.every(t => t.isReady);
   }
@@ -273,8 +459,8 @@ export class ConcreteTrackerSet {
 
 export const Trackers = new ConcreteTrackerSet(
   new ConcreteEntcoreTracker('Entcore', undefined),
-  //new ConcreteMatomoTracker('Matomo', appConf.matomo),
-  //new ConcreteAppCenterTracker('AppCenter', undefined),
+  new ConcreteAnalyticsTracker('Firebase Analytics', undefined),
+  new ConcreteCrashlyticsTracker('Firebase Crashlytics', undefined),
 );
 
 export const TRACKING_ACTION_SUFFIX_SUCCESS = 'Succès';

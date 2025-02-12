@@ -1,3 +1,4 @@
+import crashlytics from '@react-native-firebase/crashlytics';
 import * as React from 'react';
 import { Alert, ImageURISource, TouchableOpacity, View } from 'react-native';
 
@@ -59,6 +60,7 @@ import { navBarOptions } from '~/framework/navigation/navBar';
 import appConf from '~/framework/util/appConf';
 import { formatSource } from '~/framework/util/media';
 import { handleAction, tryAction } from '~/framework/util/redux/actions';
+import { Trackers } from '~/framework/util/tracker';
 import { useZendesk } from '~/framework/util/zendesk';
 import { OAuth2RessourceOwnerPasswordClient } from '~/infra/oauth';
 import Avatar, { Size } from '~/ui/avatars/Avatar';
@@ -577,6 +579,26 @@ function useVersionDetailsFeature(session: UserHomeScreenPrivateProps['session']
   const currentPlatform = session?.platform.displayName;
   const navigation = useNavigation<NavigationProp<UserNavigationParams>>();
   return React.useMemo(() => {
+    const makeMeCrash = () => {
+      try {
+        if (session) {
+          const userId = session.user.id;
+          const userType = session.user.type;
+          const userRecord: Record<string, string> = {
+            userId: String(session.user.id),
+            userType: String(session.user.type),
+            userFirstName: String(session.user.firstName),
+          };
+          Trackers.setUserId(userId);
+          Trackers.setCrashAttribute('test un seul attribute user.type ->', userType);
+          Trackers.setCrashAttributes(userRecord);
+          crashlytics().crash();
+        }
+      } catch (e) {
+        console.error(e);
+        Trackers.recordCrashError(e as Error, 'erreur teeeeesst');
+      }
+    };
     if (debugVisible)
       return (
         <>
@@ -587,9 +609,10 @@ function useVersionDetailsFeature(session: UserHomeScreenPrivateProps['session']
             <LineButton
               title="Crash me!"
               icon="ui-warning"
-              onPress={() => {
-                const toto = (session.toto.titi.tutu.tata.tete.tyty = 0);
-              }}
+              // onPress={() => {
+              //   const toto = (session.toto.titi.tutu.tata.tete.tyty = 0);
+              // }}
+              onPress={makeMeCrash}
             />
           </ButtonLineGroup>
           {appConf.isDebugEnabled ? (
