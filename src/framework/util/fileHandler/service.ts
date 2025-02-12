@@ -59,7 +59,7 @@ const fileTransferService = {
     file: IDistantFile,
     params: IDownloadParams,
     callbacks?: IDownloadCallbaks,
-    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType,
+    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType
   ) => {
     try {
       const job = await fileTransferService.startDownloadFile(session, file, params, callbacks, syncedFileClass);
@@ -74,10 +74,10 @@ const fileTransferService = {
     files: IDistantFile[],
     params: IDownloadParams,
     callbacks?: IDownloadCallbaks,
-    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType,
+    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType
   ) => {
     return Promise.all(
-      fileTransferService.startDownloadFiles(session, files, params, callbacks, syncedFileClass).map(async j => (await j).promise),
+      fileTransferService.startDownloadFiles(session, files, params, callbacks, syncedFileClass).map(async j => (await j).promise)
     );
   },
 
@@ -87,7 +87,7 @@ const fileTransferService = {
     file: IDistantFile,
     params: IDownloadParams,
     callbacks?: IDownloadCallbaks,
-    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType,
+    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType
   ) => {
     const sfclass = (syncedFileClass ?? SyncedFile) as new (
       ...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]
@@ -106,7 +106,7 @@ const fileTransferService = {
       },
       {
         _needIOSReleaseSecureAccess: false,
-      },
+      }
     );
     // If destination folder exists, there may be a file already downloaded.
     const exists = await RNFS.exists(folderDest);
@@ -126,7 +126,7 @@ const fileTransferService = {
           resolve({
             jobId: 0,
             promise: new Promise(resolve => resolve(new sfclass(localFile, file))),
-          }),
+          })
         );
       }
     }
@@ -183,7 +183,7 @@ const fileTransferService = {
     files: IDistantFile[],
     params: IDownloadParams,
     callbacks?: IDownloadCallbaks,
-    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType,
+    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType
   ) => {
     return files.map(f => fileTransferService.startDownloadFile(session, f, params, callbacks, syncedFileClass));
   },
@@ -195,7 +195,7 @@ const fileTransferService = {
     params: IUploadParams,
     adapter: (data: any) => SyncedFileType['df'],
     callbacks?: IUploadCallbaks,
-    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType,
+    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType
   ) => {
     const url = session.platform.url + params.url;
     const job = RNFS.uploadFiles({
@@ -238,7 +238,7 @@ const fileTransferService = {
     params: IUploadParams,
     adapter: (data: any) => SyncedFileType['df'],
     callbacks?: IUploadCallbaks,
-    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType,
+    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType
   ) => {
     return files.map(f => fileTransferService.startUploadFile(session, f, params, adapter, callbacks, syncedFileClass));
   },
@@ -250,7 +250,7 @@ const fileTransferService = {
     params: IUploadParams,
     adapter: (data: any) => SyncedFileType['df'],
     callbacks?: IUploadCallbaks,
-    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType,
+    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType
   ) => {
     try {
       const job = fileTransferService.startUploadFile(session, file, params, adapter, callbacks, syncedFileClass);
@@ -266,10 +266,10 @@ const fileTransferService = {
     params: IUploadParams,
     adapter: (data: any) => SyncedFileType['df'],
     callbacks?: IUploadCallbaks,
-    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType,
+    syncedFileClass?: new (...arguments_: [SyncedFileType['lf'], SyncedFileType['df']]) => SyncedFileType
   ) => {
     return Promise.all(
-      fileTransferService.startUploadFiles(session, files, params, adapter, callbacks, syncedFileClass).map(j => j.promise),
+      fileTransferService.startUploadFiles(session, files, params, adapter, callbacks, syncedFileClass).map(j => j.promise)
     );
   },
 };

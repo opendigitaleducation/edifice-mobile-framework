@@ -10,6 +10,16 @@ export interface UserWhoAreWeScreenStoreProps {}
 
 export interface UserWhoAreWeScreenDispatchProps {}
 
+export enum WhoAreWellustrationType {
+  Animation = 'Animation',
+  Image = 'Image',
+}
+
+export enum WhoAreWeQuoteType {
+  HeadingXSText = 'HeadingXSText',
+  BodyBoldText = 'BodyBoldText',
+}
+
 export interface UserWhoAreWeScreenPrivateProps
   extends NativeStackScreenProps<UserNavigationParams, 'whoAreWe'>,
     UserWhoAreWeScreenProps,

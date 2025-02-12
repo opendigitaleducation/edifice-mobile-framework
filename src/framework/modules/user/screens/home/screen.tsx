@@ -251,7 +251,7 @@ function useAccountMenuFeature(session: UserHomeScreenPrivateProps['session'], f
 
   const canEditPersonalInfo = session?.user.type !== AccountType.Student;
   const isFederated = session?.method === InitialAuthenticationMethod.WAYF_SAML;
-  const showWhoAreWe = session?.platform.showWhoAreWe;
+  const showWhoAreWe = appConf.whoAreWeEnabled;
 
   const splashads = readSplashadsData();
   //
@@ -388,7 +388,7 @@ function useAccountMenuFeature(session: UserHomeScreenPrivateProps['session'], f
                 onPress={() => {
                   navigation.navigate(userRouteNames.whoAreWe, {});
                 }}
-                icon="ui-edifice"
+                icon={appConf.whoAreWe?.icon || 'ui-edifice'}
                 testID="account-who-are-we"
               />
             ) : null}

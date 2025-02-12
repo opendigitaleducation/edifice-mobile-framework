@@ -10,6 +10,7 @@ import AppConfValues from '~/app/appconf';
 import { I18n } from '~/app/i18n';
 import type { PictureProps } from '~/framework/components/picture';
 import type { AccountType } from '~/framework/modules/auth/model';
+import { WhoAreWellustrationType, WhoAreWeQuoteType } from '~/framework/modules/user/screens/who-are-we';
 
 // Platforms ======================================================================================
 
@@ -23,49 +24,31 @@ export type IPlatformAccessDeclaration = {
   logoType?: PictureProps['type']; // The logo type
   name: string; // unique name of the access point
   oauth: [string, string]; // oAuth2 configuration as [clientId, clientSecret]
-  url: string; // Access url WITHOUT trailing slash and WITH protocol
-  wayf?: string; // WAYF url to redirect onto federation login process instead of standard one
   redirect?: string; // Redirect url to redirect in external browser
-  webTheme: string; // web theme applied to the activated accounts
-  webviewIdentifier?: string; // safe-webview unique key. In not provided, fallback to the application's one.
-  showWhoAreWe?: boolean; // To show or not the team link in profile page
   showVieScolaireDashboard?: boolean; // To show or not the VieScolaire dashboard
   splashads?: string; // splashads url
+  url: string; // Access url WITHOUT trailing slash and WITH protocol
+  wayf?: string; // WAYF url to redirect onto federation login process instead of standard one
+  webTheme: string; // web theme applied to the activated accounts
+  webviewIdentifier?: string; // safe-webview unique key. In not provided, fallback to the application's one.
 };
 
 export class Platform {
   auth: IPlatformAccessDeclaration['auth'];
-
   displayName!: IPlatformAccessDeclaration['displayName'];
-
   federation: IPlatformAccessDeclaration['federation'];
-
   hidden: IPlatformAccessDeclaration['hidden'];
-
   logo: IPlatformAccessDeclaration['logo'];
-
   logoStyle: IPlatformAccessDeclaration['logoStyle'];
-
   logoType: Required<IPlatformAccessDeclaration>['logoType'];
-
   name!: IPlatformAccessDeclaration['name'];
-
   _oauth!: IPlatformAccessDeclaration['oauth'];
-
   url!: IPlatformAccessDeclaration['url'];
-
   wayf: IPlatformAccessDeclaration['wayf'];
-
   redirect: IPlatformAccessDeclaration['redirect'];
-
-  webTheme!: IPlatformAccessDeclaration['webTheme'];
-
-  showWhoAreWe!: IPlatformAccessDeclaration['showWhoAreWe'];
-
   showVieScolaireDashboard!: IPlatformAccessDeclaration['showVieScolaireDashboard'];
-
   splashads: IPlatformAccessDeclaration['splashads'];
-
+  webTheme!: IPlatformAccessDeclaration['webTheme'];
   _webviewIdentifier: IPlatformAccessDeclaration['webviewIdentifier'];
 
   constructor(pf: IPlatformAccessDeclaration) {
@@ -81,15 +64,10 @@ export class Platform {
     this.url = pf.url;
     this.wayf = pf.wayf;
     this.redirect = pf.redirect;
-    this.webTheme = pf.webTheme;
-    this.showWhoAreWe = pf.showWhoAreWe;
     this.showVieScolaireDashboard = pf.showVieScolaireDashboard;
     this.splashads = pf.splashads;
+    this.webTheme = pf.webTheme;
     this._webviewIdentifier = pf.webviewIdentifier;
-  }
-
-  get webviewIdentifier() {
-    return this._webviewIdentifier ?? appConf.webviewIdentifier;
   }
 
   get oauth() {
@@ -97,6 +75,10 @@ export class Platform {
       client_id: this._oauth[0],
       client_secret: this._oauth[1],
     };
+  }
+
+  get webviewIdentifier() {
+    return this._webviewIdentifier ?? appConf.webviewIdentifier;
   }
 }
 
@@ -124,6 +106,14 @@ export interface IAppConfDeclaration {
   platforms: IPlatformAccessDeclaration[];
   splashads?: string;
   webviewIdentifier: string;
+  whoAreWe?: {
+    appleId?: string;
+    discoverUrl?: string;
+    entButton?: boolean;
+    icon?: string;
+    illustration?: WhoAreWellustrationType;
+    quote?: WhoAreWeQuoteType;
+  };
   zendesk?: {
     appId?: string;
     clientId?: string;
@@ -135,11 +125,8 @@ export interface IAppConfDeclaration {
 
 export class AppConf {
   debugEnabled = false;
-
   i18nOTA = false;
-
   level: '1d' | '2d' = '2d'; // 2d by default
-
   matomo: { url: string; siteId: number };
 
   onboarding: {
@@ -160,6 +147,15 @@ export class AppConf {
   splashads?: string;
 
   webviewIdentifier: string;
+
+  whoAreWe?: {
+    appleId?: string;
+    discoverUrl?: string;
+    entButton?: boolean;
+    icon?: string;
+    illustration?: WhoAreWellustrationType;
+    quote?: WhoAreWeQuoteType;
+  };
 
   zendesk?: {
     appId?: string;
@@ -211,6 +207,10 @@ export class AppConf {
     return this.splashads;
   }
 
+  get whoAreWeEnabled() {
+    return this.whoAreWe && this.whoAreWe.appleId;
+  }
+
   get zendeskEnabled() {
     return this.zendesk && this.zendesk.appId && this.zendesk.clientId && this.zendesk.zendeskUrl;
   }
@@ -256,6 +256,19 @@ export class AppConf {
     this.space = space as AppConf['space'];
     this.platforms = opts.platforms.map(pfd => new Platform(pfd));
     this.webviewIdentifier = opts.webviewIdentifier;
+
+    this.whoAreWe = opts.whoAreWe
+      ? {
+          appleId: opts.whoAreWe?.appleId,
+
+          discoverUrl: opts.whoAreWe?.discoverUrl,
+          entButton: opts.whoAreWe?.entButton,
+          icon: opts.whoAreWe?.icon,
+          illustration: opts.whoAreWe?.illustration,
+          quote: opts.whoAreWe?.quote,
+        }
+      : undefined;
+
     this.zendesk = opts.zendesk
       ? {
           appId: opts.zendesk?.appId,

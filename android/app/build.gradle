@@ -3,8 +3,6 @@ import com.android.build.OutputFile
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
-apply plugin: 'com.google.firebase.appdistribution'
-apply plugin: 'com.google.firebase.crashlytics'
 
 react {
     /* Folders */
@@ -86,11 +84,11 @@ android {
         applicationId APPID
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1140000
-        versionName "1.14.0"
+        versionCode 1131200
+        versionName "1.13.12"
         manifestPlaceholders.applicationName = APPNAME
         buildConfigField "String", "BundleVersionOverride", "\"${APPOVERRIDE}\""
-        buildConfigField "String", "BundleVersionType", "\"rc.2\""
+        buildConfigField "String", "BundleVersionType", "\"\""
         resValue "string", "app_name", "${APPNAME}"
         ndk {
             debugSymbolLevel 'FULL'
@@ -141,8 +139,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core:2.11.1")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.11.1")
     implementation("com.google.android.gms:play-services-base:18.5.0")
-    implementation 'com.google.firebase:firebase-common-ktx:21.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:19.4.0'
+    // Fix Duplicate class
     implementation('org.jetbrains:annotations:16.0.2')
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     // Zendesk
