@@ -13,6 +13,7 @@ import './wdyr';
 // from https://stackoverflow.com/a/35305611/6111343
 // in React Native, `process.nextTick` doesn't exist.
 process.nextTick = setImmediate;
-
 startNetworkLogging({ maxRequests: 500 });
+if (__DEV__) globalThis.RNFBDebug = true;
+
 AppRegistry.registerComponent(appName, () => App);

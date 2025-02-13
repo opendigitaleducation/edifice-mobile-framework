@@ -3,6 +3,9 @@ import com.android.build.OutputFile
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply plugin: "com.google.firebase.appdistribution"
+apply plugin: "com.google.gms.google-services"
+apply plugin: "com.google.firebase.crashlytics"
 
 react {
     /* Folders */
@@ -119,6 +122,10 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             shrinkResources false
             signingConfig signingConfigs.release
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+                unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
+            }
         }
     }
     applicationVariants.all { variant ->
@@ -144,11 +151,9 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     // Zendesk
     implementation("com.zendesk:answerbot:3.2.0")
-    implementation("com.zendesk:chat:3.4.0")
-    implementation("com.zendesk:messaging:5.4.0")
-    implementation("com.zendesk:support:5.2.0")
+    implementation("com.zendesk:chat:3.6.0")
+    implementation("com.zendesk:messaging:5.6.0")
+    implementation("com.zendesk:support:5.4.0")
     // Packages
     implementation project(':react-native-action-sheet')
 }
-
-apply plugin: 'com.google.gms.google-services'

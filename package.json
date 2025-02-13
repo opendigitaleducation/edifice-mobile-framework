@@ -266,7 +266,7 @@
   },
   "resolutions": {
     "set-value": "4.1.0",
-    "tsconfig-paths": "^4.0.0",
+    "tsconfig-paths": "4.0.0",
     "react-native-gesture-handler": "2.21.2",
     "@react-native-community/cli-platform-apple": "15.1.2",
     "@react-native-community/cli-platform-ios": "15.1.2",
