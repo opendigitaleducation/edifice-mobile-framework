@@ -2,11 +2,10 @@ import * as React from 'react';
 
 import type { NativeStackNavigationOptions, NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import type { WikiHomeScreenPrivateProps } from './types';
+import moduleConfig from '../../module-config';
 
 import { I18n } from '~/app/i18n';
-import { PageView } from '~/framework/components/page';
-import { BodyBoldText } from '~/framework/components/text';
+import ResourceExplorer, { ResourceExplorerTemplate } from '~/framework/modules/explorer/templates/resource-explorer';
 import { WikiNavigationParams, wikiRouteNames } from '~/framework/modules/wiki/navigation';
 import { navBarOptions } from '~/framework/navigation/navBar';
 
@@ -21,10 +20,6 @@ export const computeNavBar = ({
   }),
 });
 
-export default function WikiHomeScreen(props: WikiHomeScreenPrivateProps) {
-  return (
-    <PageView>
-      <BodyBoldText>wiki home screen</BodyBoldText>
-    </PageView>
-  );
+export default function WikiHomeScreen(props: ResourceExplorerTemplate.ScreenProps) {
+  return <ResourceExplorer {...props} moduleConfig={moduleConfig} />;
 }

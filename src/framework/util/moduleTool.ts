@@ -7,13 +7,13 @@ import { ColorValue } from 'react-native';
 
 import type { Reducer } from 'redux';
 
-import type { AuthActiveAccount } from '../modules/auth/model';
 import type { StorageSlice } from './storage/slice';
 import type { StorageTypeMap } from './storage/types';
 
 import { IGlobalState } from '~/app/store';
 import theme, { IShades } from '~/app/theme';
 import type { PictureProps } from '~/framework/components/picture';
+import type { AuthActiveAccount } from '~/framework/modules/auth/model';
 import { updateAppBadges } from '~/framework/modules/timeline/app-badges';
 import { toCamelCase, toSnakeCase } from '~/framework/util/string';
 

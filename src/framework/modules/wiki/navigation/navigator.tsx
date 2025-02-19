@@ -8,5 +8,7 @@ import { createModuleNavigator } from '~/framework/navigation/moduleScreens';
 
 export default () =>
   createModuleNavigator<WikiNavigationParams>(moduleConfig.name, Stack => (
-    <>{<Stack.Screen name={wikiRouteNames.home} component={WikiHomeScreen} options={homeNavBar} initialParams={{}} />}</>
+    <>
+      <Stack.Screen name={wikiRouteNames.home} component={WikiHomeScreen} options={homeNavBar} initialParams={{}} />
+    </>
   ));

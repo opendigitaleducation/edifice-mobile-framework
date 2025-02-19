@@ -7,11 +7,12 @@ import * as React from 'react';
 
 import DeviceInfo from 'react-native-device-info';
 
+import { FetchErrorCode } from './http/error';
+
 import { I18n } from '~/app/i18n';
+import { AccountErrorCode } from '~/framework/modules/auth/model/error';
 import { OAuth2ErrorCode } from '~/framework/util/oauth2';
 import { IOAuthCustomToken } from '~/infra/oauth';
-import { AccountErrorCode } from '../modules/auth/model/error';
-import { FetchErrorCode } from './http/error';
 
 export namespace Error {
   //  8888888888                                                      d8b 888    888            888
@@ -70,7 +71,7 @@ export namespace Error {
   //                                                                                                   Y8b d88P 888
   //                                                                                                    "Y88P"  888
 
-  export enum AnyErrorType {}
+  export enum AnyErrorType { }
 
   export class ErrorWithType<Types = AnyErrorType> extends global.Error {
     constructor(

@@ -115,6 +115,7 @@ export const UI_SIZES = {
       small: getScaleWidth(20),
       xlarge: getScaleWidth(36),
       xsmall: getScaleWidth(16),
+      xxlarge: getScaleWidth(96),
       xxsmall: getScaleWidth(12),
     },
 
