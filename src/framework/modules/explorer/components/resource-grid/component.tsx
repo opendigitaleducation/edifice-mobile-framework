@@ -14,19 +14,23 @@ const defaultKeyExtractor: ResourceGrid.Props<ResourceGrid.BaseItemT>['keyExtrac
 
 const getItemType: FlashListProps<ResourceGrid.BaseItemT>['getItemType'] = item => item?.resourceType ?? 0;
 
-const renderItem: FlashListProps<ResourceGrid.BaseItemT>['renderItem'] = info => <ResourceExplorerItem {...info} />;
-
 export function ResourceGrid<T extends ExplorerData['items'][0]>({
-  extraData: _extraData,
   keyExtractor,
   moduleConfig,
+  onPressFolder,
+  onPressResource,
   ...flashListProps
 }: ResourceGrid.Props<T>) {
-  const extraData = React.useMemo(() => ({ ..._extraData, moduleConfig }), [_extraData, moduleConfig]);
+  console.debug('=== onPressFolder', onPressFolder);
+  const renderItem = React.useCallback<NonNullable<FlashListProps<ResourceGrid.BaseItemT>['renderItem']>>(
+    info => (
+      <ResourceExplorerItem {...info} onPressFolder={onPressFolder} onPressResource={onPressResource} moduleConfig={moduleConfig} />
+    ),
+    [onPressFolder, onPressResource, moduleConfig],
+  );
   return (
     <FlashList
       {...flashListProps}
-      extraData={extraData}
       keyExtractor={keyExtractor ?? defaultKeyExtractor}
       numColumns={2}
       getItemType={getItemType}

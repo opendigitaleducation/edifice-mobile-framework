@@ -12,6 +12,7 @@ export default StyleSheet.create({
     padding: UI_SIZES.border.thin,
   },
   folderLabel: {
+    color: theme.palette.grey.graphite,
     lineHeight: TextSizeStyle.Small.lineHeight,
     position: 'relative',
     textAlign: 'center',
@@ -42,11 +43,14 @@ export default StyleSheet.create({
     width: '100%',
   },
   labelCaption: {
+    color: theme.palette.grey.graphite,
     lineHeight: TextSizeStyle.Small.lineHeight,
   },
   labelContainer: {
     flexDirection: 'column',
-    paddingBottom: UI_SIZES.spacing.small,
+    height: 2 * TextSizeStyle.Small.lineHeight + UI_SIZES.spacing.minor + (UI_SIZES.spacing.small + UI_SIZES.spacing.minor) / 2,
+    justifyContent: 'center',
+    paddingBottom: (UI_SIZES.spacing.small + UI_SIZES.spacing.minor) / 2,
     paddingHorizontal: UI_SIZES.spacing.small,
     paddingTop: UI_SIZES.spacing.minor,
   },

@@ -4,6 +4,7 @@
  * Usage: import and use the init() function when local changes (setup is automatic on import)
  * Then, import and use the native i18next and moment modules.
  */
+import { Temporal } from '@js-temporal/polyfill';
 import { flatten, unflatten } from 'flat';
 import i18n, { TOptions } from 'i18next';
 import ChainedBackend from 'i18next-chained-backend';
@@ -220,4 +221,6 @@ export namespace I18n {
     }
     computeLangDisplayNames();
   }
+
+  export const date = (d: Temporal.Instant) => d.toLocaleString(getLanguage(), { dateStyle: 'medium', timeStyle: undefined });
 }

@@ -36,6 +36,7 @@ const hydrateFolder = (data: API.Explorer.ResourcesPageOK['folders'][0]): Explor
 
 const hydrateResource = (data: API.Explorer.ResourcesPageOK['resources'][0]): ExplorerPageData['resources'][0] => ({
   resourceType: data.resourceType,
+  thumbnail: data.thumbnail,
   ...hydrateExplorerNode(data),
 });
 

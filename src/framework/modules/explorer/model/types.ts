@@ -44,6 +44,7 @@ export interface ExplorerPageData {
 
 export interface Resource extends ExplorerNode {
   resourceType: string;
+  thumbnail?: string;
 }
 
 export interface ExplorerData {

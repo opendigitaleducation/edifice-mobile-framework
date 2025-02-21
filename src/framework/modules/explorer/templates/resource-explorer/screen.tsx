@@ -8,6 +8,7 @@ import { UI_SIZES } from '~/framework/components/constants';
 import { PageView } from '~/framework/components/page';
 import { ContentLoader, ContentLoaderProps } from '~/framework/hooks/loader';
 import ResourceGrid from '~/framework/modules/explorer/components/resource-grid';
+import { ResourceGrid as ResourceGridTypes } from '~/framework/modules/explorer/components/resource-grid/types';
 import { ExplorerData, Folder, Resource } from '~/framework/modules/explorer/model/types';
 import service from '~/framework/modules/explorer/service/index';
 import { HTTPError } from '~/framework/util/http';
@@ -39,7 +40,7 @@ export function ResourceExplorerTemplate({ moduleConfig }: ResourceExplorerTempl
 
   const loadPage = React.useCallback(async (start_idx: number, reloadAll: boolean = false) => {
     // DUMMY WAIT
-    // if (__DEV__) await new Promise(resolve => setTimeout(resolve, 1000));
+    if (__DEV__) await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Call Page API
     try {
@@ -139,14 +140,16 @@ export function ResourceExplorerTemplate({ moduleConfig }: ResourceExplorerTempl
     [loadPage],
   );
 
-  const loadContent: ContentLoaderProps['loadContent'] = () => loadPage(0, true);
+  const loadContent: ContentLoaderProps['loadContent'] = React.useCallback(() => loadPage(0, true), [loadPage]);
 
-  const extraData = React.useMemo(
-    () => ({
-      nbFolders: data.nbFolders,
-      nbResources: data.nbResources,
-    }),
-    [data.nbResources, data.nbFolders],
+  const onPressFolder = React.useCallback<NonNullable<ResourceGridTypes.Props<(typeof data.items)[0]>['onPressFolder']>>(
+    f => console.info(`Pressed folder ${f.name} (${f.id})`),
+    [],
+  );
+
+  const onPressResource = React.useCallback<NonNullable<ResourceGridTypes.Props<(typeof data.items)[0]>['onPressResource']>>(
+    r => console.info(`Pressed resource ${r.name} (${r.id})`),
+    [],
   );
 
   const renderContent: ContentLoaderProps['renderContent'] = React.useCallback(
@@ -156,15 +159,16 @@ export function ResourceExplorerTemplate({ moduleConfig }: ResourceExplorerTempl
           key="data"
           moduleConfig={moduleConfig}
           data={data.items}
-          extraData={extraData}
           estimatedListSize={estimatedListSize}
           refreshControl={refreshControl}
           viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={onViewableItemsChanged}
+          onPressFolder={onPressFolder}
+          onPressResource={onPressResource}
         />
       );
     },
-    [data.items, extraData, moduleConfig, onViewableItemsChanged],
+    [data.items, moduleConfig, onViewableItemsChanged, onPressFolder, onPressResource],
   );
 
   const renderLoading: ContentLoaderProps['renderLoading'] = React.useCallback(
