@@ -5,11 +5,12 @@ import { FlashListProps, ViewToken } from '@shopify/flash-list';
 import type { ResourceExplorerTemplate } from './types';
 
 import { UI_SIZES } from '~/framework/components/constants';
+import { EmptyContentScreen } from '~/framework/components/empty-screens';
 import { PageView } from '~/framework/components/page';
 import { ContentLoader, ContentLoaderProps } from '~/framework/hooks/loader';
 import ResourceGrid from '~/framework/modules/explorer/components/resource-grid';
 import { ResourceGrid as ResourceGridTypes } from '~/framework/modules/explorer/components/resource-grid/types';
-import { ExplorerData, Folder, Resource } from '~/framework/modules/explorer/model/types';
+import { ExplorerData, Folder, Resource, RootFolderId } from '~/framework/modules/explorer/model/types';
 import service from '~/framework/modules/explorer/service/index';
 import { HTTPError } from '~/framework/util/http';
 
@@ -29,7 +30,9 @@ const WINDOW_SLOP = 12; // How many margin to compute which items to load outsid
 
 const placeholderData = new Array(8).fill(null);
 
-export function ResourceExplorerTemplate({ moduleConfig }: ResourceExplorerTemplate.AllProps) {
+export function ResourceExplorerTemplate({ moduleConfig, navigation, route }: ResourceExplorerTemplate.AllProps) {
+  const { folderId = RootFolderId.ROOT } = route.params;
+
   const [data, setData] = React.useState<ExplorerData>({ items: [], nbFolders: 0, nbResources: 0 });
   // Note: here store a ref to the state because `onViewableItemsChanged` won't be refreshed by state updates.
   const dataRef = React.useRef(data);
@@ -38,60 +41,63 @@ export function ResourceExplorerTemplate({ moduleConfig }: ResourceExplorerTempl
   // Pages currenlty fetching
   const fetchingPages = React.useRef<Set<number>>(new Set());
 
-  const loadPage = React.useCallback(async (start_idx: number, reloadAll: boolean = false) => {
-    // DUMMY WAIT
-    if (__DEV__) await new Promise(resolve => setTimeout(resolve, 1000));
+  const loadPage = React.useCallback(
+    async (start_idx: number, reloadAll: boolean = false) => {
+      // DUMMY WAIT
+      // if (__DEV__) await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // Call Page API
-    try {
-      const response = await service.resources.get({
-        application: 'wiki',
-        folder: 'default',
-        order_by: 'updatedAt:desc',
-        page_size: PAGE_SIZE,
-        resource_type: 'wiki',
-        start_idx: start_idx,
-      });
+      // Call Page API
+      try {
+        const response = await service.resources.get({
+          application: 'wiki',
+          folder: folderId,
+          order_by: 'updatedAt:desc',
+          page_size: PAGE_SIZE,
+          resource_type: 'wiki',
+          start_idx: start_idx,
+        });
 
-      // Merge Page Data into existent
-      setData(previousData => {
-        // console.debug(previousData, data);
-        const newItems: (Folder | Resource | null)[] = [...response.folders, ...new Array(response.pagination.total).fill(null)];
-        const keepOldResources = !reloadAll && previousData.nbResources === response.pagination.total;
-        // Fill resources with old or new data
-        // console.debug('BEFORE', response.pagination.pageStart, newItems);
-        // console.debug(
-        //   'RESPONSE',
-        //   response.pagination.pageStart,
-        //   response.resources.map(e => e.name),
-        // );
-        for (let iResource = 0; iResource < response.pagination.total; ++iResource) {
-          if (
-            iResource >= response.pagination.pageStart &&
-            iResource < response.pagination.pageStart + response.pagination.pageSize
-          ) {
-            // console.debug(
-            //   `INSERT (${response.folders.length} + ${response.pagination.pageStart} +) ${iResource - response.pagination.pageStart} at ${response.folders.length + iResource} (${response.resources[iResource - response.pagination.pageStart].name})`,
-            // );
-            newItems[response.folders.length + iResource] = response.resources[iResource - response.pagination.pageStart];
-          } else if (keepOldResources) {
-            // console.debug('copy OLD resource from', previousData.nbFolders + iResource, 'to', response.folders.length + iResource);
-            newItems[response.folders.length + iResource] = previousData.items[previousData.nbFolders + iResource];
+        // Merge Page Data into existent
+        setData(previousData => {
+          // console.debug(previousData, data);
+          const newItems: (Folder | Resource | null)[] = [...response.folders, ...new Array(response.pagination.total).fill(null)];
+          const keepOldResources = !reloadAll && previousData.nbResources === response.pagination.total;
+          // Fill resources with old or new data
+          // console.debug('BEFORE', response.pagination.pageStart, newItems);
+          // console.debug(
+          //   'RESPONSE',
+          //   response.pagination.pageStart,
+          //   response.resources.map(e => e.name),
+          // );
+          for (let iResource = 0; iResource < response.pagination.total; ++iResource) {
+            if (
+              iResource >= response.pagination.pageStart &&
+              iResource < response.pagination.pageStart + response.pagination.pageSize
+            ) {
+              // console.debug(
+              //   `INSERT (${response.folders.length} + ${response.pagination.pageStart} +) ${iResource - response.pagination.pageStart} at ${response.folders.length + iResource} (${response.resources[iResource - response.pagination.pageStart].name})`,
+              // );
+              newItems[response.folders.length + iResource] = response.resources[iResource - response.pagination.pageStart];
+            } else if (keepOldResources) {
+              // console.debug('copy OLD resource from', previousData.nbFolders + iResource, 'to', response.folders.length + iResource);
+              newItems[response.folders.length + iResource] = previousData.items[previousData.nbFolders + iResource];
+            }
           }
-        }
-        // console.debug('AFTER', newItems);
-        return {
-          items: newItems,
-          nbFolders: response.folders.length,
-          nbResources: response.pagination.total,
-        };
-      });
-    } catch (e) {
-      if (e instanceof HTTPError) console.error(await e.read(e.text));
-      else console.error(e?.toString());
-      throw e;
-    }
-  }, []);
+          // console.debug('AFTER', newItems);
+          return {
+            items: newItems,
+            nbFolders: response.folders.length,
+            nbResources: response.pagination.total,
+          };
+        });
+      } catch (e) {
+        if (e instanceof HTTPError) console.error(await e.read(e.text));
+        else console.error(e?.toString());
+        throw e;
+      }
+    },
+    [folderId],
+  );
 
   const onViewableItemsChanged = React.useCallback(
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
@@ -143,8 +149,8 @@ export function ResourceExplorerTemplate({ moduleConfig }: ResourceExplorerTempl
   const loadContent: ContentLoaderProps['loadContent'] = React.useCallback(() => loadPage(0, true), [loadPage]);
 
   const onPressFolder = React.useCallback<NonNullable<ResourceGridTypes.Props<(typeof data.items)[0]>['onPressFolder']>>(
-    f => console.info(`Pressed folder ${f.name} (${f.id})`),
-    [],
+    f => navigation.push(route.name, { folderId: f.id }),
+    [navigation, route.name],
   );
 
   const onPressResource = React.useCallback<NonNullable<ResourceGridTypes.Props<(typeof data.items)[0]>['onPressResource']>>(
@@ -165,6 +171,7 @@ export function ResourceExplorerTemplate({ moduleConfig }: ResourceExplorerTempl
           onViewableItemsChanged={onViewableItemsChanged}
           onPressFolder={onPressFolder}
           onPressResource={onPressResource}
+          ListEmptyComponent={EmptyContentScreen}
         />
       );
     },
