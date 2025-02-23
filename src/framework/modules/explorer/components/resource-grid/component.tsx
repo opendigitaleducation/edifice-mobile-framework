@@ -21,7 +21,6 @@ export function ResourceGrid<T extends ExplorerData['items'][0]>({
   onPressResource,
   ...flashListProps
 }: ResourceGrid.Props<T>) {
-  console.debug('=== onPressFolder', onPressFolder);
   const renderItem = React.useCallback<NonNullable<FlashListProps<ResourceGrid.BaseItemT>['renderItem']>>(
     info => (
       <ResourceExplorerItem {...info} onPressFolder={onPressFolder} onPressResource={onPressResource} moduleConfig={moduleConfig} />

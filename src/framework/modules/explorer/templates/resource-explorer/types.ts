@@ -1,12 +1,13 @@
 import type { ParamListBase } from '@react-navigation/native';
 import type { NativeStackNavigationOptions, NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import type { Folder, FolderId } from '~/framework/modules/explorer/model/types';
+import type { Folder, FolderId, Resource } from '~/framework/modules/explorer/model/types';
 import type { AnyNavigableModuleConfig } from '~/framework/util/moduleTool';
 
 export namespace ResourceExplorerTemplate {
   export interface Props {
     moduleConfig: Pick<AnyNavigableModuleConfig, 'displayPicture' | 'displayColor'>;
+    onOpenResource?: (r: Resource) => void;
   }
 
   export interface NavParams {
@@ -14,7 +15,7 @@ export namespace ResourceExplorerTemplate {
     folderName?: Folder['name'];
   }
 
-  type NavigationProps<
+  export type NavigationProps<
     T extends ParamListBase = {
       [key: string]: NavParams;
     },

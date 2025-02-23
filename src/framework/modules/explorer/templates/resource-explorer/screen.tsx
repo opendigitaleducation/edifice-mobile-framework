@@ -30,7 +30,7 @@ const WINDOW_SLOP = 12; // How many margin to compute which items to load outsid
 
 const placeholderData = new Array(8).fill(null);
 
-export function ResourceExplorerTemplate({ moduleConfig, navigation, route }: ResourceExplorerTemplate.AllProps) {
+export function ResourceExplorerTemplate({ moduleConfig, navigation, onOpenResource, route }: ResourceExplorerTemplate.AllProps) {
   const { folderId = RootFolderId.ROOT } = route.params;
 
   const [data, setData] = React.useState<ExplorerData>({ items: [], nbFolders: 0, nbResources: 0 });
@@ -44,7 +44,7 @@ export function ResourceExplorerTemplate({ moduleConfig, navigation, route }: Re
   const loadPage = React.useCallback(
     async (start_idx: number, reloadAll: boolean = false) => {
       // DUMMY WAIT
-      // if (__DEV__) await new Promise(resolve => setTimeout(resolve, 1000));
+      // if (__DEV__) await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Call Page API
       try {
@@ -153,11 +153,6 @@ export function ResourceExplorerTemplate({ moduleConfig, navigation, route }: Re
     [navigation, route.name],
   );
 
-  const onPressResource = React.useCallback<NonNullable<ResourceGridTypes.Props<(typeof data.items)[0]>['onPressResource']>>(
-    r => console.info(`Pressed resource ${r.name} (${r.id})`),
-    [],
-  );
-
   const renderContent: ContentLoaderProps['renderContent'] = React.useCallback(
     refreshControl => {
       return (
@@ -170,12 +165,12 @@ export function ResourceExplorerTemplate({ moduleConfig, navigation, route }: Re
           viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={onViewableItemsChanged}
           onPressFolder={onPressFolder}
-          onPressResource={onPressResource}
+          onPressResource={onOpenResource}
           ListEmptyComponent={EmptyContentScreen}
         />
       );
     },
-    [data.items, moduleConfig, onViewableItemsChanged, onPressFolder, onPressResource],
+    [moduleConfig, data.items, onViewableItemsChanged, onPressFolder, onOpenResource],
   );
 
   const renderLoading: ContentLoaderProps['renderLoading'] = React.useCallback(

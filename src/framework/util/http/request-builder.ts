@@ -170,21 +170,21 @@ const MAX_FETCH_TIMEOUT_MS = 30000; // 30 seconds
  */
 const _timeoutFetch =
   (fetchFn: typeof fetch) =>
-    async (info: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), MAX_FETCH_TIMEOUT_MS);
-      try {
-        return await fetchFn(info, { ...init, signal: controller.signal });
-      } catch (e) {
-        const deepError = Error.getDeepError(e);
-        if (deepError instanceof global.Error && deepError.name === 'AbortError') {
-          throw new FetchError(FetchErrorCode.TIMEOUT, undefined, { cause: e });
-        }
-        throw e;
-      } finally {
-        clearTimeout(timeout);
+  async (info: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), MAX_FETCH_TIMEOUT_MS);
+    try {
+      return await fetchFn(info, { ...init, signal: controller.signal });
+    } catch (e) {
+      const deepError = Error.getDeepError(e);
+      if (deepError instanceof global.Error && deepError.name === 'AbortError') {
+        throw new FetchError(FetchErrorCode.TIMEOUT, undefined, { cause: e });
       }
-    };
+      throw e;
+    } finally {
+      clearTimeout(timeout);
+    }
+  };
 
 const _realFetch = _timeoutFetch(_performFetch);
 
@@ -211,7 +211,7 @@ export const _parseJson = async <ResponseType>(r: Response) => {
     return (await r.json()) as Promise<ResponseType>;
   } catch (e) {
     const error = new FetchError(FetchErrorCode.PARSE_ERROR, 'Failed to parse response JSON', { cause: e });
-    console.error(error);
+    console.error(error, '\n', await r.clone().text());
     throw error;
   }
 };
